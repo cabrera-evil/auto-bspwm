@@ -25,7 +25,7 @@ bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 
-feh --bg-fill ~/Wallpapers/archkali.png &
+feh --bg-fill ~/Pictures/Wallpapers/archkali.png &
 polybar &
 picom --config ~/.config/picom/picom.conf &
 # wal -R
