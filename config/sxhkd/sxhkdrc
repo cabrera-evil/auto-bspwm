@@ -124,6 +124,10 @@ super + shift + r
 super + shift + f
 	flatpak run com.google.Chrome
 
+# Open Blueman
+super + shift + b
+	blueman-manager
+
 # Screen Lock
 super + shift + l
 	/usr/bin/i3lock-fancy
