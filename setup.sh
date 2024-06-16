@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # Author: Douglas Cabrera (aka @cabrera-evil)
 
