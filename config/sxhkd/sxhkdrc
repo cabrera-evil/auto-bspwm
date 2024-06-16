@@ -18,13 +18,13 @@ super + Escape
 # bspwm hotkeys
 #
 
-# quit/restart bspwm
-super + alt + {q,r}
-	bspc {quit,wm -r}
-
 # close and kill
 super + {_,shift + }w
 	bspc node -{c,k}
+
+# quit/restart bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r}
 
 # alternate between the tiled and monocle layout
 super + m
@@ -116,21 +116,60 @@ super + ctrl + {Left,Down,Up,Right}
 super + alt + {Left,Down,Up,Right}
 	~/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
 
+#
 # Xrandr
-super + shift + r
+#
+
+super + shift + x
 	~/.config/bspwm/scripts/xrandr
 
-# Open Chrome
-super + shift + f
-	flatpak run com.google.Chrome
+#
+# Application Shortcuts
+#
 
 # Open Blueman
 super + shift + b
 	blueman-manager
 
+# Open Chrome
+super + shift + f
+	flatpak run com.google.Chrome
+
+# Open Ranger
+super + shift + r
+	kitty -e ranger
+
+# Open Spotify
+super + shift + s
+	flatpak run com.spotify.Client
+
+#
+# System Controls
+#
+
 # Screen Lock
 super + shift + l
 	/usr/bin/i3lock-fancy
+
+# Increase screen brightness
+super + shift + Up
+	brightnessctl set +10%
+
+# Decrease screen brightness
+super + shift + Down
+	brightnessctl set 10%-
+
+# Toggle touchpad
+super + shift + p
+	synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
+
+# Restart Network Manager
+super + shift + n
+	sudo systemctl restart NetworkManager
+
+#
+# Volume Controls
+#
 
 # Increase volume
 ctrl + shift + Up
@@ -144,9 +183,48 @@ ctrl + shift + Down
 ctrl + shift + m
 	pamixer --toggle-mute
 
+#
+# Workspace Management
+#
+
+# Move window to the next monitor
+super + shift + m
+	bspc node -d next
+
+# Move window to the previous monitor
+super + shift + n
+	bspc node -d prev
+
+# Switch to the next monitor
+super + period
+	bspc monitor -f next
+
+# Switch to the previous monitor
+super + comma
+	bspc monitor -f prev
+
+#
+# Media Controls
+#
+
+# Play/Pause media
+super + shift + p
+	playerctl play-pause
+
+# Next track
+super + shift + period
+	playerctl next
+
+# Previous track
+super + shift + comma
+	playerctl previous
+
+#
 # ScreenShots
+#
+
 @Print
-	flameshot full
+	flameshot screen -c
 
 ctrl + @Print
-	flameshot gui
+	flameshot gui -c

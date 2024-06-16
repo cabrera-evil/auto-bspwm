@@ -47,7 +47,7 @@ else
 	sleep 1
 	echo -e "\n\n${BLUE}[*] Installing necessary packages for the environment...\n${NC}"
 	sleep 2
-	sudo apt install -y kitty rofi feh xclip ranger i3lock-fancy scrot scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip procps tty-clock fzf lsd bat pamixer flameshot
+	sudo apt install -y kitty rofi feh xclip ranger i3lock-fancy scrot scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip procps tty-clock fzf lsd bat pamixer flameshot playerctl brightnessctl blueman
 	if [ $? != 0 ] && [ $? != 130 ]; then
 		echo -e "\n${RED}[-] Failed to install some packages!\n${NC}"
 		exit 1
