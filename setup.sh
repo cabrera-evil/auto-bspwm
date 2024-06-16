@@ -262,10 +262,9 @@ else
 	echo -e "\n${GREEN}[+] Done\n${NC}"
 	sleep 1.5
 
-	echo -e "\n${PURPLE}[*] Removing repository and tools directory...\n${NC}"
+	echo -e "\n${PURPLE}[*] Removing tools directory...\n${NC}"
 	sleep 2
 	rm -rfv ~/tools
-	rm -rfv $dir
 	echo -e "\n${GREEN}[+] Done\n${NC}"
 	sleep 1.5
 
