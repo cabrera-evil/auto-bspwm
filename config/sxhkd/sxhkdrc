@@ -134,14 +134,14 @@ super + shift + b
 
 # Screen Lock
 ctrl + alt + l
-	/usr/bin/i3lock-fancy	
+	/usr/bin/i3lock-fancy
 
 # Increase volume
 ctrl + shift + Up
 	pamixer --increase 5
 
 # Decrease the volume
-ctrl + shift + Down 
+ctrl + shift + Down
 	pamixer --decrease 5
 
 # Mute/Restore volume
