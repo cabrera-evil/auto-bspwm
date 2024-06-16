@@ -216,20 +216,20 @@ else
 
 	echo -e "\n${PURPLE}[*] Configuring wallpaper...\n${NC}"
 	sleep 2
-	if [[ -d "~/Wallpapers" ]]; then
-		cp -rv $dir/wallpapers/* ~/Wallpapers
+	if [[ -d "~/Pictures/Wallpapers" ]]; then
+		cp -rv $dir/wallpapers/* ~/Pictures/Wallpapers
 	else
-		mkdir ~/Wallpapers
-		cp -rv $dir/wallpapers/* ~/Wallpapers
+		mkdir ~/Pictures/Wallpapers
+		cp -rv $dir/wallpapers/* ~/Pictures/Wallpapers
 	fi
-	wal -nqi ~/Wallpapers/archkali.png
-	sudo wal -nqi ~/Wallpapers/archkali.png
+	wal -nqi ~/Pictures/Wallpapers/archkali.png
+	sudo wal -nqi ~/Pictures/Wallpapers/archkali.png
 	echo -e "\n${GREEN}[+] Done\n${NC}"
 	sleep 1.5
 
 	echo -e "\n${PURPLE}[*] Configuring configuration files...\n${NC}"
 	sleep 2
-	cp -rv $dir/config/* ~/.config/
+	ln -s $dir/.config/* ~/.config/
 	echo -e "\n${GREEN}[+] Done\n${NC}"
 	sleep 1.5
 
