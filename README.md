@@ -12,7 +12,7 @@ sudo apt upgrade -y
 2. Clone the repository and navigate to it.
 
 ```shell
-git clone https://github.com/r1vs3c/auto-bspwm.git
+git clone https://github.com/cabrera-evil/auto-bspwm.git
 cd auto-bspwm
 ```
 

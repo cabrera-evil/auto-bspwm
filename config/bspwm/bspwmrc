@@ -26,6 +26,6 @@ bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 
 feh --bg-fill ~/Wallpapers/archkali.png &
-~/.config/polybar/./launch.sh --shapes &
+polybar &
 picom --config ~/.config/picom/picom.conf &
 # wal -R
