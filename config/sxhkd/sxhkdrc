@@ -110,7 +110,7 @@ super + ctrl + shift + space
 
 # Move a floating window
 super + ctrl + {Left,Down,Up,Right}
-	bspc node -v {-20 0,0 20,0 -20,20 0}
+	bspc node -v {-50 0,0 50,0 -50,50 0}
 
 # BSPWM Resize
 super + alt + {Left,Down,Up,Right}
