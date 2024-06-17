@@ -121,7 +121,7 @@ super + alt + {Left,Down,Up,Right}
 #
 
 # Backup important files
-super + shift + b
+super + shift + k
 	~/.config/bspwm/scripts/backup.sh
 
 #
@@ -165,7 +165,7 @@ super + shift + l
 
 # Increse/Decrease brightness
 XF86MonBrightness{Down,Up}
-	xbacklight {-dec 15,-inc 15}
+	brightnessctl s {5%-,+5%}
 
 # Toggle touchpad
 super + shift + p
@@ -210,19 +210,6 @@ super + period
 # Switch to the previous monitor
 super + comma
 	bspc monitor -f prev
-
-#
-# Workspace Automation
-#
-
-# Open dev environment
-super + shift + d
-	~/.config/bspwm/scripts/dev.sh
-
-# Open work environment
-super + shift + m
-	~/.config/bspwm/scripts/work.sh
-
 
 #
 # Media Controls
