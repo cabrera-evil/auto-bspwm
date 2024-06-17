@@ -240,6 +240,20 @@ else
 		sleep 1.5
 	fi
 
+	echo -e "\n${BLUE}[*] Configuring touchpad...\n${NC}"
+	sleep 2
+	sudo mkdir -p /etc/X11/xorg.conf.d && sudo tee /etc/X11/xorg.conf.d/90-touchpad.conf <<'EOF' 1>/dev/null
+Section "InputClass"
+        Identifier "touchpad"
+        MatchIsTouchpad "on"
+        Driver "libinput"
+        Option "Tapping" "on"
+        Option "TappingButtonMap" "lrm"
+        Option "NaturalScrolling" "on"
+        Option "ScrollMethod" "twofinger"
+EndSection
+EOF
+
 	echo -e "\n${BLUE}[*] Starting configuration of fonts, wallpaper, configuration files, .zshrc, .p10k.zsh, and scripts...\n${NC}"
 	sleep 0.5
 
