@@ -125,13 +125,6 @@ super + shift + k
 	~/.config/bspwm/scripts/backup.sh
 
 #
-# Xrandr
-#
-
-super + shift + x
-	~/.config/bspwm/scripts/xrandr.sh
-
-#
 # Application Shortcuts
 #
 
