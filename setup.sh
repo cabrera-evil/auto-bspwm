@@ -182,7 +182,6 @@ EOF
 
 	header "Configuring scripts..."
 	sudo cp -v $dir/scripts/whichSystem.py /usr/local/bin/
-	touch ~/.config/polybar/scripts/target
 
 	header "Configuring necessary permissions and symbolic links..."
 	sudo chmod +x /usr/local/bin/whichSystem.py
@@ -190,8 +189,6 @@ EOF
 	sudo chmod +x /usr/local/share/zsh/site-functions/_bspc
 	sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
 	sudo mkdir -p /root/.config/polybar/scripts/
-	sudo touch /root/.config/polybar/scripts/target
-	sudo ln -sfv ~/.config/polybar/scripts/target /root/.config/polybar/scripts/target
 	cd ..
 
 	header "\n${GREEN}[+] Environment configured :D\n${NC}"
