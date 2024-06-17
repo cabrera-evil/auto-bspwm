@@ -229,7 +229,7 @@ else
 
 	echo -e "\n${PURPLE}[*] Configuring configuration files...\n${NC}"
 	sleep 2
-	ln -s $dir/.config/* ~/.config/
+	ln -s $dir/config/* ~/.config/
 	echo -e "\n${GREEN}[+] Done\n${NC}"
 	sleep 1.5
 
