@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Function to get the IP address of a given interface
 get_ip() {
@@ -6,14 +6,14 @@ get_ip() {
 }
 
 # Get a list of interfaces excluding lo (loopback)
-interfaces=$(ip link show | awk -F: '$0 !~ "lo|vir|^[^0-9]"{print $2;getline}')
+interfaces=$(ip -o link show | awk '$2 !~ /^(lo|docker|vir)/{print $2}')
 
 # Loop through each interface and get its IP address
 output=""
 for iface in $interfaces; do
     ip=$(get_ip $iface)
     if [ -z "$ip" ]; then
-        ip="No IP"
+        ip="N/A"
     fi
     output="$output %{F#ffffff} $iface: $ip %{u-}"
 done
