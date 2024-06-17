@@ -114,14 +114,22 @@ super + ctrl + {Left,Down,Up,Right}
 
 # BSPWM Resize
 super + alt + {Left,Down,Up,Right}
-	~/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
+	~/.config/bspwm/scripts/bspwm_resize.sh {west,south,north,east}
+
+#
+# System Backup
+#
+
+# Backup important files
+super + shift + b
+	~/.config/bspwm/scripts/backup.sh
 
 #
 # Xrandr
 #
 
 super + shift + x
-	~/.config/bspwm/scripts/xrandr
+	~/.config/bspwm/scripts/xrandr.sh
 
 #
 # Application Shortcuts
@@ -143,6 +151,10 @@ super + shift + r
 super + shift + s
 	flatpak run com.spotify.Client
 
+# Open VS Code
+super + shift + c
+	code
+
 #
 # System Controls
 #
@@ -151,13 +163,9 @@ super + shift + s
 super + shift + l
 	/usr/bin/i3lock-fancy
 
-# Increase screen brightness
-super + shift + Up
-	brightnessctl set +10%
-
-# Decrease screen brightness
-super + shift + Down
-	brightnessctl set 10%-
+# Increse/Decrease brightness
+XF86MonBrightness{Down,Up}
+	xbacklight {-dec 15,-inc 15}
 
 # Toggle touchpad
 super + shift + p
@@ -204,20 +212,39 @@ super + comma
 	bspc monitor -f prev
 
 #
+# Workspace Automation
+#
+
+# Open dev environment
+super + shift + d
+	~/.config/bspwm/scripts/dev.sh
+
+# Open work environment
+super + shift + m
+	~/.config/bspwm/scripts/work.sh
+
+
+#
 # Media Controls
 #
 
-# Play/Pause media
-super + shift + p
-	playerctl play-pause
+XF86Audio{Play,Prev,Next,Stop}
+	playerctl {play-pause,previous,next,stop}
 
-# Next track
-super + shift + period
-	playerctl next
+super + XF86Audio{Mute,LowerVolume,RaiseVolume}
+	mpc {toggle,prev,next,stop}
 
-# Previous track
-super + shift + comma
-	playerctl previous
+super + {Down,Left,Right,Up}
+	mpc {toggle,prev,next,stop}
+
+XF86Audio{Mute,LowerVolume,RaiseVolume}
+	amixer set Master {toggle,5%-,5%+}
+
+XF86AudioMicMute
+	amixer set Capture toggle
+
+super + XF86Audio{Mute,LowerVolume,RaiseVolume}
+	amixer set Capture {toggle,5%-,5%+}
 
 #
 # ScreenShots
