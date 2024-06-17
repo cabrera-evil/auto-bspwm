@@ -27,6 +27,6 @@ bspc rule -a Screenkey manage=off
 
 feh --bg-fill ~/Pictures/Wallpapers/archkali.png &
 polybar main &
-~/.config/bspwm/scripts/xrandr &
+~/.config/bspwm/scripts/xrandr.sh &
 picom --config ~/.config/picom/picom.conf &
 # wal -R

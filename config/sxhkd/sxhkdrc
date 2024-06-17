@@ -100,6 +100,10 @@ super + ctrl + {1-9}
 super + ctrl + alt + space
 	bspc node -p cancel
 
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
 #
 # move/resize
 #
@@ -159,28 +163,16 @@ super + shift + l
 XF86MonBrightness{Down,Up}
 	brightnessctl s {5%-,+5%}
 
-# Toggle touchpad
-super + shift + p
-	synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
-
 #
 # Workspace Management
 #
 
-# Move window to the next monitor
-super + shift + m
-	bspc node -d next
-
-# Move window to the previous monitor
-super + shift + n
-	bspc node -d prev
-
 # Switch to the next monitor
-super + period
+super + shift + m
 	bspc monitor -f next
 
 # Switch to the previous monitor
-super + comma
+super + shift + n
 	bspc monitor -f prev
 
 #
@@ -195,9 +187,6 @@ XF86Audio{Mute,LowerVolume,RaiseVolume}
 
 XF86AudioMicMute
 	amixer set Capture toggle
-
-super + XF86Audio{Mute,LowerVolume,RaiseVolume}
-	amixer set Capture {toggle,5%-,5%+}
 
 #
 # ScreenShots
