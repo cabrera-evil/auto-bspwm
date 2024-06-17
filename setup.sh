@@ -200,6 +200,46 @@ else
 		sleep 1.5
 	fi
 
+	echo -e "\n${PURPLE}[*] Installing zsh-autosuggestions for user $user...\n${NC}"
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	if [ $? != 0 ] && [ $? != 130 ]; then
+		echo -e "\n${RED}[-] Failed to install zsh-autosuggestions for user $user!\n${NC}"
+		exit 1
+	else
+		echo -e "\n${GREEN}[+] Done\n${NC}"
+		sleep 1.5
+	fi
+
+	echo -e "\n${PURPLE}[*] Installing zsh-autosuggestions for user root...\n${NC}"
+	sudo git clone https://github.com/zsh-users/zsh-autosuggestions /root/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	if [ $? != 0 ] && [ $? != 130 ]; then
+		echo -e "\n${RED}[-] Failed to install zsh-autosuggestions for user root!\n${NC}"
+		exit 1
+	else
+		echo -e "\n${GREEN}[+] Done\n${NC}"
+		sleep 1.5
+	fi
+
+	echo -e "\n${PURPLE}[*] Installing zsh-syntax-highlighting for user $user...\n${NC}"
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	if [ $? != 0 ] && [ $? != 130 ]; then
+		echo -e "\n${RED}[-] Failed to install zsh-syntax-highlighting for user $user!\n${NC}"
+		exit 1
+	else
+		echo -e "\n${GREEN}[+] Done\n${NC}"
+		sleep 1.5
+	fi
+
+	echo -e "\n${PURPLE}[*] Installing zsh-syntax-highlighting for user root...\n${NC}"
+	sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	if [ $? != 0 ] && [ $? != 130 ]; then
+		echo -e "\n${RED}[-] Failed to install zsh-syntax-highlighting for user root!\n${NC}"
+		exit 1
+	else
+		echo -e "\n${GREEN}[+] Done\n${NC}"
+		sleep 1.5
+	fi
+
 	echo -e "\n${BLUE}[*] Starting configuration of fonts, wallpaper, configuration files, .zshrc, .p10k.zsh, and scripts...\n${NC}"
 	sleep 0.5
 
