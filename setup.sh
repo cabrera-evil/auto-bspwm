@@ -172,8 +172,11 @@ EOF
 	ln -s $dir/config/* ~/.config/
 
 	header "Configuring the .zshrc and .p10k.zsh files..."
+	chsh -s $(which zsh)
+	sudo chsh -s $(which zsh) root
 	cp -v $dir/.zshrc ~/.zshrc
 	sudo ln -sfv ~/.zshrc /root/.zshrc
+	sudo ln -sfv ~/.bashrc /root/.bashrc
 	cp -v $dir/.p10k.zsh ~/.p10k.zsh
 	sudo ln -sfv ~/.p10k.zsh /root/.p10k.zsh
 
