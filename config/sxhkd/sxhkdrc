@@ -100,10 +100,6 @@ super + ctrl + {1-9}
 super + ctrl + alt + space
 	bspc node -p cancel
 
-# cancel the preselection for the focused desktop
-super + ctrl + shift + space
-	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
-
 #
 # move/resize
 #
@@ -151,10 +147,6 @@ super + shift + r
 super + shift + s
 	flatpak run com.spotify.Client
 
-# Open VS Code
-super + shift + c
-	code
-
 #
 # System Controls
 #
@@ -170,26 +162,6 @@ XF86MonBrightness{Down,Up}
 # Toggle touchpad
 super + shift + p
 	synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
-
-# Restart Network Manager
-super + shift + n
-	sudo systemctl restart NetworkManager
-
-#
-# Volume Controls
-#
-
-# Increase volume
-ctrl + shift + Up
-	pamixer --increase 5
-
-# Decrease the volume
-ctrl + shift + Down
-	pamixer --decrease 5
-
-# Mute/Restore volume
-ctrl + shift + m
-	pamixer --toggle-mute
 
 #
 # Workspace Management
@@ -217,12 +189,6 @@ super + comma
 
 XF86Audio{Play,Prev,Next,Stop}
 	playerctl {play-pause,previous,next,stop}
-
-super + XF86Audio{Mute,LowerVolume,RaiseVolume}
-	mpc {toggle,prev,next,stop}
-
-super + {Down,Left,Right,Up}
-	mpc {toggle,prev,next,stop}
 
 XF86Audio{Mute,LowerVolume,RaiseVolume}
 	amixer set Master {toggle,5%-,5%+}
