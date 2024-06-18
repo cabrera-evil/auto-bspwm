@@ -4,7 +4,7 @@
 workspace_names=("1" "2" "3" "4" "5")
 
 # Get connected monitors and assign workspaces
-xrandr -q | awk '/ connected/ {print $1}' | while read -r monitor; do
+for monitor in $(xrandr -q | awk '/ connected/ {print $1}'); do
     bspc monitor "$monitor" -d "${workspace_names[@]}"
 done
 
@@ -38,8 +38,8 @@ sxhkd -c $HOME/.config/sxhkd/sxhkdrc &
 picom -b --config $HOME/.config/picom/picom.conf &
 
 # Launch polybar for each monitor
-for monitor in $(bspc query -M --names); do
-    MONITOR="$monitor" polybar -c $HOME/.config/polybar/config.ini &
+for monitor in $(xrandr -q | awk '/ connected/ {print $1}'); do
+    MONITOR=$monitor polybar --reload &
 done
 
 # Launch dunst
