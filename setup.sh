@@ -185,10 +185,6 @@ EOF
 
 	header "Configuring necessary permissions and symbolic links..."
 	sudo chmod +x /usr/local/bin/whichSystem.py
-	sudo chmod +x /usr/local/bin/screenshot
-	sudo chmod +x /usr/local/share/zsh/site-functions/_bspc
-	sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
-	sudo mkdir -p /root/.config/polybar/scripts/
 	cd ..
 
 	header "\n${GREEN}[+] Environment configured :D\n${NC}"
