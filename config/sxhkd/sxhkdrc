@@ -1,5 +1,5 @@
 #
-# wm independent hotkeys
+# Window Manager Hotkeys
 #
 
 # terminal emulator
@@ -7,7 +7,7 @@ super + Return
 	/usr/bin/kitty
 
 # program launcher
-super + d
+super + @space
 	rofi -no-config -no-lazy-grab -show drun -modi drun -theme ~/.config/polybar/scripts/rofi/launcher.rasi
 
 # make sxhkd reload its configuration files:
@@ -15,7 +15,7 @@ super + Escape
 	pkill -USR1 -x sxhkd
 
 #
-# bspwm hotkeys
+# BSPWM Hotkeys
 #
 
 # close and kill
@@ -39,7 +39,7 @@ super + g
 	bspc node -s biggest.window
 
 #
-# state/flags
+# State/Flags
 #
 
 # set the window state
@@ -51,7 +51,7 @@ super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
 
 #
-# focus/swap
+# Focus/Swap
 #
 
 # focus the node in the given direction
@@ -85,7 +85,7 @@ super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
 #
-# preselect
+# Preselection
 #
 
 # preselect the direction
@@ -105,7 +105,7 @@ super + ctrl + shift + space
     bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 #
-# move/resize
+# Move/Resize
 #
 
 # Move a floating window
@@ -117,12 +117,16 @@ super + alt + {Left,Down,Up,Right}
 	~/.config/bspwm/scripts/bspwm_resize.sh {west,south,north,east}
 
 #
-# System Backup
+# Multi-Monitor
 #
 
-# Backup important files
-super + shift + k
-	~/.config/bspwm/scripts/backup.sh
+# Switch to the next monitor
+super + shift + m
+	bspc monitor -f next
+
+# Switch to the previous monitor
+super + shift + n
+	bspc monitor -f prev
 
 #
 # Application Shortcuts
@@ -133,7 +137,7 @@ super + shift + b
 	blueman-manager
 
 # Open Chrome
-super + shift + f
+super + shift + g
 	flatpak run com.google.Chrome
 
 # Open Ranger
@@ -145,28 +149,20 @@ super + shift + s
 	flatpak run com.spotify.Client
 
 #
+# System Backup
+#
+
+# Backup important files
+super + shift + k
+	~/.config/bspwm/scripts/backup.sh
+
+#
 # System Controls
 #
 
-# Screen Lock
-super + shift + l
-	/usr/bin/i3lock-fancy
-
-# Increse/Decrease brightness
-XF86MonBrightness{Down,Up}
-	brightnessctl s {5%-,+5%}
-
-#
-# Workspace Management
-#
-
-# Switch to the next monitor
-super + shift + m
-	bspc monitor -f next
-
-# Switch to the previous monitor
-super + shift + n
-	bspc monitor -f prev
+# Power off, Reboot, Lock
+ctrl + super + alt + {p,r,l}
+	{systemctl poweroff, systemctl reboot, i3lock-fancy}
 
 #
 # Media Controls
@@ -180,6 +176,14 @@ XF86Audio{Mute,LowerVolume,RaiseVolume}
 
 XF86AudioMicMute
 	amixer set Capture toggle
+
+#
+# Screen Brightness
+#
+
+# Increase/Decrease brightness
+XF86MonBrightness{Down,Up}
+	brightnessctl s {5%-,+5%}
 
 #
 # ScreenShots
