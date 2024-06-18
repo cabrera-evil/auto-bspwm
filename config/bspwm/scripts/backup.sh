@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Error handling function
+function handle_error() {
+	local exit_code=$1
+	local command="${BASH_COMMAND}"
+
+	if [ $exit_code -ne 0 ]; then
+		dunstify "Backup" "Backup failed" -t 2000 -u critical
+		exit 1
+	fi
+}
+
+# Trap events
+trap 'handle_error $?' ERR
+
 # Backup file name
 fdir=$HOME/Documents/Backups
 fname=bk-$(date +%Y-%m-%d).zip
