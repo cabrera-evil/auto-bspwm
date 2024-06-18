@@ -15,7 +15,7 @@ for iface in $interfaces; do
     if [ -z "$ip" ]; then
         ip="N/A"
     fi
-    output="$output %{F#ffffff} $iface: $ip %{u-}"
+    output="$output %{F#ffffff} $iface $ip %{u-}"
 done
 
 # Print the formatted output
