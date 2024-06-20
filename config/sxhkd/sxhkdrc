@@ -190,7 +190,7 @@ XF86MonBrightness{Down,Up}
 #
 
 @Print
-	flameshot screen -c
+	flameshot full --clipboard
 
 ctrl + @Print
-	flameshot gui -c
+	flameshot gui --clipboard
