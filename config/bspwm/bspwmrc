@@ -35,12 +35,10 @@ feh --bg-fill $HOME/Pictures/Wallpapers/archkali.png &
 sxhkd -c $HOME/.config/sxhkd/sxhkdrc &
 
 # Launch Picom
-picom -b --config $HOME/.config/picom/picom.conf &
-
-# Launch polybar for each monitor
-for monitor in $(xrandr -q | awk '/ connected/ {print $1}'); do
-    MONITOR=$monitor ~/.config/polybar/launch.sh
-done
+picom --config $HOME/.config/picom/picom.conf &
 
 # Launch dunst
 dunst -config $HOME/.config/dunst/dunstrc &
+
+# Launch Polybar
+$HOME/.config/polybar/launch.sh &
