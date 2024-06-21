@@ -6,10 +6,10 @@ status=$(amixer sget Capture | awk -F"[][]" '/\[on\]/ {print "enabled"; exit} /\
 # Check if Capture is enabled or disabled
 if [ "$status" = "enabled" ]; then
     icon=""
-    text="Capture: On"
+    text="On"
 else
     icon=""
-    text="Capture: Off"
+    text="Off"
 fi
 
 # Print the icon and text

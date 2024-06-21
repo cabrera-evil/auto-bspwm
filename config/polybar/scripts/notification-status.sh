@@ -6,10 +6,10 @@ status=$(dunstctl is-paused | grep -q "false" && echo "enabled" || echo "disable
 # Check if notifications are enabled or disabled
 if [ "$status" = "enabled" ]; then
     icon=""
-    text="Notifications: On"
+    text="On"
 else
     icon=""
-    text="Notifications: Off"
+    text="Off"
 fi
 
 # Print the icon and text

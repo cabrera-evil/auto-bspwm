@@ -39,7 +39,7 @@ picom -b --config $HOME/.config/picom/picom.conf &
 
 # Launch polybar for each monitor
 for monitor in $(xrandr -q | awk '/ connected/ {print $1}'); do
-    MONITOR=$monitor polybar --reload &
+    MONITOR=$monitor ~/.config/polybar/launch.sh
 done
 
 # Launch dunst

@@ -17,7 +17,6 @@ configuration {
     fullscreen:                     false;
 	hide-scrollbar: 				true;
 	sidebar-mode: 					false;
-    terminal:                       "/usr/bin/kitty";
 }
 
 @import "colors.rasi"
