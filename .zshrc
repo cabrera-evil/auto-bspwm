@@ -142,6 +142,7 @@ alias ls='/usr/bin/lsd --group-dirs=first'
 alias cat='/usr/bin/batcat'
 alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
+alias c='clear'
 alias e='exit'
 alias vim='nvim'
 alias vi='nvim'
@@ -150,3 +151,5 @@ alias vi='nvim'
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+PATH=~/.console-ninja/.bin:$PATH
