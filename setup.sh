@@ -65,53 +65,44 @@ if [ "$user" == "root" ]; then
 else
 	banner
 	header "Installing necessary packages for the environment..."
-	sudo apt install -y kitty rofi dunst feh xclip ranger i3lock-fancy scrot scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip procps tty-clock fzf lsd bat pamixer flameshot playerctl brightnessctl blueman bluez
+	sudo apt install -y kitty rofi dunst feh xclip ranger i3lock-fancy scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip tty-clock fzf lsd pamixer flameshot playerctl brightnessctl blueman bluez
 
 	header "Installing pywal..."
 	sudo pip3 install pywal --break-system
 
 	if [ ! -d "$HOME/.oh-my-zsh" ]; then
-		header "Installing Oh My Zsh and Powerlevel10k for user $user..."
+		header "Installing Oh My Zsh for user $USER..."
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-		git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 	else
-		header "Oh My Zsh is already installed for user $user."
+		header "Oh My Zsh is already installed for user $USER."
 	fi
 
-	if [ ! -d "/root/.oh-my-zsh" ]; then
-		header "Installing Oh My Zsh and Powerlevel10k for user root..."
-		sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-		sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.oh-my-zsh/custom/themes/powerlevel10k
+	if [! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"]; then
+		header "Installing Powerlevel10k theme for user $USER..."
+		git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 	else
-		header "Oh My Zsh is already installed for user root."
+		header "Powerlevel10k is already installed for user $USER."
 	fi
 
 	if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
-		header "Installing zsh-autosuggestions for user $user..."
+		header "Installing zsh-autosuggestions for user $USER..."
 		git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	else
-		header "zsh-autosuggestions is already installed for user $user."
-	fi
-
-	if [ ! -d "/root/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
-		header "Installing zsh-autosuggestions for user root..."
-		sudo git clone https://github.com/zsh-users/zsh-autosuggestions /root/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-	else
-		header "zsh-autosuggestions is already installed for user root."
+		header "zsh-autosuggestions is already installed for user $USER."
 	fi
 
 	if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
-		header "Installing zsh-syntax-highlighting for user $user..."
+		header "Installing zsh-syntax-highlighting for user $USER..."
 		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 	else
-		header "zsh-syntax-highlighting is already installed for user $user."
+		header "zsh-syntax-highlighting is already installed for user $USER."
 	fi
 
-	if [ ! -d "/root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
-		header "Installing zsh-syntax-highlighting for user root..."
-		sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	if [ ! -d "/root/.oh-my-zsh" ]; then
+		header "Copying Oh My Zsh configuration to user root..."
+		sudo cp -r $HOME/.oh-my-zsh /root/
 	else
-		header "zsh-syntax-highlighting is already installed for user root."
+		header "Oh My Zsh is already installed for user root."
 	fi
 
 	header "Configuring touchpad..."
@@ -145,7 +136,7 @@ EOF
 	wal -nqi $HOME/Pictures/Wallpapers/archkali.png
 	sudo wal -nqi $HOME/Pictures/Wallpapers/archkali.png
 
-	header "Configuring configuration files..."
+	header "Configuring dotfiles symlinks..."
 	[ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"
 	ln -sfv $dir/config/* $HOME/.config/
 
