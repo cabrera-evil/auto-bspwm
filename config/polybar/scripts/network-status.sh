@@ -6,7 +6,7 @@ get_ip() {
 }
 
 # Get a list of interfaces excluding lo (loopback), docker, vir, and microk8s (including ingress)
-interfaces=$(ip -o link show | awk '$2 !~ /^(lo|docker|vir|cni|flannel|vxlan|veth|weave|kube|microk8s)/{print $2}')
+interfaces=$(ip -o link show | awk '$2 !~ /^(lo|docker|vir|cni|flannel|vxlan|cali|veth|weave|kube|microk8s)/{print $2}')
 
 # Loop through each interface and get its IP address
 output=""
