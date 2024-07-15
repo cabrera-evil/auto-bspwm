@@ -146,7 +146,6 @@ alias c='clear'
 alias e='exit'
 alias vim='nvim'
 alias vi='nvim'
-alias k='microk8s kubectl'
 
 # Nvm
 export NVM_DIR="$HOME/.nvm"
