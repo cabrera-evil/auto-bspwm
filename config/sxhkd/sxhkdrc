@@ -149,14 +149,6 @@ super + shift + s
 	flatpak run com.spotify.Client
 
 #
-# System Backup
-#
-
-# Backup important files
-super + shift + k
-	~/.config/bspwm/scripts/backup.sh
-
-#
 # System Controls
 #
 

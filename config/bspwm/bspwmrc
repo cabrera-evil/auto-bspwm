@@ -42,3 +42,6 @@ dunst -config $HOME/.config/dunst/dunstrc &
 
 # Launch Polybar
 $HOME/.config/polybar/launch.sh &
+
+# Launch numlockx
+numlockx &

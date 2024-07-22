@@ -65,7 +65,7 @@ if [ "$user" == "root" ]; then
 else
 	banner
 	header "Installing necessary packages for the environment..."
-	sudo apt install -y kitty rofi dunst feh xclip ranger i3lock-fancy scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip tty-clock fzf lsd pamixer flameshot playerctl brightnessctl blueman bluez bat rsync
+	sudo apt install -y kitty rofi dunst feh xclip ranger i3lock-fancy scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip tty-clock fzf lsd pamixer flameshot playerctl brightnessctl blueman bluez bat rsync numlockx
 
 	header "Installing pywal..."
 	sudo pip3 install pywal --break-system
