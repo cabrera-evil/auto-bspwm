@@ -1,26 +1,21 @@
-return {{
+return {"nvim-lua/plenary.nvim", {
     "NvChad/base46",
-    branch = "v2.5",
     build = function()
         require("base46").load_all_highlights()
     end
 }, {
     "NvChad/ui",
-    branch = "v2.5",
     lazy = false,
-    config = function()
-        require "nvchad"
+    build = function()
+        dofile(vim.fn.stdpath "data" .. "/lazy/ui/lua/nvchad_feedback.lua")()
     end
 }, {
     "nvim-tree/nvim-web-devicons",
     opts = function()
+        dofile(vim.g.base46_cache .. "devicons")
         return {
             override = require "nvchad.icons.devicons"
         }
-    end,
-    config = function(_, opts)
-        dofile(vim.g.base46_cache .. "devicons")
-        require("nvim-web-devicons").setup(opts)
     end
 }, {
     "lukas-reineke/indent-blankline.nvim",
@@ -50,9 +45,6 @@ return {{
     cmd = {"NvimTreeToggle", "NvimTreeFocus"},
     opts = function()
         return require "nvchad.configs.nvimtree"
-    end,
-    config = function(_, opts)
-        require("nvim-tree").setup(opts)
     end
 }, {
     "folke/which-key.nvim",
@@ -62,26 +54,20 @@ return {{
         dofile(vim.g.base46_cache .. "whichkey")
         require("which-key").setup(opts)
     end
-}, "nvim-lua/plenary.nvim", -- formatting!
+}, -- formatting!
 {
     "stevearc/conform.nvim",
     opts = {
         formatters_by_ft = {
             lua = {"stylua"}
         }
-    },
-    config = function(_, opts)
-        require("conform").setup(opts)
-    end
+    }
 }, -- git stuff
 {
     "lewis6991/gitsigns.nvim",
     event = "User FilePost",
     opts = function()
         return require "nvchad.configs.gitsigns"
-    end,
-    config = function(_, opts)
-        require("gitsigns").setup(opts)
     end
 }, -- lsp stuff
 {
@@ -89,19 +75,13 @@ return {{
     cmd = {"Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate"},
     opts = function()
         return require "nvchad.configs.mason"
-    end,
-    config = function(_, opts)
-        require("mason").setup(opts)
-
-        vim.api.nvim_create_user_command("MasonInstallAll", function()
-            require("nvchad.mason").install_all(opts.ensure_installed)
-        end, {})
     end
 }, {
     "williamboman/mason-lspconfig.nvim",
-    config = function()
-        require("nvchad.configs.mason-lspconfig").defaults()
-    end
+    lazy = false,
+    opts = {
+        auto_install = true
+    }
 }, {
     "neovim/nvim-lspconfig",
     event = "User FilePost",
@@ -143,9 +123,6 @@ return {{
      "hrsh7th/cmp-path"}},
     opts = function()
         return require "nvchad.configs.cmp"
-    end,
-    config = function(_, opts)
-        require("cmp").setup(opts)
     end
 }, {
     "nvim-telescope/telescope.nvim",
@@ -169,7 +146,8 @@ return {{
     opts = {
         user_default_options = {
             names = false
-        }
+        },
+        filetypes = {"*", "!lazy"}
     },
     config = function(_, opts)
         require("colorizer").setup(opts)
@@ -189,5 +167,13 @@ return {{
     end,
     config = function(_, opts)
         require("nvim-treesitter.configs").setup(opts)
+    end
+}, {
+    "github/copilot.vim",
+    lazy = false
+}, {
+    "rmagatti/auto-session",
+    config = function()
+        require("auto-session").setup()
     end
 }}

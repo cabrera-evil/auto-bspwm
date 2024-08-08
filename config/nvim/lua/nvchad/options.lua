@@ -20,9 +20,7 @@ o.smartindent = true
 o.tabstop = 2
 o.softtabstop = 2
 
-opt.fillchars = {
-    eob = " "
-}
+opt.fillchars = { eob = " " }
 o.ignorecase = true
 o.smartcase = true
 o.mouse = "a"
@@ -51,13 +49,13 @@ opt.whichwrap:append "<>[]hl"
 -- g.mapleader = " "
 
 -- disable some default providers
-g["loaded_node_provider"] = 0
-g["loaded_python3_provider"] = 0
-g["loaded_perl_provider"] = 0
-g["loaded_ruby_provider"] = 0
+g.loaded_node_provider = 0
+g.loaded_python3_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_ruby_provider = 0
 
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.fn.has "win32" ~= 0
 local sep = is_windows and "\\" or "/"
 local delim = is_windows and ";" or ":"
-vim.env.PATH = table.concat({vim.fn.stdpath "data", "mason", "bin"}, sep) .. delim .. vim.env.PATH
+vim.env.PATH = table.concat({ vim.fn.stdpath "data", "mason", "bin" }, sep) .. delim .. vim.env.PATH
