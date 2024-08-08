@@ -151,9 +151,6 @@ EOF
 	sudo ln -sfv $HOME/.p10k.zsh /root/.p10k.zsh
 	sudo ln -sfv $HOME/.bashrc /root/.bashrc
 
-	header "Configuring scripts..."
-	sudo cp -v $dir/scripts/whichSystem.py /usr/local/bin/
-
 	header "\n${GREEN}[+] Environment configured :D\n${NC}"
 
 	while true; do
