@@ -134,7 +134,6 @@ EOF
 		cp -rv $dir/wallpapers/* $HOME/Pictures/Wallpapers
 	fi
 	wal -nqi $HOME/Pictures/Wallpapers/archkali.png
-	sudo wal -nqi $HOME/Pictures/Wallpapers/archkali.png
 
 	header "Configuring dotfiles symlinks..."
 	[ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"

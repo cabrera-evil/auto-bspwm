@@ -1,11 +1,27 @@
 #!/bin/bash
 
-# Assign workspaces to connected monitors
+# Define workspace names
 workspace_names=("1" "2" "3" "4" "5")
 
-# Get connected monitors and assign workspaces
-for monitor in $(xrandr -q | awk '/ connected/ {print $1}'); do
+# Get the primary monitor (assuming eDP-1 is primary, adjust as needed)
+primary_monitor=$(xrandr --query | awk '/ connected primary/ {print $1}')
+
+# Counter to assign workspaces to monitors
+counter=0
+
+# Iterate through all connected monitors
+for monitor in $(xrandr --query | awk '/ connected/ {print $1}'); do
+    # Assign workspaces to the current monitor
     bspc monitor "$monitor" -d "${workspace_names[@]}"
+
+    # If the monitor is not the primary, position it to the right of the primary
+    if [ "$monitor" != "$primary_monitor" ]; then
+        xrandr --output "$monitor" --auto --right-of "$primary_monitor"
+        primary_monitor="$monitor" # Set the current monitor as the new primary for the next iteration
+    fi
+
+    # Increment counter to move to the next set of workspaces if more monitors are connected
+    counter=$((counter + 1))
 done
 
 # Configure BSPWM settings
