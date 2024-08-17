@@ -138,7 +138,7 @@ super + shift + b
 
 # Open Chrome
 super + shift + g
-	flatpak run com.google.Chrome
+	google-chrome
 
 # Open Ranger
 super + shift + r
