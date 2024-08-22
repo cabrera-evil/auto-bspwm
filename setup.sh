@@ -65,7 +65,7 @@ if [ "$user" == "root" ]; then
 else
 	banner
 	header "Installing necessary packages for the environment..."
-	sudo apt install -y kitty rofi dunst feh xclip ranger i3lock-fancy scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip tty-clock fzf lsd pamixer flameshot playerctl brightnessctl blueman bluez bat rsync numlockx
+	sudo apt install -y kitty rofi dunst feh xclip ranger i3lock-fancy scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip tty-clock fzf lsd pamixer flameshot playerctl brightnessctl blueman bluez bat rsync numlockx lxappearance
 
 	header "Installing pywal..."
 	sudo pip3 install pywal --break-system
@@ -125,6 +125,9 @@ EOF
 		mkdir -p $fdir
 		cp -rv $dir/fonts/* $fdir
 	fi
+
+	header "Configuring icons..."
+	sudo apt install -y numix-icon-theme
 
 	header "Configuring wallpaper..."
 	if [[ -d "$HOME/Pictures/Wallpapers" ]]; then

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NOTIFY_ICON=/usr/share/icons/Papirus/32x32/apps/system-software-update.svg
+NOTIFY_ICON=/usr/share/icons/Numix-Circle/48@2x/apps/system-software-update.svg
 
 # Function to get the number of available updates
 get_total_updates() {
