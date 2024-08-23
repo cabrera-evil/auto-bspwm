@@ -26,6 +26,7 @@ sxhkd -c $HOME/.config/sxhkd/sxhkdrc &
 picom --config $HOME/.config/picom/picom.conf &
 dunst -config $HOME/.config/dunst/dunstrc &
 numlockx &
+1password --silent &
 
 # Launch scripts
 $HOME/.config/bspwm/scripts/monitor_config.sh &
