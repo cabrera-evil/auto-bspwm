@@ -20,23 +20,13 @@ for process in "sxhkd" "polybar" "dunst"; do
     fi
 done
 
-# Set wallpaper
+# Launch applications
 feh --bg-fill $HOME/Pictures/Wallpapers/archkali.png &
-
-# Launch sxhkd
 sxhkd -c $HOME/.config/sxhkd/sxhkdrc &
-
-# Launch Picom
 picom --config $HOME/.config/picom/picom.conf &
-
-# Launch dunst
 dunst -config $HOME/.config/dunst/dunstrc &
-
-# Launch numlockx
 numlockx &
 
-# Set monitors
+# Launch scripts
 $HOME/.config/bspwm/scripts/monitor_config.sh &
-
-# Launch Polybar
 $HOME/.config/polybar/launch.sh &
