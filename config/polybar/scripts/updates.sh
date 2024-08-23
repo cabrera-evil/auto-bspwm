@@ -34,7 +34,7 @@ while true; do
 
     while ((UPDATES > 0)); do
         echo " $UPDATES"
-        sleep 10
+        sleep 5
         get_total_updates
     done
 

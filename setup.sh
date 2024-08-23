@@ -37,7 +37,7 @@ function handle_error() {
 # Function to print header with the script name
 function header() {
 	echo -e "\n\n${BLUE}[*] $1${NC}\n"
-	sleep 0.5
+	sleep 1
 }
 
 # Trap events
@@ -46,15 +46,10 @@ trap 'handle_error $?' ERR
 
 function banner() {
 	echo -e "\n${TURQUOISE}              _____            ______"
-	sleep 0.05
 	echo -e "______ ____  ___  /______      ___  /___________________      ________ ___"
-	sleep 0.05
 	echo -e "_  __ \`/  / / /  __/  __ \     __  __ \_  ___/__  __ \_ | /| / /_  __ \`__ \\"
-	sleep 0.05
 	echo -e "/ /_/ // /_/ // /_ / /_/ /     _  /_/ /(__  )__  /_/ /_ |/ |/ /_  / / / / /"
-	sleep 0.05
 	echo -e "\__,_/ \__,_/ \__/ \____/      /_.___//____/ _  .___/____/|__/ /_/ /_/ /_/    ${NC}${YELLOW}(${NC}${GRAY}By ${NC}${PURPLE}@cabrera-evil${NC}${YELLOW})${NC}${TURQUOISE}"
-	sleep 0.05
 	echo -e "                                             /_/${NC}"
 }
 
