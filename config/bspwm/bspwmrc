@@ -20,6 +20,10 @@ for process in "sxhkd" "polybar" "dunst" "1password"; do
     fi
 done
 
+# Launch scripts
+$HOME/.config/bspwm/scripts/monitor_config.sh &
+$HOME/.config/polybar/launch.sh &
+
 # Launch applications
 feh --bg-fill $HOME/Pictures/Wallpapers/archkali.png &
 sxhkd -c $HOME/.config/sxhkd/sxhkdrc &
@@ -28,6 +32,3 @@ dunst -config $HOME/.config/dunst/dunstrc &
 numlockx &
 1password --silent &
 
-# Launch scripts
-$HOME/.config/bspwm/scripts/monitor_config.sh &
-$HOME/.config/polybar/launch.sh &
