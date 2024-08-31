@@ -15,9 +15,7 @@ bspc config presel_feedback_color '#512da8'
 
 # Terminate already running instances
 for process in "sxhkd" "polybar" "dunst" "1password"; do
-    if pgrep -f "$process"; then
-        pkill -f "$process" >/dev/null
-    fi
+    killall -q "$process"
 done
 
 # Launch scripts

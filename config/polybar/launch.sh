@@ -7,7 +7,7 @@ NETWORK_CACHE=""
 
 # Function to launch Polybar on each connected monitor
 launch_polybar() {
-    pkill -x polybar
+    killall -q polybar
     for monitor in $(xrandr -q | awk '/ connected/ {print $1}'); do
         export MONITOR=$monitor
         export NETWORK_INTERFACE=$(nmcli -t -f active,device dev wifi | egrep '^yes' | cut -d':' -f2)
