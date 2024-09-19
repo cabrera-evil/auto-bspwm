@@ -125,23 +125,29 @@ alias e='exit'
 alias vim='nvim'
 alias vi='nvim'
 
-# Custom PATH
-PATH=~/.console-ninja/.bin:$PATH
-export PATH=$PATH:/snap/bin
-export KUBECONFIG="${KUBECONFIG}:config-dev:config-staging:config-prod"
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# nvm end
+# Kubeconfig configuration
+configs=($HOME/.kube/config-*)
+if ((${#configs[@]} > 0)); then
+    export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
+fi
 
-# pnpm
+# Console Ninja
+PATH=~/.console-ninja/.bin:$PATH
+
+# Snap
+export PATH=$PATH:/snap/bin
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# PNPM
 export PNPM_HOME="/home/douglas/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
 
 # Auto-completion
 source <(kubectl completion bash)
