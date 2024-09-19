@@ -93,6 +93,13 @@ else
 		header "zsh-syntax-highlighting is already installed for user $USER."
 	fi
 
+	if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/you-should-use" ]; then
+		header "Installing you-should-use for user $USER..."
+		git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/you-should-use
+	else
+		header "you-should-use is already installed for user $USER."
+	fi
+
 	if [ ! -d "/root/.oh-my-zsh" ]; then
 		header "Copying Oh My Zsh configuration to user root..."
 		sudo cp -r $HOME/.oh-my-zsh /root/

@@ -70,7 +70,26 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-autosuggestions zsh-syntax-highlighting git battery kubectl)
+plugins=(
+  1password
+  aws
+  battery
+  docker
+  git
+  git-auto-fetch
+  git-flow
+  github
+  gitignore
+  helm
+  kubectx
+  kubectl
+  terraform
+  tmux
+  you-should-use
+  zsh-autosuggestions
+  zsh-interactive-cd
+  zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -85,7 +104,7 @@ source $ZSH/oh-my-zsh.sh
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='code'
+  export EDITOR='nvim'
 fi
 
 # Compilation flags
@@ -133,6 +152,20 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
 
+# Kubectx configuration
+# right prompt
+RPS1='$(kubectx_prompt_info)'
+# left prompt
+PROMPT="$PROMPT"'$(kubectx_prompt_info)'
+typeset -A kubectx_mapping
+typeset -A kubectx_mapping
+kubectx_mapping=(
+  microk8s                  "%F{green}dev%f"          # Maps development cluster to green "dev"
+  staging                   "%F{blue}staging%f"       # Maps staging cluster to blue "staging"
+  prod                      "%F{red}prod%f"           # Maps production cluster to red "prod"
+  "context with spaces"     "%F{red}spaces%f"         # Handles contexts with spaces
+)
+
 # Custom Aliases
 alias ll='/usr/bin/lsd -lh --group-dirs=first'
 alias la='/usr/bin/lsd -a --group-dirs=first'
@@ -147,12 +180,19 @@ alias e='exit'
 alias vim='nvim'
 alias vi='nvim'
 
-# Nvm
+# Custom PATH
+PATH=~/.console-ninja/.bin:$PATH
+export PATH=$PATH:/snap/bin
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-PATH=~/.console-ninja/.bin:$PATH
-export PATH=$PATH:/snap/bin
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+# nvm end
+
+# pnpm
+export PNPM_HOME="/home/douglas/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
