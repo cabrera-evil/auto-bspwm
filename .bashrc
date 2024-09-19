@@ -128,6 +128,7 @@ alias vi='nvim'
 # Custom PATH
 PATH=~/.console-ninja/.bin:$PATH
 export PATH=$PATH:/snap/bin
+export KUBECONFIG="${KUBECONFIG}:config-dev:config-prod"
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
