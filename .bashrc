@@ -126,7 +126,7 @@ alias vim='nvim'
 alias vi='nvim'
 
 # Kubeconfig configuration
-configs=($HOME/.kube/config-*)
+configs=($HOME/.kube/config*)
 if ((${#configs[@]} > 0)); then
     export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
 fi
