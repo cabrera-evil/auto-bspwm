@@ -122,8 +122,10 @@ alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
-alias vim='nvim'
-alias vi='nvim'
+alias v='nvim'
+alias k='kubectl'
+alias h='helm'
+alias g='git'
 
 # Kubeconfig configuration
 configs=($HOME/.kube/config*)
