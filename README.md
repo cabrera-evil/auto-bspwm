@@ -19,13 +19,13 @@ cd auto-bspwm
 3. Grant execution permissions to the script.
 
 ```shell
-chmod +x setup.sh
+chmod +x init.sh
 ```
 
 4. Execute the script.
 
 ```shell
-./setup.sh
+./init.sh
 ```
 
 5. After the script has finished, you will be prompted to restart the system. Once you have rebooted, select `bspwm` as the window manager and then log in.
