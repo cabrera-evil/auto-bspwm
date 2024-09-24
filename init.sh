@@ -13,9 +13,42 @@ TURQUOISE="\e[0;36m\033[1m"
 GRAY="\e[0;37m\033[1m"
 
 # Global variables
-dir=$(pwd)
-fdir="$HOME/.local/share/fonts"
+current_dir=$(pwd)
+font_dir="$HOME/.local/share/fonts"
+xorg_dir="/etc/X11/xorg.conf.d"
 user=$(whoami)
+packages=(
+	bat
+	blueman
+	bluez
+	brightnessctl
+	cmatrix
+	dunst
+	exo-utils
+	feh
+	flameshot
+	firejail
+	fzf
+	htop
+	i3lock-fancy
+	imagemagick
+	kitty
+	lxappearance
+	lsd
+	neofetch
+	numlockx
+	numix-icon-theme
+	pamixer
+	playerctl
+	python3-pip
+	ranger
+	rofi
+	rsync
+	scrub
+	tty-clock
+	wmname
+	xclip
+)
 
 # Function to exit the script
 function ctrl_c() {
@@ -60,7 +93,7 @@ if [ "$user" == "root" ]; then
 else
 	banner
 	header "Installing necessary packages for the environment..."
-	sudo apt install -y kitty rofi dunst feh xclip ranger i3lock-fancy scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip tty-clock fzf lsd pamixer flameshot playerctl brightnessctl blueman bluez bat rsync numlockx lxappearance exo-utils
+	sudo apt update -y && sudo apt install -y "${packages[@]}"
 
 	header "Installing pywal..."
 	sudo pip3 install pywal --break-system
@@ -107,50 +140,35 @@ else
 		header "Oh My Zsh is already installed for user root."
 	fi
 
-	header "Configuring touchpad..."
-	sudo mkdir -p /etc/X11/xorg.conf.d && sudo tee /etc/X11/xorg.conf.d/90-touchpad.conf <<'EOF' 1>/dev/null
-Section "InputClass"
-        Identifier "touchpad"
-        MatchIsTouchpad "on"
-        Driver "libinput"
-        Option "Tapping" "on"
-        Option "TappingButtonMap" "lrm"
-        Option "NaturalScrolling" "on"
-        Option "ScrollMethod" "twofinger"
-EndSection
-EOF
+	header "Configuring xorg..."
+	sudo mkdir -p $xorg_dir
+	cp -rv $current_dir/xorg/* $xorg_dir
 
 	header "Configuring fonts..."
-	if [[ -d "$fdir" ]]; then
-		cp -rv $dir/fonts/* $fdir
-	else
-		mkdir -p $fdir
-		cp -rv $dir/fonts/* $fdir
-	fi
-
-	header "Configuring icons..."
-	sudo apt install -y numix-icon-theme
+	mkdir -p $font_dir
+	cp -rv $current_dir/fonts/* $font_dir
 
 	header "Configuring wallpaper..."
 	if [[ -d "$HOME/Pictures/Wallpapers" ]]; then
-		cp -rv $dir/wallpapers/* $HOME/Pictures/Wallpapers
+		cp -rv $current_dir/wallpapers/* $HOME/Pictures/Wallpapers
 	else
 		mkdir $HOME/Pictures/Wallpapers
-		cp -rv $dir/wallpapers/* $HOME/Pictures/Wallpapers
+		cp -rv $current_dir/wallpapers/* $HOME/Pictures/Wallpapers
 	fi
 	wal -nqi $HOME/Pictures/Wallpapers/archkali.png
 
 	header "Configuring dotfiles symlinks..."
-	[ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"
-	ln -sfv $dir/config/* $HOME/.config/
+	mkdir -p "$HOME/.config"
+	ln -sfv $current_dir/config/* $HOME/.config/
 
 	header "Configuring zsh as default shell..."
 	chsh -s $(which zsh)
 	sudo chsh -s $(which zsh) root
 
 	header "Configuring the .zshrc and .p10k.zsh files..."
-	cp -v $dir/.zshrc $HOME/.zshrc
-	cp -v $dir/.p10k.zsh $HOME/.p10k.zsh
+	cp -v $current_dir/.zshrc $HOME/.zshrc
+	cp -v $current_dir/.p10k.zsh $HOME/.p10k.zsh
+	cp -v $current_dir/.bashrc $HOME/.bashrc
 	sudo ln -sfv $HOME/.zshrc /root/.zshrc
 	sudo ln -sfv $HOME/.p10k.zsh /root/.p10k.zsh
 	sudo ln -sfv $HOME/.bashrc /root/.bashrc
