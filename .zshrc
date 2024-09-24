@@ -175,8 +175,9 @@ alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
-alias vim='nvim'
-alias vi='nvim'
+alias v='nvim'
+alias wgs="sudo wg-quick up wg0"
+alias wgf="sudo wg-quick down wg0"
 
 # Kubeconfig configuration
 configs=($HOME/.kube/config*)

@@ -126,6 +126,8 @@ alias v='nvim'
 alias k='kubectl'
 alias h='helm'
 alias g='git'
+alias wgs="sudo wg-quick up wg0"
+alias wgf="sudo wg-quick down wg0"
 
 # Kubeconfig configuration
 configs=($HOME/.kube/config*)
