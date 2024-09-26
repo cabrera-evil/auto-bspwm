@@ -29,4 +29,4 @@ picom --config $HOME/.config/picom/picom.conf &
 dunst -config $HOME/.config/dunst/dunstrc &
 numlockx &
 1password --silent &
-
+systemctl --user start docker-desktop &
