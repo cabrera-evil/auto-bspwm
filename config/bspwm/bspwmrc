@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Define variables
+WALLPAPER_PATH="$HOME/Pictures/Wallpapers/archkali.png"
+CONFIG_DIR="$HOME/.config"
+BSPWM_SCRIPTS="$CONFIG_DIR/bspwm/scripts"
+SXHKD_CONFIG="$CONFIG_DIR/sxhkd/sxhkdrc"
+PICOM_CONFIG="$CONFIG_DIR/picom/picom.conf"
+DUNST_CONFIG="$CONFIG_DIR/dunst/dunstrc"
+POLYBAR_SCRIPT="$CONFIG_DIR/polybar/launch.sh"
+
 # Configure BSPWM settings
 bspc config border_width 0
 bspc config window_gap 10
@@ -13,20 +22,22 @@ bspc config normal_border_color '#1f1f1f'
 bspc config focused_border_color '#30302f'
 bspc config presel_feedback_color '#512da8'
 
-# Terminate already running instances
-for process in "sxhkd" "polybar" "dunst" "1password"; do
-    killall -q "$process"
+# Terminate already running instances of specific processes
+declare -a processes=("sxhkd" "polybar" "dunst" "1password")
+
+for process in "${processes[@]}"; do
+    if pgrep -x "$process" >/dev/null; then
+        killall -q "$process"
+    fi
 done
 
-# Launch scripts
-$HOME/.config/bspwm/scripts/monitor_config.sh &
-$HOME/.config/polybar/launch.sh &
-
-# Launch applications
-feh --bg-fill $HOME/Pictures/Wallpapers/archkali.png &
-sxhkd -c $HOME/.config/sxhkd/sxhkdrc &
-picom --config $HOME/.config/picom/picom.conf &
-dunst -config $HOME/.config/dunst/dunstrc &
-numlockx &
+# Launch configuration and applications
+"$BSPWM_SCRIPTS/monitor_config.sh" &
+"$POLYBAR_SCRIPT" &
+feh --bg-fill "$WALLPAPER_PATH" &
+sxhkd -c "$SXHKD_CONFIG" &
+picom --config "$PICOM_CONFIG" &
+dunst -config "$DUNST_CONFIG" &
+numlockx on &
 1password --silent &
 systemctl --user start docker-desktop &
