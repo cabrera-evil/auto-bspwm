@@ -140,6 +140,10 @@ else
 		header "Oh My Zsh is already installed for user root."
 	fi
 
+	header "Configuring terminal emulator..."
+	sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 50
+	sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
+
 	header "Configuring xorg..."
 	sudo mkdir -p $xorg_dir
 	cp -rv $current_dir/xorg/* $xorg_dir
