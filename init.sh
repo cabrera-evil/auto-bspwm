@@ -2,15 +2,15 @@
 
 # Author: Douglas Cabrera (aka @cabrera-evil)
 
-# Colours
-GREEN="\e[0;32m\033[1m"
-NC="\033[0m\e[0m"
-RED="\e[0;31m\033[1m"
-BLUE="\e[0;34m\033[1m"
-YELLOW="\e[0;33m\033[1m"
-PURPLE="\e[0;35m\033[1m"
-TURQUOISE="\e[0;36m\033[1m"
-GRAY="\e[0;37m\033[1m"
+# Colors for terminal output
+RED='\e[0;31m'
+GREEN='\e[0;32m'
+YELLOW='\e[1;33m'
+BLUE='\e[0;34m'
+PURPLE="\e[0;35m"
+TURQUOISE="\e[0;36m"
+GRAY="\e[0;37m"
+NC='\e[0m' # No Color
 
 # Global variables
 current_dir=$(pwd)
@@ -52,7 +52,7 @@ packages=(
 
 # Function to exit the script
 function ctrl_c() {
-	echo -e "\n\n${RED}[!] Exiting..."
+	echo -e "${RED}Exiting...${NC}"
 	exit 1
 }
 
@@ -62,14 +62,14 @@ function handle_error() {
 	local command="${BASH_COMMAND}"
 
 	if [ $exit_code -ne 0 ]; then
-		echo -e "\n${RED}[-] Error: Command \"${command}\" failed with exit code ${exit_code}\n${NC}"
+		echo -e "${RED}Error: Command \"${command}\" failed with exit code ${exit_code}${NC}"
 		exit 1
 	fi
 }
 
 # Function to print header with the script name
 function header() {
-	echo -e "\n\n${BLUE}[*] $1${NC}\n"
+	echo -e "${BLUE}$1${NC}"
 	sleep 1
 }
 
@@ -78,7 +78,7 @@ trap ctrl_c INT
 trap 'handle_error $?' ERR
 
 function banner() {
-	echo -e "\n${TURQUOISE}              _____            ______"
+	echo -e "${TURQUOISE}              _____            ______"
 	echo -e "______ ____  ___  /______      ___  /___________________      ________ ___"
 	echo -e "_  __ \`/  / / /  __/  __ \     __  __ \_  ___/__  __ \_ | /| / /_  __ \`__ \\"
 	echo -e "/ /_/ // /_/ // /_ / /_/ /     _  /_/ /(__  )__  /_/ /_ |/ |/ /_  / / / / /"
@@ -88,7 +88,7 @@ function banner() {
 
 if [ "$user" == "root" ]; then
 	banner
-	echo -e "\n\n${RED}[!] You should not run the script as the root user!\n${NC}"
+	echo -e "${RED}You should not run the script as the root user!${NC}"
 	exit 1
 else
 	banner
@@ -177,19 +177,19 @@ else
 	sudo ln -sfv $HOME/.p10k.zsh /root/.p10k.zsh
 	sudo ln -sfv $HOME/.bashrc /root/.bashrc
 
-	header "\n${GREEN}[+] Environment configured :D\n${NC}"
+	header "${GREEN}Environment configured :D${NC}"
 
 	while true; do
-		echo -en "\n${YELLOW}[?] It's necessary to restart the system. Do you want to restart the system now? ([y]/n) ${NC}"
+		echo -en "${YELLOW}It's necessary to restart the system. Do you want to restart the system now? ([y]/n)${NC}"
 		read -r
 		REPLY=${REPLY:-"y"}
 		if [[ $REPLY =~ ^[Yy]$ ]]; then
-			echo -e "\n\n${GREEN}[+] Restarting the system...\n${endColor}"
+			echo -e "${GREEN}Restarting the system...${NC}"
 			sudo reboot
 		elif [[ $REPLY =~ ^[Nn]$ ]]; then
 			exit 0
 		else
-			echo -e "\n${RED}[!] Invalid response, please try again\n${NC}"
+			echo -e "${RED}Invalid response, please try again${NC}"
 		fi
 	done
 fi
