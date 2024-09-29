@@ -22,6 +22,7 @@ packages=(
 	blueman
 	bluez
 	brightnessctl
+	bspwm
 	cmatrix
 	dunst
 	exo-utils
@@ -39,12 +40,16 @@ packages=(
 	numlockx
 	numix-icon-theme
 	pamixer
+  polybar
+  picom
 	playerctl
 	python3-pip
 	ranger
 	rofi
 	rsync
 	scrub
+  sxhkd
+  tmux
 	tty-clock
 	wmname
 	xclip
@@ -146,7 +151,7 @@ else
 
 	header "Configuring xorg..."
 	sudo mkdir -p $xorg_dir
-	cp -rv $current_dir/xorg/* $xorg_dir
+  sudo	cp -rv $current_dir/xorg/* $xorg_dir
 
 	header "Configuring fonts..."
 	mkdir -p $font_dir
