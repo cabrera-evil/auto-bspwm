@@ -39,17 +39,18 @@ packages=(
 	neofetch
 	numlockx
 	numix-icon-theme
+	numix-icon-theme-circle
 	pamixer
-  polybar
-  picom
+	polybar
+	picom
 	playerctl
 	python3-pip
 	ranger
 	rofi
 	rsync
 	scrub
-  sxhkd
-  tmux
+	sxhkd
+	tmux
 	tty-clock
 	wmname
 	xclip
