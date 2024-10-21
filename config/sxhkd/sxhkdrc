@@ -150,7 +150,7 @@ super + shift + r
 
 # Open Spotify
 super + shift + s
-	flatpak run com.spotify.Client
+	spotify
 
 #
 # System Controls
