@@ -167,6 +167,9 @@ else
 	fi
 	wal -nqi $HOME/Pictures/Wallpapers/archkali.png
 
+  header "Configuring timezone..."
+  sudo timedatectl set-timezone America/El_Salvador
+
 	header "Configuring dotfiles symlinks..."
 	mkdir -p "$HOME/.config"
 	ln -sfv $current_dir/config/* $HOME/.config/
