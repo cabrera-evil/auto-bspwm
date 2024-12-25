@@ -24,8 +24,9 @@ bspc config presel_feedback_color '#512da8'
 
 # Terminate already running instances of specific processes
 declare -a processes=(
-    "sxhkd"
     "polybar"
+    "sxhkd"
+    "picom"
     "dunst"
     "1password"
 )

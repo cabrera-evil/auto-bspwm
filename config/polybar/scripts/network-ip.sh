@@ -2,18 +2,20 @@
 
 # Function to get the IP address of a given interface
 get_ip() {
-    ip addr show "$1" 2>/dev/null | awk '/inet /{sub(/\/.*/, "", $2); print $2; exit}'
+    ip addr show "$1" 2>/dev/null | awk '/inet / {sub(/\/.*/, "", $2); print $2; exit}'
 }
 
-# Get a list of active interfaces that are connected to Wi-Fi
-active_interfaces=$(nmcli -t -f active,device dev wifi | egrep '^yes' | cut -d':' -f2)
+# Get all active network interfaces (Wi-Fi and Ethernet) using nmcli
+active_interfaces=$(nmcli -t -f DEVICE,STATE d | awk -F: '$2 == "connected" {print $1}')
 
-# Loop through each active Wi-Fi interface and get its IP address
+# Initialize output variable
 output=""
+
+# Loop through each active interface to retrieve its IP address
 for iface in $active_interfaces; do
-    ip=$(get_ip $iface)
+    ip=$(get_ip "$iface")
     if [ -n "$ip" ]; then
-        output="$output %{F#ffffff} $iface: $ip %{u-}"
+        output="$output%{F#ffffff} $iface: $ip %{u-}  "
     fi
 done
 
