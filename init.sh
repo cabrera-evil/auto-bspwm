@@ -111,7 +111,7 @@ else
 		header "Oh My Zsh is already installed for user $USER."
 	fi
 
-	if [! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"]; then
+	if [ ! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
 		header "Installing Powerlevel10k theme for user $USER..."
 		git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 	else
@@ -152,7 +152,7 @@ else
 
 	header "Configuring xorg..."
 	sudo mkdir -p $xorg_dir
-  sudo	cp -rv $current_dir/xorg/* $xorg_dir
+	sudo cp -rv $current_dir/xorg/* $xorg_dir
 
 	header "Configuring fonts..."
 	mkdir -p $font_dir
@@ -167,8 +167,8 @@ else
 	fi
 	wal -nqi $HOME/Pictures/Wallpapers/archkali.png
 
-  header "Configuring timezone..."
-  sudo timedatectl set-timezone America/El_Salvador
+	header "Configuring timezone..."
+	sudo timedatectl set-timezone America/El_Salvador
 
 	header "Configuring dotfiles symlinks..."
 	mkdir -p "$HOME/.config"
