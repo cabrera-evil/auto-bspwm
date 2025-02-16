@@ -152,18 +152,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
 
-# Kubectx configuration
-RPS1='$(kubectx_prompt_info)'
-PROMPT="$PROMPT"'$(kubectx_prompt_info)'
-typeset -A kubectx_mapping
-typeset -A kubectx_mapping
-kubectx_mapping=(
-  microk8s                  "%F{green}microk8s%f"     # Maps microk8s cluster to green "microk8s"
-  staging                   "%F{blue}staging%f"       # Maps staging cluster to blue "staging"
-  prod                      "%F{red}prod%f"           # Maps production cluster to red "prod"
-  "context with spaces"     "%F{red}spaces%f"         # Handles contexts with spaces
-)
-
 # Custom Aliases
 alias ll='/usr/bin/lsd -lh --group-dirs=first'
 alias la='/usr/bin/lsd -a --group-dirs=first'
@@ -183,6 +171,18 @@ alias wgf="sudo wg-quick down wg0"
 configs=($HOME/.kube/config*)
 if (( ${#configs[@]} > 0 )); then
   export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
+
+  # Kubectx configuration
+  RPS1='$(kubectx_prompt_info)'
+  PROMPT="$PROMPT"'$(kubectx_prompt_info)'
+  typeset -A kubectx_mapping
+  typeset -A kubectx_mapping
+  kubectx_mapping=(
+    microk8s                  "%F{green}microk8s%f"     # Maps microk8s cluster to green "microk8s"
+    staging                   "%F{blue}staging%f"       # Maps staging cluster to blue "staging"
+    prod                      "%F{red}prod%f"           # Maps production cluster to red "prod"
+    "context with spaces"     "%F{red}spaces%f"         # Handles contexts with spaces
+  )
 fi
 
 # Console Ninja
