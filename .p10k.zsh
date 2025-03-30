@@ -189,8 +189,18 @@
   # OS identifier color.
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=254
-  # Custom icon.
-  typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
+
+  # OS Icons Mapping
+  declare -A distro_icons=(
+    ["Ubuntu"]="" ["Debian"]="" ["Fedora"]=""
+    ["Arch Linux"]="" ["Manjaro"]="" ["CentOS"]=""
+    ["openSUSE"]=""
+  )
+
+  # Set OS Icon Dynamically
+  # take off all the text after a /if theres one
+  distro=$(awk -F= '/^NAME/{print $2}' /etc/os-release | tr -d '"' | sed 's/ .*//')
+  export POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION="${distro_icons[$distro]:-}"
 
   ################################[ prompt_char: prompt symbol ]################################
   # Transparent background.

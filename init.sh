@@ -139,6 +139,13 @@ else
 		header "you-should-use is already installed for user $USER."
 	fi
 
+	if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-history-substring-search" ]; then
+		header "Installing zsh-history-substring-search for user $USER..."
+		git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+	else
+		header "zsh-history-substring-search is already installed for user $USER."
+	fi
+
 	if [ ! -d "/root/.oh-my-zsh" ]; then
 		header "Copying Oh My Zsh configuration to user root..."
 		sudo cp -r $HOME/.oh-my-zsh /root/
@@ -179,9 +186,9 @@ else
 	sudo chsh -s $(which zsh) root
 
 	header "Configuring the .zshrc and .p10k.zsh files..."
-	cp -v $current_dir/.zshrc $HOME/.zshrc
-	cp -v $current_dir/.p10k.zsh $HOME/.p10k.zsh
-	cp -v $current_dir/.bashrc $HOME/.bashrc
+	ln -sfv $current_dir/.zshrc $HOME/.zshrc
+	ln -sfv $current_dir/.p10k.zsh $HOME/.p10k.zsh
+	ln -sfv $current_dir/.bashrc $HOME/.bashrc
 	sudo ln -sfv $HOME/.zshrc /root/.zshrc
 	sudo ln -sfv $HOME/.p10k.zsh /root/.p10k.zsh
 	sudo ln -sfv $HOME/.bashrc /root/.bashrc

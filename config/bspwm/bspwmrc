@@ -18,7 +18,7 @@ declare -A RESTART_PROCESSES=(
 # Processes that should keep running (ensure they start if not already running)
 declare -A KEEP_ALIVE_PROCESSES=(
     [1password]="1password --silent"
-    [docker-desktop]="/usr/bin/docker-desktop"
+    [docker-desktop]="systemctl --user enable docker-desktop"
 )
 
 # Configure BSPWM
