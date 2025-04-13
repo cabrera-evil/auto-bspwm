@@ -160,6 +160,12 @@ else
     header "Tmux Plugin Manager is already installed for user $USER."
   fi
 
+  header "Installing lazygit..."
+  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+  wget -O /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+  tar -xzf /tmp/lazygit.tar.gz -C /tmp lazygit
+  sudo install /tmp/lazygit -D -t /usr/local/bin/
+
 	header "Configuring terminal emulator..."
 	sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 50
 	sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
