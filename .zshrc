@@ -110,15 +110,43 @@ plugins=(
   yarn
 )
 
+###################################
+# TMUX configuration
+###################################
+# Auto-start tmux if not already in a session
+ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_AUTOSTART_ONCE=true
 
+# Use a default named session (you can attach manually to others if needed)
+ZSH_TMUX_DEFAULT_SESSION_NAME="dev"
+
+# Auto-reconnect to existing session on tmux exit (e.g., if tmux crashes)
+ZSH_TMUX_AUTOCONNECT=true
+
+# Don't close terminal if tmux exits — for debugging or fallback shell
+ZSH_TMUX_AUTOQUIT=true
+
+# Fix $TERM properly to support 256-color + tmux
+ZSH_TMUX_FIXTERM=true
+ZSH_TMUX_FIXTERM_WITH_256COLOR="tmux-256color"
+
+# Auto-name sessions by folder (nice for multiple projects)
+ZSH_TMUX_AUTONAME_SESSION=true
+
+# Optional: Set config path (useful if you use ~/.config/tmux/tmux.conf)
+# ZSH_TMUX_CONFIG="$HOME/.config/tmux/tmux.conf"
+
+###################################
+# Oh My Zsh startup
+###################################
 source $ZSH/oh-my-zsh.sh
 
+###################################
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
+###################################
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -142,12 +170,16 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Custom Configuration
+###################################
+# Custom configuration
+###################################
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Enable completion features
+###################################
+# Terminal configuration
+###################################
 autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 zstyle ':completion:*' auto-description 'specify: %d'
@@ -167,12 +199,16 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-# History configurations
+###################################
+# History configuration
+###################################
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
 
-# Custom Aliases
+###################################
+# Aliases configuration
+###################################
 alias ll='/usr/bin/lsd -lh --group-dirs=first'
 alias la='/usr/bin/lsd -a --group-dirs=first'
 alias l='/usr/bin/lsd --group-dirs=first'
@@ -187,7 +223,9 @@ alias v='nvim'
 alias wgs="sudo wg-quick up wg0"
 alias wgf="sudo wg-quick down wg0"
 
-# Kubeconfig configuration
+###################################
+# K8's configuration
+###################################
 configs=($HOME/.kube/config*)
 if (( ${#configs[@]} > 0 )); then
   export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
@@ -198,32 +236,42 @@ if (( ${#configs[@]} > 0 )); then
   typeset -A kubectx_mapping
   typeset -A kubectx_mapping
   kubectx_mapping=(
-    microk8s                  "%F{green}microk8s%f"     # Maps microk8s cluster to green "microk8s"
-    staging                   "%F{blue}staging%f"       # Maps staging cluster to blue "staging"
-    prod                      "%F{red}prod%f"           # Maps production cluster to red "prod"
-    "context with spaces"     "%F{red}spaces%f"         # Handles contexts with spaces
+    local                     "%F{green}local%f"
+    staging                   "%F{blue}staging%f"
+    production                "%F{red}production%f"
+    "context with spaces"     "%F{red}spaces%f"
   )
 fi
 
-# Console Ninja
+###################################
+# Console Ninja configuration
+###################################
 PATH=~/.console-ninja/.bin:$PATH
 
-# Snap
+###################################
+# Snap configuration
+###################################
 export PATH=$PATH:/snap/bin
 
-# NVM
+###################################
+# NVM configuration
+###################################
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# PNPM
+###################################
+# PNPM configuration
+###################################
 export PNPM_HOME="/home/douglas/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
-# Android SDK
+###################################
+# Android SDK configuration
+###################################
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
