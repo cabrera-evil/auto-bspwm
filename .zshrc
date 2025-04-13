@@ -222,6 +222,16 @@ alias e='exit'
 alias v='nvim'
 alias wgs="sudo wg-quick up wg0"
 alias wgf="sudo wg-quick down wg0"
+alias tmxn='tmuxifier new-session'
+alias tmxe='tmuxifier edit-layout'
+alias tmxl='tmuxifier list-layouts'
+alias tmxs='tmuxifier load-session'
+
+###################################
+# Tmuxifier configuration
+###################################
+export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
+eval "$(tmuxifier init -)"
 
 ###################################
 # K8's configuration
@@ -276,8 +286,3 @@ export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-###################################
-# Tmuxifier configuration
-###################################
-export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
-eval "$(tmuxifier init -)"
