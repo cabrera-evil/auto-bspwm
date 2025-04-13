@@ -275,3 +275,9 @@ esac
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+###################################
+# Tmuxifier configuration
+###################################
+export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
+eval "$(tmuxifier init -)"
