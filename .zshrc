@@ -8,7 +8,8 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
+eval "$(starship init zsh)"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -232,25 +233,57 @@ alias tmxs='tmuxifier load-session'
 ###################################
 export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
 eval "$(tmuxifier init -)"
-
 ###################################
-# K8's configuration
+# K8s Configuration
 ###################################
-configs=($HOME/.kube/config*)
-if (( ${#configs[@]} > 0 )); then
+if [ -d "$HOME/.kube" ]; then
+  configs=($HOME/.kube/config*)
   export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
-
-  # Kubectx configuration
-  RPS1='$(kubectx_prompt_info)'
-  PROMPT="$PROMPT"'$(kubectx_prompt_info)'
-  typeset -A kubectx_mapping
-  typeset -A kubectx_mapping
-  kubectx_mapping=(
-    local                     "%F{green}local%f"
-    staging                   "%F{blue}staging%f"
-    production                "%F{red}production%f"
-    "context with spaces"     "%F{red}spaces%f"
-  )
+  function kubectx_prompt_info() {
+    local ctx=$(kubectl config current-context 2>/dev/null)
+    [[ -z "$ctx" ]] && return
+    local color symbol
+    case "$ctx" in
+      *raspberry*|*pi*)
+        color="%F{162}"
+        symbol=""
+        ;;
+      *local*)
+        color="%F{70}"
+        symbol="󰟐"
+        ;;
+      *staging*)
+        color="%F{33}"
+        symbol=""
+        ;;
+      *prod*|*production*)
+        color="%F{160}"
+        symbol="󰞵"
+        ;;
+      *dev*)
+        color="%F{106}"
+        symbol=""
+        ;;
+      *gke*)
+        color="%F{39}"
+        symbol=""
+        ;;
+      *eks*)
+        color="%F{172}"
+        symbol=""
+        ;;
+      *aks*)
+        color="%F{27}"
+        symbol=""
+        ;;
+      *)
+        color="%F{249}"
+        symbol="⎈"
+        ;;
+    esac
+    echo "${color}[${symbol} ${ctx}]%f"
+  }
+  RPROMPT='$(kubectx_prompt_info)'
 fi
 
 ###################################
