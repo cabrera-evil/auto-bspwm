@@ -228,8 +228,11 @@ alias tmxs='tmuxifier load-session'
 ###################################
 # Tmuxifier configuration
 ###################################
-export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
-eval "$(tmuxifier init -)"
+if [ command -v tmuxifier &> /dev/null ]; then
+  export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
+  eval "$(tmuxifier init -)"
+fi
+
 ###################################
 # K8s Configuration
 ###################################

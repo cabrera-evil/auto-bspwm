@@ -8,6 +8,20 @@ case $- in
 *) return ;;
 esac
 
+###################################
+# User configuration
+###################################
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='vim'
+else
+    export EDITOR='nvim'
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -111,49 +125,118 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# Custom Aliases
+###################################
+# Aliases configuration
+###################################
 alias ll='/usr/bin/lsd -lh --group-dirs=first'
 alias la='/usr/bin/lsd -a --group-dirs=first'
 alias l='/usr/bin/lsd --group-dirs=first'
 alias lla='/usr/bin/lsd -lha --group-dirs=first'
 alias ls='/usr/bin/lsd --group-dirs=first'
+alias lg='lazygit'
 alias cat='/usr/bin/batcat'
 alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
 alias v='nvim'
-alias k='kubectl'
-alias h='helm'
-alias g='git'
 alias wgs="sudo wg-quick up wg0"
 alias wgf="sudo wg-quick down wg0"
+alias tmxn='tmuxifier new-session'
+alias tmxe='tmuxifier edit-layout'
+alias tmxl='tmuxifier list-layouts'
+alias tmxs='tmuxifier load-session'
 
-# Kubeconfig configuration
-configs=($HOME/.kube/config*)
-if ((${#configs[@]} > 0)); then
-    export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
+###################################
+# Tmuxifier configuration
+###################################
+if [ command -v tmuxifier ] &>/dev/null; then
+    export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
+    eval "$(tmuxifier init -)"
 fi
 
-# Console Ninja
+###################################
+# K8s Configuration
+###################################
+if [ -d "$HOME/.kube" ]; then
+    configs=($HOME/.kube/config*)
+    export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
+    function kubectx_prompt_info() {
+        local ctx=$(kubectl config current-context 2>/dev/null)
+        [[ -z "$ctx" ]] && return
+        local color symbol
+        case "$ctx" in
+        *raspberry* | *pi*)
+            color="%F{162}"
+            symbol=""
+            ;;
+        *local*)
+            color="%F{70}"
+            symbol="󰟐"
+            ;;
+        *staging*)
+            color="%F{33}"
+            symbol=""
+            ;;
+        *prod* | *production*)
+            color="%F{160}"
+            symbol="󰞵"
+            ;;
+        *dev*)
+            color="%F{106}"
+            symbol=""
+            ;;
+        *gke*)
+            color="%F{39}"
+            symbol=""
+            ;;
+        *eks*)
+            color="%F{172}"
+            symbol=""
+            ;;
+        *aks*)
+            color="%F{27}"
+            symbol=""
+            ;;
+        *)
+            color="%F{249}"
+            symbol="⎈"
+            ;;
+        esac
+        echo "${color}[${symbol} ${ctx}]%f"
+    }
+    RPROMPT='$(kubectx_prompt_info)'
+fi
+
+###################################
+# Console Ninja configuration
+###################################
 PATH=~/.console-ninja/.bin:$PATH
 
-# Snap
+###################################
+# Snap configuration
+###################################
 export PATH=$PATH:/snap/bin
 
-# NVM
+###################################
+# NVM configuration
+###################################
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# PNPM
+###################################
+# PNPM configuration
+###################################
 export PNPM_HOME="/home/douglas/.local/share/pnpm"
 case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
-# Android SDK
+###################################
+# Android SDK configuration
+###################################
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools

@@ -61,17 +61,16 @@ else
     echo -e "${YELLOW}Running as user, updating user symlinks...${NC}"
 fi
 
-header "Updating dotfiles symlinks..."
+header "Creating symlinks for $user..."
 mkdir -p "$config_dir"
 ln -sfv $current_dir/config/* $config_dir/
-
-header "Creating symlinks for .zshrc, .p10k.zsh, and .bashrc..."
 ln -sfv $current_dir/.zshrc $HOME/.zshrc
 ln -sfv $current_dir/.p10k.zsh $HOME/.p10k.zsh
 ln -sfv $current_dir/.bashrc $HOME/.bashrc
 
-# Update symlinks for root user too if running as non-root user
-header "Updating symlinks for root user..."
+header "Creating symlinks for root user..."
+sudo mkdir -p "$config_dir"
+sudo ln -sfv $current_dir/config/* $config_dir/
 sudo ln -sfv $HOME/.zshrc /root/.zshrc
 sudo ln -sfv $HOME/.p10k.zsh /root/.p10k.zsh
 sudo ln -sfv $HOME/.bashrc /root/.bashrc
