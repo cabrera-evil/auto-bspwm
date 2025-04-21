@@ -76,7 +76,6 @@ plugins=(
   git
   git-auto-fetch
   git-flow
-  git-prompt
   gitignore
   github
   git-extras
@@ -118,9 +117,6 @@ plugins=(
 ZSH_TMUX_AUTOSTART=true
 ZSH_TMUX_AUTOSTART_ONCE=true
 
-# Use a default named session (you can attach manually to others if needed)
-ZSH_TMUX_DEFAULT_SESSION_NAME="dev"
-
 # Auto-reconnect to existing session on tmux exit (e.g., if tmux crashes)
 ZSH_TMUX_AUTOCONNECT=true
 
@@ -147,7 +143,7 @@ source $ZSH/oh-my-zsh.sh
 ###################################
 
 # You may need to manually set your language environment
-export LANG=en_US.UTF-8
+# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -215,6 +211,7 @@ alias la='/usr/bin/lsd -a --group-dirs=first'
 alias l='/usr/bin/lsd --group-dirs=first'
 alias lla='/usr/bin/lsd -lha --group-dirs=first'
 alias ls='/usr/bin/lsd --group-dirs=first'
+alias lg='lazygit'
 alias cat='/usr/bin/batcat'
 alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
