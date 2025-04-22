@@ -159,53 +159,8 @@ fi
 # K8s Configuration
 ###################################
 if [ -d "$HOME/.kube" ]; then
-    configs=($HOME/.kube/config*)
-    export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
-    function kubectx_prompt_info() {
-        local ctx=$(kubectl config current-context 2>/dev/null)
-        [[ -z "$ctx" ]] && return
-        local color symbol
-        case "$ctx" in
-        *raspberry* | *pi*)
-            color="%F{162}"
-            symbol=""
-            ;;
-        *local*)
-            color="%F{70}"
-            symbol="󰟐"
-            ;;
-        *staging*)
-            color="%F{33}"
-            symbol=""
-            ;;
-        *prod* | *production*)
-            color="%F{160}"
-            symbol="󰞵"
-            ;;
-        *dev*)
-            color="%F{106}"
-            symbol=""
-            ;;
-        *gke*)
-            color="%F{39}"
-            symbol=""
-            ;;
-        *eks*)
-            color="%F{172}"
-            symbol=""
-            ;;
-        *aks*)
-            color="%F{27}"
-            symbol=""
-            ;;
-        *)
-            color="%F{249}"
-            symbol="⎈"
-            ;;
-        esac
-        echo "${color}[${symbol} ${ctx}]%f"
-    }
-    RPROMPT='$(kubectx_prompt_info)'
+  configs=($HOME/.kube/config*)
+  export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
 fi
 
 ###################################
