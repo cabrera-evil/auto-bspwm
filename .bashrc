@@ -196,6 +196,14 @@ export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-# Auto-completion
+###################################
+# AWS configuration
+###################################
+SHOW_AWS_PROMPT=false
+AWS_PROFILE=default
+
+###################################
+# Autocompletion configuration
+###################################
 source <(kubectl completion bash)
 source <(helm completion bash)
