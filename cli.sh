@@ -19,39 +19,16 @@ xorg_dir="/etc/X11/xorg.conf.d"
 user=$(whoami)
 packages=(
 	bat
-	blueman
-	bluez
-	brightnessctl
-	bspwm
 	cmatrix
-	dunst
-	exo-utils
 	feh
-	flameshot
-	firejail
 	fzf
 	htop
-	i3lock-fancy
-	imagemagick
-	kitty
-	lxappearance
 	lsd
 	neofetch
-	numlockx
-	numix-icon-theme
-	numix-icon-theme-circle
-	pamixer
-	polybar
-	picom
-	playerctl
-	python3-pip
 	ranger
-	rofi
 	rsync
 	scrub
-	sxhkd
 	tmux
-	tty-clock
 	wmname
 	xclip
 )
