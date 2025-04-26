@@ -114,11 +114,11 @@ plugins=(
 # TMUX configuration
 ###################################
 # Auto-start tmux if not already in a session
-ZSH_TMUX_AUTOSTART=true
-ZSH_TMUX_AUTOSTART_ONCE=true
+# ZSH_TMUX_AUTOSTART=true
+# ZSH_TMUX_AUTOSTART_ONCE=true
 
 # Auto-reconnect to existing session on tmux exit (e.g., if tmux crashes)
-ZSH_TMUX_AUTOCONNECT=true
+# ZSH_TMUX_AUTOCONNECT=true
 
 # Don't close terminal if tmux exits — for debugging or fallback shell
 ZSH_TMUX_AUTOQUIT=true
@@ -277,5 +277,5 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ###################################
 # AWS configuration
 ###################################
-SHOW_AWS_PROMPT=false
-AWS_PROFILE=default
+#SHOW_AWS_PROMPT=false
+export AWS_PROFILE=default

@@ -163,7 +163,6 @@ else
 	sudo chsh -s $(which zsh) root
 
 	header "Configuring terminal emulator..."
-	sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 50
 	sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
 
 	if [! -d "$HOME/.tmux/plugins/tpm" ]; then
