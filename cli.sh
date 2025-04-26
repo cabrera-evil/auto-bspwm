@@ -171,9 +171,6 @@ else
 	header "Installing necessary packages for the environment..."
 	sudo apt update -y && sudo apt install -y "${packages[@]}"
 
-	header "Installing pywal..."
-	sudo pip3 install pywal --break-system
-
 	header "Installing zsh and configuring it as the default shell..."
 	if [ ! -d "$HOME/.oh-my-zsh" ]; then
 		install_oh_my_zsh
@@ -206,22 +203,9 @@ else
 	header "Configuring dotfiles symlinks..."
 	configure_symlinks
 
-	header "Configuring xorg..."
-	sudo mkdir -p $xorg_dir
-	sudo cp -rv $current_dir/xorg/* $xorg_dir
-
 	header "Configuring fonts..."
 	mkdir -p $font_dir
 	cp -rv $current_dir/fonts/* $font_dir
-
-	header "Configuring wallpaper..."
-	if [[ -d "$HOME/Pictures/Wallpapers" ]]; then
-		cp -rv $current_dir/wallpapers/* $HOME/Pictures/Wallpapers
-	else
-		mkdir $HOME/Pictures/Wallpapers
-		cp -rv $current_dir/wallpapers/* $HOME/Pictures/Wallpapers
-	fi
-	wal -nqi $HOME/Pictures/Wallpapers/archkali.png
 
 	header "Configuring timezone..."
 	sudo timedatectl set-timezone America/El_Salvador
