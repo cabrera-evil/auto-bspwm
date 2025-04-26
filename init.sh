@@ -181,6 +181,9 @@ else
 		header "Oh My Zsh is already installed for user $USER."
 	fi
 
+	header "Install starship..."
+	curl -sS https://starship.rs/install.sh | sh
+
 	header "Configuring zsh as default shell..."
 	chsh -s $(which zsh)
 	sudo chsh -s $(which zsh) root
