@@ -163,7 +163,7 @@ else
 	chsh -s $(which zsh)
 	sudo chsh -s $(which zsh) root
 
-  if [! -d "$HOME/.tmux/plugins/tpm" ]; then
+  if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
 		header "Installing Tmux Plugin Manager for user $USER..."
 		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 	else
