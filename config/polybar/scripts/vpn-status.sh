@@ -17,8 +17,9 @@ format_output() {
 	printf "%%{F%s}%s %%{F%s}%s: %s %%{u-}\n" "$color" "$icon" "$color" "$iface" "$ip"
 }
 
-# Main logic: Detect WireGuard interfaces and display their IPs
 found_iface=false
+
+# Process WireGuard interfaces (wg*)
 while read -r iface; do
 	ip=$(get_ip "$iface")
 	ip=${ip:-"N/A"}
@@ -26,7 +27,15 @@ while read -r iface; do
 	found_iface=true
 done < <(ip link show | awk -F: '/^[0-9]+: wg/ {gsub(/ /, "", $2); print $2}')
 
-# If no WireGuard interfaces were found
+# Process Tailscale interface (tailscale0)
+if ip link show tailscale0 &>/dev/null; then
+	ip=$(get_ip "tailscale0")
+	ip=${ip:-"N/A"}
+	format_output "tailscale0" "$ip"
+	found_iface=true
+fi
+
+# If no interfaces found
 if ! $found_iface; then
 	printf "%%{F#ffffff}%%{u-} N/A\n"
 fi
