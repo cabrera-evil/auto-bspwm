@@ -31,6 +31,7 @@ packages=(
 	tmux
 	wmname
 	xclip
+  zsh
 )
 
 # Function to exit the script
@@ -71,7 +72,7 @@ function install_lazygit() {
 function install_oh_my_zsh() {
 	if [ ! -d "$HOME/.oh-my-zsh" ]; then
 		header "Installing Oh My Zsh for user $USER..."
-		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 	else
 		header "Oh My Zsh is already installed for user $USER."
 	fi
@@ -162,10 +163,7 @@ else
 	chsh -s $(which zsh)
 	sudo chsh -s $(which zsh) root
 
-	header "Configuring terminal emulator..."
-	sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
-
-	if [! -d "$HOME/.tmux/plugins/tpm" ]; then
+  if [! -d "$HOME/.tmux/plugins/tpm" ]; then
 		header "Installing Tmux Plugin Manager for user $USER..."
 		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 	else
