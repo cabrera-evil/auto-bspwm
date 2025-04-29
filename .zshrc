@@ -81,7 +81,7 @@ plugins=(
   git-extras
 
   # AWS, Docker, Terraform, Kubernetes
-  aws
+  # aws
   docker
   kubectl
   kubectx
