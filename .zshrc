@@ -1,138 +1,99 @@
-# If you come from bash you might have to change your $PATH.
+# Path adjustments
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$PATH:/snap/bin
+export PATH=~/.console-ninja/.bin:$PATH
 
-# Path to your Oh My Zsh installation.
+# Oh My Zsh
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="powerlevel10k/powerlevel10k"
+# Starship prompt
 eval "$(starship init zsh)"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+###################################
+# Compinit configuration
+###################################
+autoload -Uz compinit
+if [[ ! -d ~/.cache ]]; then
+  mkdir -p ~/.cache
+fi
+compinit -d ~/.cache/zcompdump
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+###################################
+# Plugins configuration
+###################################
 plugins=(
-  # Git & Git-related
+  # Core utilities
+  fasd
+  z
+  extract
+  safe-paste
+  colored-man-pages
+  web-search
+
+  # Git
   git
   git-auto-fetch
   git-flow
   gitignore
   github
   git-extras
+  # git-open
+  # git-recall
 
-  # AWS, Docker, Terraform, Kubernetes
-  # aws
+  # DevOps / Infrastructure
   docker
   kubectl
   kubectx
   helm
   terraform
-
-  # Tools & Utilities
-  battery
-  tmux
-  you-should-use
-  zsh-autosuggestions
-  zsh-interactive-cd
-  zsh-syntax-highlighting
-  zsh-history-substring-search
-  zsh-navigation-tools
-  fasd
-  history
-  history-substring-search
-
-  # Security & Password Management
-  1password
+  # kube-aliases
+  aws
   vault
+  1password
+  gpg-agent
 
-  # Other tools
+  # Node / Frontend
   npm
   yarn
   vscode
+  httpie
+
+  # Productivity
+  # zsh-abbr
+  # zsh-you-should-use
+  zsh-navigation-tools
+  # navi
+
+  # Input & UX enhancements
+  # zsh-autopair
+  zsh-history-substring-search
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  # fzf-tab
+  # zsh-notify
 )
 
 ###################################
-# TMUX configuration
+# Completion configuration
 ###################################
-# Auto-start tmux if not already in a session
-# ZSH_TMUX_AUTOSTART=true
-# ZSH_TMUX_AUTOSTART_ONCE=true
-
-# Auto-reconnect to existing session on tmux exit (e.g., if tmux crashes)
-# ZSH_TMUX_AUTOCONNECT=true
-
-# Don't close terminal if tmux exits — for debugging or fallback shell
-ZSH_TMUX_AUTOQUIT=true
-
-# Fix $TERM properly to support 256-color + tmux
-ZSH_TMUX_FIXTERM=true
-ZSH_TMUX_FIXTERM_WITH_256COLOR="tmux-256color"
-
-# Auto-name sessions by folder (nice for multiple projects)
-ZSH_TMUX_AUTONAME_SESSION=true
-
-# Optional: Set config path (useful if you use ~/.config/tmux/tmux.conf)
-# ZSH_TMUX_CONFIG="$HOME/.config/tmux/tmux.conf"
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' format '%F{blue}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' select-prompt %SScrolling: current item at %p%s
+zstyle ':completion:*' matcher-list \
+  'm:{a-z}={A-Z}' \
+  'm:{a-zA-Z}={A-Za-z}' \
+  'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' list-prompt %SAt %p: hit TAB to select, or type more%s
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b)([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:aliases' auto-description 'alias for %d'
+zstyle ':completion:*' use-compctl false
 
 ###################################
 # Oh My Zsh startup
@@ -140,62 +101,9 @@ ZSH_TMUX_AUTONAME_SESSION=true
 source $ZSH/oh-my-zsh.sh
 
 ###################################
-# User configuration
+# Prompt configuration
 ###################################
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-###################################
-# Custom configuration
-###################################
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-###################################
-# Terminal configuration
-###################################
-autoload -Uz compinit
-compinit -d ~/.cache/zcompdump
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 ###################################
 # History configuration
@@ -205,7 +113,7 @@ HISTSIZE=1000
 SAVEHIST=2000
 
 ###################################
-# Aliases configuration
+# Aliases
 ###################################
 alias ll='/usr/bin/lsd -lh --group-dirs=first'
 alias la='/usr/bin/lsd -a --group-dirs=first'
@@ -231,19 +139,23 @@ export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
 --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
---color=selected-bg:#45475a \
 --color=border:#313244,label:#cdd6f4"
 
 ###################################
-# Tmuxifier configuration
+# Tmuxifier
 ###################################
-if [ command -v tmuxifier &> /dev/null ]; then
+if command -v tmuxifier &> /dev/null; then
   export PATH=$PATH:$HOME/.config/tmux/plugins/tmuxifier/bin
   eval "$(tmuxifier init -)"
 fi
 
+ZSH_TMUX_AUTOQUIT=true
+ZSH_TMUX_FIXTERM=true
+ZSH_TMUX_FIXTERM_WITH_256COLOR="tmux-256color"
+ZSH_TMUX_AUTONAME_SESSION=true
+
 ###################################
-# K8s Configuration
+# Kubernetes configuration
 ###################################
 if [ -d "$HOME/.kube" ]; then
   configs=($HOME/.kube/config*)
@@ -251,14 +163,13 @@ if [ -d "$HOME/.kube" ]; then
 fi
 
 ###################################
-# Console Ninja configuration
+# Editor configuration
 ###################################
-PATH=~/.console-ninja/.bin:$PATH
-
-###################################
-# Snap configuration
-###################################
-export PATH=$PATH:/snap/bin
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 ###################################
 # NVM configuration
@@ -286,7 +197,6 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ###################################
 # AWS configuration
 ###################################
-#SHOW_AWS_PROMPT=false
 export AWS_PROFILE=default
 
 ###################################
