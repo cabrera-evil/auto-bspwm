@@ -278,3 +278,8 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ###################################
 #SHOW_AWS_PROMPT=false
 export AWS_PROFILE=default
+
+###################################
+# Docker configuration
+###################################
+export DOCKER_VOLUMES=/opt/docker/volumes

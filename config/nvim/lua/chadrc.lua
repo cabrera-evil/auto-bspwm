@@ -5,20 +5,39 @@
 ---@type ChadrcConfig
 local M = {}
 
+-- Theme configuration (Base46)
 M.base46 = {
   theme = "onedark",
 
-  -- hl_override = {
-  -- 	Comment = { italic = true },
-  -- 	["@comment"] = { italic = true },
-  -- },
+  hl_override = {
+    Comment = { italic = true },
+    ["@comment"] = { italic = true },
+  },
 }
 
-M.nvdash = { load_on_startup = true }
--- M.ui = {
---       tabufline = {
---          lazyload = false
---      }
---}
+-- Dashboard configuration
+M.nvdash = {
+  load_on_startup = true,
+}
+
+-- UI configuration
+M.ui = {
+  theme_toggle = { "onedark", "catppuccin" }, -- toggle theme
+
+  -- Enable and customize tabline
+  tabufline = {
+    lazyload = false,
+    order = { "treeOffset", "buffers", "tabs", "btns" },
+  },
+
+  -- Enable better statusline contrast and diagnostics
+  statusline = {
+    theme = "default",         -- or "minimal"
+    separator_style = "round", -- options: "default", "round", "block", "arrow"
+  },
+
+  -- Enable LSP diagnostic icons
+  lsp_semantic_tokens = true,
+}
 
 return M

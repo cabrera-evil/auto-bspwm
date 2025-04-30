@@ -140,8 +140,6 @@ alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
 alias v='nvim'
-alias wgs="sudo wg-quick up wg0"
-alias wgf="sudo wg-quick down wg0"
 alias tmxn='tmuxifier new-session'
 alias tmxe='tmuxifier edit-session'
 alias tmxl='tmuxifier list-sessions'
@@ -159,8 +157,8 @@ fi
 # K8s Configuration
 ###################################
 if [ -d "$HOME/.kube" ]; then
-  configs=($HOME/.kube/config*)
-  export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
+    configs=($HOME/.kube/config*)
+    export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
 fi
 
 ###################################
@@ -183,7 +181,7 @@ export NVM_DIR="$HOME/.nvm"
 ###################################
 # PNPM configuration
 ###################################
-export PNPM_HOME="/home/douglas/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -199,8 +197,13 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ###################################
 # AWS configuration
 ###################################
-SHOW_AWS_PROMPT=false
-AWS_PROFILE=default
+#SHOW_AWS_PROMPT=false
+export AWS_PROFILE=default
+
+###################################
+# Docker configuration
+###################################
+export DOCKER_VOLUMES=/opt/docker/volumes
 
 ###################################
 # Autocompletion configuration
