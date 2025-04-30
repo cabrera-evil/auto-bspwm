@@ -50,3 +50,5 @@ for process in "${!KEEP_ALIVE_PROCESSES[@]}"; do
         nohup ${KEEP_ALIVE_PROCESSES[$process]} >/dev/null 2>&1 &
     fi
 done
+
+~CONFIG_DIR/bspwm/scripts/low_bat_notifier.sh
