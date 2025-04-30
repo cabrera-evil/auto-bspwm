@@ -7,7 +7,7 @@ local M = {}
 
 -- Theme configuration (Base46)
 M.base46 = {
-  theme = "onedark",
+  theme = "catppuccin",
 
   hl_override = {
     Comment = { italic = true },
@@ -22,7 +22,7 @@ M.nvdash = {
 
 -- UI configuration
 M.ui = {
-  theme_toggle = { "onedark", "catppuccin" }, -- toggle theme
+  theme_toggle = { "catppuccin", "onedark" }, -- toggle theme
 
   -- Enable and customize tabline
   tabufline = {

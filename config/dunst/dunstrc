@@ -1,32 +1,29 @@
-#!/bin/bash
-
 [global]
 title = Dunst
 class = Dunst
 monitor = 0
 follow = mouse
-width = 300
-height = 300
+width = 340
+height = 200
 origin = top-right
-offset = 10x92
-indicate_hidden = yes
-shrink = yes
-
+offset = 12x92
+corner_radius = 6
 transparency = 0
-separator_height = 2
-padding = 8
-horizontal_padding = 11
-frame_width = 6
-frame_color = "#1a1b26"
-separator_color = "#c0caf5"
+frame_width = 0
+separator_height = 1
+padding = 12
+horizontal_padding = 14
+shrink = yes
+indicate_hidden = yes
 
+# Fonts
 font = JetBrainsMono Nerd Font Medium 9
-
-line_height = 0
+line_height = 3
 markup = full
-format = "<span size='x-large' font_desc='Cantarell 9' weight='bold' foreground='#f9f9f9'>%s</span>\n%b"
 alignment = left
+format = "<span font_desc='JetBrainsMono Nerd Font Bold 10' foreground='#cdd6f4'>%s</span>\n<span font_desc='JetBrainsMono Nerd Font Medium 9' foreground='#cdd6f4'>%b</span>"
 
+# Behavior
 idle_threshold = 120
 show_age_threshold = 60
 sort = no
@@ -36,31 +33,35 @@ stack_duplicates = false
 hide_duplicate_count = yes
 show_indicators = no
 sticky_history = no
-history_length = 20
+history_length = 30
 always_run_script = true
-corner_radius = 4
+
+# Icons
 icon_position = left
-max_icon_size = 80
+max_icon_size = 48
+icon_path = /usr/share/icons/Papirus-Dark/
 
-icon_path = /usr/share/icons/Papirus-Dark/48x48/actions/:/usr/share/icons/Papirus-Dark/48x48/apps/:/usr/share/icons/Papirus-Dark/48x48/devices/:/usr/share/icons/Papirus-Dark/48x48/emblems/:/usr/share/icons/Papirus-Dark/48x48/emotes/:/usr/share/icons/Papirus-Dark/48x48/mimetypes/:/usr/share/icons/Papirus-Dark/48x48/places/:/usr/share/icons/Papirus-Dark/48x48/status/
-
-browser = firefox
-
+# Interaction
+browser = google-chrome
 mouse_left_click = close_current
 mouse_middle_click = do_action
 mouse_right_click = close_all
 
+# Catppuccin
+[global]
+frame_color = "#89b4fa"
+separator_color= frame
+highlight = "#89b4fa"
+
 [urgency_low]
-timeout = 3
-background = "#1a1b26"
-foreground = "#c0caf5"
+background = "#1e1e2e"
+foreground = "#cdd6f4"
 
 [urgency_normal]
-timeout = 6
-background = "#1a1b26"
-foreground = "#c0caf5"
+background = "#1e1e2e"
+foreground = "#cdd6f4"
 
 [urgency_critical]
-timeout = 0
-background = "#1a1b26"
-foreground = "#c0caf5"
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+frame_color = "#fab387"
