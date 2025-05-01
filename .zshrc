@@ -45,7 +45,7 @@ plugins=(
   kubectx
   helm
   terraform
-  aws
+  # aws
   vault
   1password
   gpg-agent
