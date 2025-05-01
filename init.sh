@@ -13,7 +13,7 @@ CONFIG_DIR="$HOME/.config"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 CLI_PACKAGES=(
-	bat fzf htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip
+	bat fzf htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip ripgrep
 )
 
 DESKTOP_PACKAGES=(
