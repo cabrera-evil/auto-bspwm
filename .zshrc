@@ -37,8 +37,7 @@ plugins=(
   gitignore
   github
   git-extras
-  # git-open
-  # git-recall
+  git-open
 
   # DevOps / Infrastructure
   docker
@@ -46,7 +45,6 @@ plugins=(
   kubectx
   helm
   terraform
-  # kube-aliases
   aws
   vault
   1password
@@ -59,18 +57,15 @@ plugins=(
   httpie
 
   # Productivity
-  # zsh-abbr
-  # zsh-you-should-use
+  you-should-use
   zsh-navigation-tools
-  # navi
 
   # Input & UX enhancements
-  # zsh-autopair
+  zsh-autopair
   zsh-history-substring-search
   zsh-autosuggestions
   zsh-syntax-highlighting
-  # fzf-tab
-  # zsh-notify
+  fzf-tab
 )
 
 ###################################
