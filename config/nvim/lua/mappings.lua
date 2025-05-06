@@ -9,7 +9,7 @@ map("i", "jk", "<ESC>")
 map("n", "<leader>sw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Substitute word under cursor" })
 
 -- Make current file executable (for scripts, etc.)
-map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Make file executable", silent = true })
+map("n", "<leader>sx", "<cmd>!chmod +x %<CR>", { desc = "Make file executable", silent = true })
 
 -- Move selected lines up/down in visual mode
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move line down" })
