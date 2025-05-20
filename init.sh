@@ -13,7 +13,7 @@ CONFIG_DIR="$HOME/.config"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 CLI_PACKAGES=(
-	bat fzf htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip ripgrep
+	bat fzf btop htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip ripgrep
 )
 
 DESKTOP_PACKAGES=(
@@ -101,6 +101,10 @@ function install_ohmyzsh() {
 }
 
 function install_starship() {
+  if command -v starship &>/dev/null; then
+    header "Starship already installed"
+    return
+  fi
 	header "Installing Starship..."
 	curl -sS https://starship.rs/install.sh | sh -s -- --yes
 }
@@ -145,9 +149,14 @@ function setup_cli_tools() {
 	install_starship
 	install_tpm
 	install_lazygit
-	chsh -s "$(which zsh)"
-	sudo chsh -s "$(which zsh)" root
-	sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
+  # Only if zsh is not the default shell
+  if [[ "$SHELL" != *zsh ]]; then
+    chsh -s "$(which zsh)"
+    sudo chsh -s "$(which zsh)" root
+  fi
+  if command -v x-terminal-emulator &>/dev/null; then
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 50
+  fi
 }
 
 function setup_desktop_env() {
