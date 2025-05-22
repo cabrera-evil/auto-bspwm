@@ -160,11 +160,7 @@ fi
 ###################################
 # Editor configuration
 ###################################
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+export EDITOR='nvim'
 
 ###################################
 # NVM configuration
