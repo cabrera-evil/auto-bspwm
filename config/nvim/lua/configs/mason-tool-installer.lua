@@ -1,7 +1,7 @@
 return {
     ensure_installed = {
         "actionlint",
-        "black",
+        -- "black",
         "eslint_d",
         "dotenv-linter",
         "prettier",
@@ -10,7 +10,7 @@ return {
         "kube-linter",
         "shfmt",
         "shellcheck",
-        "sqlfluff",
+        -- "sqlfluff",
         "taplo"
     },
     auto_update = true,
