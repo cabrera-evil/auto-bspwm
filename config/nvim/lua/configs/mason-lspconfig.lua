@@ -1,8 +1,36 @@
-local options = {
-  auto_install = true,
-  ensure_installed = { "vtsls", "eslint", "html", "cssls", "tailwindcss", "emmet_ls", "jsonls", "graphql", "prismals",
-    "marksman", "bashls", "dockerls", "docker_compose_language_service", "yamlls",
-    "ansiblels", "terraformls", "sqlls", "lua_ls", "pyright" }
+return {
+  ensure_installed = {
+    "ansiblels",
+    "astro",
+    "bashls",
+    "cssls",
+    "docker_compose_language_service",
+    "dockerls",
+    "emmet_ls",
+    "eslint",
+    "graphql",
+    -- "groovyls",
+    "helm_ls",
+    "html",
+    "jsonls",
+    "lua_ls",
+    "marksman",
+    "nextls",
+    -- "nginx_language_server",
+    "prismals",
+    "pyright",
+    "sqlls",
+    "snyk_ls",
+    "tailwindcss",
+    "terraformls",
+    "tflint",
+    "ts_ls",
+    "unocss",
+    "vtsls",
+    "yamlls",
+  },
+  -- Automatically enable installed LSP servers
+  -- Set to `false` to disable auto-enable globally
+  -- or pass a table to include/exclude specific servers
+  automatic_enable = true,
 }
-
-return options
