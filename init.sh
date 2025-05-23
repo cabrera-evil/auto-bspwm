@@ -7,10 +7,6 @@ set -euo pipefail
 # -------------------------
 USER=$(whoami)
 CURRENT_DIR=$(pwd)
-FONT_DIR="$HOME/.local/share/fonts"
-XORG_DIR="/etc/X11/xorg.conf.d"
-CONFIG_DIR="$HOME/.config"
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 CLI_PACKAGES=(
 	bat fzf btop htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip ripgrep
@@ -56,7 +52,7 @@ function header() {
 
 function require_cmd() {
 	command -v "$1" >/dev/null 2>&1 || {
-		echo -e "${RED}❌ '$1' is not installed.${NC}"
+		echo -e "${RED}'$1' is not installed.${NC}"
 		exit 1
 	}
 }
@@ -74,6 +70,8 @@ function banner() {
 # Install CLI tools
 # -------------------------
 function install_ohmyzsh() {
+	local ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
 	[[ -d "$HOME/.oh-my-zsh" ]] || {
 		header "Installing Oh My Zsh..."
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -98,27 +96,32 @@ function install_ohmyzsh() {
 	done
 
 	[[ -d "$ZSH_CUSTOM/themes/powerlevel10k" ]] || git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
+
+	# Copy Oh My Zsh setup to root
+	if [[ $EUID -ne 0 ]]; then
+		sudo rsync -a --chown=root:root "$HOME/.oh-my-zsh" /root/
+	fi
 }
 
 function install_starship() {
-  if command -v starship &>/dev/null; then
-    header "Starship already installed"
-    return
-  fi
+	if command -v starship &>/dev/null; then
+		header "Starship already installed"
+		return
+	fi
 	header "Installing Starship..."
 	curl -sS https://starship.rs/install.sh | sh -s -- --yes
 }
 
 install_lazygit() {
+	local arch=$(uname -m)
+	local version=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep -Po '"tag_name":\s*"v\K[^"]+')
+	local url
+
 	command -v lazygit &>/dev/null && {
 		header "lazygit already installed"
 		return
 	}
 	header "Installing lazygit..."
-	local arch version url
-	arch=$(uname -m)
-	version=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep -Po '"tag_name":\s*"v\K[^"]+')
-
 	case "$arch" in
 	x86_64) url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_x86_64.tar.gz" ;;
 	aarch64 | armv7l) url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_arm64.tar.gz" ;;
@@ -127,7 +130,6 @@ install_lazygit() {
 		return 1
 		;;
 	esac
-
 	curl -sL "$url" | tar xz -C /tmp lazygit
 	sudo install /tmp/lazygit -D -t /usr/local/bin/
 }
@@ -137,6 +139,39 @@ function install_tpm() {
 		header "Installing Tmux Plugin Manager..."
 		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 	}
+}
+
+function set_default_shell() {
+	if [[ "$SHELL" != /usr/bin/zsh ]]; then
+		header "Changing default shell to zsh..."
+		chsh -s "$(which zsh)"
+		sudo chsh -s "$(which zsh)" root
+	else
+		header "Default shell is already zsh."
+	fi
+}
+
+function set_default_terminal_emulator() {
+	local kitty_path="$(command -v kitty)"
+	local priority=100
+
+	if [[ -z "$kitty_path" ]]; then
+		echo -e "${YELLOW}Kitty is not installed. Skipping terminal emulator setup.${NC}"
+		return
+	fi
+	if command -v x-terminal-emulator &>/dev/null; then
+		if update-alternatives --query x-terminal-emulator 2>/dev/null | grep -q "$kitty_path"; then
+			echo "Removing existing kitty alternative..."
+			sudo update-alternatives --remove x-terminal-emulator "$kitty_path"
+		fi
+		echo "Installing kitty as x-terminal-emulator with priority $priority..."
+		sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$kitty_path" "$priority"
+		echo "Setting kitty as default terminal emulator..."
+		sudo update-alternatives --set x-terminal-emulator "$kitty_path"
+	else
+		echo "x-terminal-emulator is not available on this system."
+		return 1
+	fi
 }
 
 # -------------------------
@@ -149,40 +184,39 @@ function setup_cli_tools() {
 	install_starship
 	install_tpm
 	install_lazygit
-  # Only if zsh is not the default shell
-  if [[ "$SHELL" != *zsh ]]; then
-    chsh -s "$(which zsh)"
-    sudo chsh -s "$(which zsh)" root
-  fi
-  if command -v x-terminal-emulator &>/dev/null; then
-    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 50
-  fi
+	set_default_shell
+	set_default_terminal_emulator
 }
 
 function setup_desktop_env() {
+	local font_dir="$HOME/.local/share/fonts"
+	local xorg_dir="/etc/X11/xorg.conf.d"
+
 	header "Installing Desktop packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
 	sudo pip3 install pywal --break-system
-	mkdir -p "$FONT_DIR"
-	cp -rv "$CURRENT_DIR/fonts/"* "$FONT_DIR"
+	mkdir -p "$font_dir"
+	cp -rv "$CURRENT_DIR/fonts/"* "$font_dir"
 	mkdir -p "$HOME/Pictures/Wallpapers"
 	cp -rv "$CURRENT_DIR/wallpapers/"* "$HOME/Pictures/Wallpapers"
 	wal -nqi "$HOME/Pictures/Wallpapers/archkali.png"
-	sudo mkdir -p "$XORG_DIR"
-	sudo cp -rv "$CURRENT_DIR/xorg/"* "$XORG_DIR"
+	sudo mkdir -p "$xorg_dir"
+	sudo cp -rv "$CURRENT_DIR/xorg/"* "$xorg_dir"
 	sudo timedatectl set-timezone America/El_Salvador
 }
 
 function apply_dotfiles() {
+	local config_dir="$HOME/.config"
+
 	header "Applying dotfiles to user and root..."
-	mkdir -p "$CONFIG_DIR"
-	ln -sfv "$CURRENT_DIR/config/"* "$CONFIG_DIR/"
+	mkdir -p "$config_dir"
+	ln -sfv "$CURRENT_DIR/config/"* "$config_dir/"
 	ln -sfv "$CURRENT_DIR/.zshrc" "$HOME/.zshrc"
 	ln -sfv "$CURRENT_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 	ln -sfv "$CURRENT_DIR/.bashrc" "$HOME/.bashrc"
 
 	sudo mkdir -p /root/.config
-	sudo cp -rf "$CONFIG_DIR/"* /root/.config/
+	sudo cp -rf "$config_dir/"* /root/.config/
 	sudo cp -f "$CURRENT_DIR/.zshrc" /root/.zshrc
 	sudo cp -f "$CURRENT_DIR/.p10k.zsh" /root/.p10k.zsh
 	sudo cp -f "$CURRENT_DIR/.bashrc" /root/.bashrc
@@ -204,8 +238,13 @@ function cmd_setup_all() {
 	setup_desktop_env
 	apply_dotfiles
 	echo -e "${GREEN}✔ Environment configured successfully.${NC}"
-	read -rp $'\e[1;33mDo you want to reboot now? ([y]/n): \e[0m' reply
-	[[ "${reply:-y}" =~ ^[Yy]$ ]] && sudo reboot
+	read -rp "${TURQUOISE}Do you want to reboot now? (y/N):${NC} " reply
+	if [[ "$reply" =~ ^[Yy]$ ]]; then
+		echo -e "${GREEN}Rebooting...${NC}"
+		sudo reboot
+	else
+		echo -e "${YELLOW}Please reboot to apply changes.${NC}"
+	fi
 }
 
 # -------------------------
