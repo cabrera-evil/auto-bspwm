@@ -1,15 +1,19 @@
 return {
     ensure_installed = {
+        "actionlint",
         "black",
+        "eslint_d",
+        "dotenv-linter",
         "prettier",
         "stylua",
         "markdownlint",
+        "kube-linter",
         "shfmt",
         "shellcheck",
         "sqlfluff",
         "taplo"
     },
-    auto_update = false,
+    auto_update = true,
     run_on_start = true,
     start_delay = 3000,
     debounce_hours = 5,
