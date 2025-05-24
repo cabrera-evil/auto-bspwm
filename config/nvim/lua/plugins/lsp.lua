@@ -8,8 +8,6 @@ return { {
             keys = {
                 { "<leader>mm", "<cmd>Mason<cr>",             desc = "Mason: Open UI" },
                 { "<leader>mU", "<cmd>MasonUpdate<cr>",       desc = "Mason: Update Registries" },
-                { "<leader>mi", "<cmd>MasonInstall<space>",   desc = "Mason: Install Package" },
-                { "<leader>mu", "<cmd>MasonUninstall<space>", desc = "Mason: Uninstall Package" },
                 { "<leader>mX", "<cmd>MasonUninstallAll<cr>", desc = "Mason: Uninstall All" },
                 { "<leader>ml", "<cmd>MasonLog<cr>",          desc = "Mason: Open Log File" },
             },
