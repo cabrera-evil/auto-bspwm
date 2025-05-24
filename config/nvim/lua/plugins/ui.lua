@@ -7,13 +7,6 @@ return { {
         require("configs.catppuccin")
     end
 },
-    -- {
-    --     "folke/snacks.nvim",
-    --     dependencies = {"echasnovski/mini.icons"},
-    --     priority = 1000,
-    --     lazy = false,
-    --     opts = require("configs.snaks")
-    -- },
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
