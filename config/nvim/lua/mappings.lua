@@ -5,9 +5,6 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
--- Search and replace word under cursor
-map("n", "<leader>sw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Substitute word under cursor" })
-
 -- Make current file executable (for scripts, etc.)
 map("n", "<leader>sx", "<cmd>!chmod +x %<CR>", { desc = "Make file executable", silent = true })
 

@@ -7,7 +7,7 @@ opt.cursorline = true
 opt.cursorlineopt = "both" -- highlights line and number
 
 -- Better indentation and tabs
-opt.expandtab = true   -- convert tabs to spaces
+opt.expandtab = false   -- convert tabs to spaces
 opt.shiftwidth = 2     -- number of spaces for each indent
 opt.tabstop = 2        -- number of spaces per tab
 opt.smartindent = true -- autoindent new lines
@@ -42,7 +42,7 @@ opt.splitright = true
 opt.splitbelow = true
 
 -- Wrapping
-opt.wrap = false     -- no line wrapping by default
+opt.wrap = true     -- no line wrapping by default
 opt.linebreak = true -- break on word boundaries if wrapping enabled
 
 -- Backup/Swap
