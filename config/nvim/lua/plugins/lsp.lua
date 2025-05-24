@@ -4,25 +4,26 @@ return { {
     dependencies = {
         {
             "mason-org/mason.nvim",
-            opts = {}
+            opts = {},
+            keys = {
+                { "<leader>mm", "<cmd>Mason<cr>",             desc = "Mason: Open UI" },
+                { "<leader>mU", "<cmd>MasonUpdate<cr>",       desc = "Mason: Update Registries" },
+                { "<leader>mi", "<cmd>MasonInstall<space>",   desc = "Mason: Install Package" },
+                { "<leader>mu", "<cmd>MasonUninstall<space>", desc = "Mason: Uninstall Package" },
+                { "<leader>mX", "<cmd>MasonUninstallAll<cr>", desc = "Mason: Uninstall All" },
+                { "<leader>ml", "<cmd>MasonLog<cr>",          desc = "Mason: Open Log File" },
+            },
         },
         "neovim/nvim-lspconfig",
     },
-    opts = require("configs.mason-lspconfig")
+    opts = require("configs.mason-lspconfig"),
 }, {
     "neovim/nvim-lspconfig",
     config = function()
         require("configs.lspconfig")
-    end
+    end,
 }, {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     event = "BufReadPre",
     opts = require("configs.mason-tool-installer"),
-    config = function()
-        vim.keymap.set("n", "<leader>mi", "<cmd>MasonToolsInstall<cr>", { desc = "Mason Install Missing Tools" })
-        vim.keymap.set("n", "<leader>ms", "<cmd>MasonToolsInstallSync<cr>", { desc = "Mason Install Sync" })
-        vim.keymap.set("n", "<leader>mu", "<cmd>MasonToolsUpdate<cr>", { desc = "Mason Update Tools" })
-        vim.keymap.set("n", "<leader>mU", "<cmd>MasonToolsUpdateSync<cr>", { desc = "Mason Update Sync" })
-        vim.keymap.set("n", "<leader>mc", "<cmd>MasonToolsClean<cr>", { desc = "Mason Clean Unused Tools" })
-    end
 } }
