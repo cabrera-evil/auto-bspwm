@@ -10,7 +10,7 @@ M.base46 = {
   hl_add = {},
   integrations = {},
   changed_themes = {},
-  transparency = true,
+  transparency = false,
   theme_toggle = { "catppuccin", "one_light" },
 
   hl_override = {
