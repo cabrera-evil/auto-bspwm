@@ -1,12 +1,22 @@
-local lspconfig = require("lspconfig")
-local mason_lspconfig = require("mason-lspconfig")
-local nvlsp = require("nvchad.configs.lspconfig")
+require("nvchad.configs.lspconfig").defaults()
 
--- handlers for all servers installed via mason-lspconfig
-mason_lspconfig.setup_handlers({function(server_name)
-    lspconfig[server_name].setup({
-        on_attach = nvlsp.on_attach,
-        on_init = nvlsp.on_init,
-        capabilities = nvlsp.capabilities
-    })
-end})
+vim.lsp.config('*', {
+    root_markers = {".git", "package.json"},
+    capabilities = {
+        textDocument = {
+            codeAction = {
+                dynamicRegistration = false,
+            },
+            completion = {
+                completionItem = {
+                    snippetSupport = true,
+                },
+            },
+            semanticTokens = {
+                multilineTokenSupport = true,
+            },
+        },
+    },
+})
+
+-- read :h vim.lsp.config for changing options of lsp servers
