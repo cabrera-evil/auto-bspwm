@@ -14,3 +14,4 @@ map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move line up" })
 
 -- Quick save from any mode
 map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR><Esc>", { desc = "Quick save" })
+
