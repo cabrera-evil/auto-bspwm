@@ -16,6 +16,26 @@ return { {
     },
     opts = require("configs.mason-lspconfig"),
 }, {
+    "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+        "williamboman/mason.nvim",
+        "nvimtools/none-ls.nvim",
+    },
+    config = function()
+        require("configs.mason-null-ls")
+    end,
+}, {
+    "jay-babu/mason-nvim-dap.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+        "mason-org/mason.nvim",
+        "mfussenegger/nvim-dap",
+    },
+    config = function()
+        require("configs.mason-nvim-dap")
+    end,
+}, {
     "neovim/nvim-lspconfig",
     config = function()
         require("configs.lspconfig")
