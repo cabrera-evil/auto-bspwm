@@ -1,13 +1,4 @@
 return { {
-    "catppuccin/nvim",
-    lazy = false,
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-        require("configs.catppuccin")
-    end
-},
-    {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
         opts = function(_, opts)
