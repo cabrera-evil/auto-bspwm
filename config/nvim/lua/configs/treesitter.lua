@@ -4,7 +4,7 @@ return {
         "bash",
         "css",
         "dockerfile",
-        "graphql",
+        -- "graphql",
         "html",
         "javascript",
         "json",
@@ -13,8 +13,8 @@ return {
         "markdown_inline",
         "tsx",
         "typescript",
-        "vim",
-        "vimdoc",
+        -- "vim",
+        -- "vimdoc",
         "yaml"
     },
 
