@@ -1,4 +1,4 @@
-return {{
+return { {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     opts = require("configs.conform")
@@ -7,6 +7,7 @@ return {{
     opts = require("configs.nvim-ts-autotag")
 }, {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
+    lazy = false,
+    build = ':TSUpdate',
     opts = require("configs.treesitter")
-}}
+} }
