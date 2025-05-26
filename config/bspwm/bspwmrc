@@ -7,17 +7,17 @@ WALLPAPER_PATH="$HOME/Pictures/Wallpapers/archkali.png"
 
 # Processes that should be restarted (kill existing instance first)
 declare -A RESTART_PROCESSES=(
-    [polybar]="$CONFIG_DIR/polybar/launch.sh"
-    [sxhkd]="sxhkd -c $CONFIG_DIR/sxhkd/sxhkdrc"
-    [picom]="picom --config $CONFIG_DIR/picom/picom.conf"
-    [dunst]="dunst -config $CONFIG_DIR/dunst/dunstrc"
-    [feh]="feh --bg-fill $WALLPAPER_PATH"
-    [numlockx]="numlockx on"
+	[polybar]="$CONFIG_DIR/polybar/launch.sh"
+	[sxhkd]="sxhkd -c $CONFIG_DIR/sxhkd/sxhkdrc"
+	[picom]="picom --config $CONFIG_DIR/picom/picom.conf"
+	[dunst]="dunst -config $CONFIG_DIR/dunst/dunstrc"
+	[feh]="feh --bg-fill $WALLPAPER_PATH"
+	[numlockx]="numlockx on"
 )
 
 # Processes that should keep running (ensure they start if not already running)
 declare -A KEEP_ALIVE_PROCESSES=(
-    [1password]="1password --silent"
+	[1password]="1password --silent"
 )
 
 # Configure BSPWM
@@ -35,20 +35,20 @@ bspc config presel_feedback_color '#512da8'
 
 # Kill and restart necessary processes
 for process in "${!RESTART_PROCESSES[@]}"; do
-    pkill -x "$process" && sleep 1
-    nohup ${RESTART_PROCESSES[$process]} >/dev/null 2>&1 &
+	pkill -x "$process" && sleep 1
+	nohup ${RESTART_PROCESSES[$process]} >/dev/null 2>&1 &
 done
 
 # Ensure essential scripts are running
 for script in "bspwm" "monitor_config"; do
-    [[ -x "$BSPWM_SCRIPTS/$script.sh" ]] && "$BSPWM_SCRIPTS/$script.sh" &
+	[[ -x "$BSPWM_SCRIPTS/$script.sh" ]] && "$BSPWM_SCRIPTS/$script.sh" &
 done
 
 # Ensure KEEP_ALIVE_PROCESSES are running
 for process in "${!KEEP_ALIVE_PROCESSES[@]}"; do
-    if ! pgrep -x "$process" >/dev/null; then
-        nohup ${KEEP_ALIVE_PROCESSES[$process]} >/dev/null 2>&1 &
-    fi
+	if ! pgrep -x "$process" >/dev/null; then
+		nohup ${KEEP_ALIVE_PROCESSES[$process]} >/dev/null 2>&1 &
+	fi
 done
 
 ~CONFIG_DIR/bspwm/scripts/low_bat_notifier.sh
