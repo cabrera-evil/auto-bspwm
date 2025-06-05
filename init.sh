@@ -1,25 +1,30 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
-# -------------------------
-# Defaults
-# -------------------------
+# ===================================
+# GLOBAL CONFIGURATION
+# ===================================
+SCRIPT_NAME="$(basename "$0")"
+SCRIPT_VERSION="1.0.0"
+DEBUG=false
+SILENT=false
+
+# ===================================
+# DEFAULT CONFIGURATION
+# ===================================
 USER=$(whoami)
 CURRENT_DIR=$(pwd)
-
 CLI_PACKAGES=(
 	bat fzf btop htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip ripgrep
 )
-
 DESKTOP_PACKAGES=(
 	blueman bluez brightnessctl bspwm cmatrix dunst exo-utils feh flameshot firejail i3lock-fancy imagemagick
 	lxappearance numlockx numix-icon-theme numix-icon-theme-circle pamixer polybar picom playerctl rofi sxhkd tty-clock
 )
 
-# -------------------------
-# Colors
-# -------------------------
+# ===================================
+# COLOR CONFIGURATION
+# ===================================
 RED='\e[0;31m'
 GREEN='\e[0;32m'
 YELLOW='\e[1;33m'
@@ -29,32 +34,29 @@ TURQUOISE='\e[0;36m'
 GRAY='\e[0;37m'
 NC='\e[0m'
 
-# -------------------------
-# Helper Functions
-# -------------------------
-function usage() {
-	cat <<EOF
-Usage: $(basename "$0") [command]
+# ===================================
+# UTILITIES
+# ===================================
+abort() {
+	echo "ERROR: $1" >&2
+	exit 1
+}
 
-Commands:
-  all           Run full environment setup
-  cli           Install terminal tools (zsh, starship, tmux, lazygit, CLI packages)
-  desktop       Install desktop packages and configs (bspwm, fonts, wallpapers)
-  dotfiles      Apply dotfiles and symlinks (user + root)
-  help                Show this help message
-EOF
+info() {
+	echo "INFO: $1"
+}
+
+success() {
+	echo "SUCCESS: $1"
+}
+
+require_cmd() {
+	command -v "$1" >/dev/null 2>&1 || abort "'$1' is not installed or not in PATH."
 }
 
 function header() {
 	echo -e "${BLUE}==> $1${NC}"
 	sleep 0.3
-}
-
-function require_cmd() {
-	command -v "$1" >/dev/null 2>&1 || {
-		echo -e "${RED}'$1' is not installed.${NC}"
-		exit 1
-	}
 }
 
 function banner() {
@@ -66,9 +68,9 @@ function banner() {
 	echo -e "                                             /_/${NC}"
 }
 
-# -------------------------
-# Install CLI tools
-# -------------------------
+# ===================================
+# COMMANDS
+# ===================================
 function install_ohmyzsh() {
 	local ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
@@ -79,16 +81,16 @@ function install_ohmyzsh() {
 
 	declare -A plugins=(
 		# UX Enhancements
-		[zsh-autosuggestions]=https://github.com/zsh-users/zsh-autosuggestions
-		[zsh-syntax-highlighting]=https://github.com/zsh-users/zsh-syntax-highlighting
-		[zsh-history-substring-search]=https://github.com/zsh-users/zsh-history-substring-search
-		[you-should-use]=https://github.com/MichaelAquilina/zsh-you-should-use
-		[zsh-navigation-tools]=https://github.com/psprint/zsh-navigation-tools
-		[zsh-autopair]=https://github.com/hlissner/zsh-autopair
-		[fzf-tab]=https://github.com/Aloxaf/fzf-tab
+		[zsh - autosuggestions]=https://github.com/zsh-users/zsh-autosuggestions
+		[zsh - syntax - highlighting]=https://github.com/zsh-users/zsh-syntax-highlighting
+		[zsh - history - substring - search]=https://github.com/zsh-users/zsh-history-substring-search
+		[you - should - use]=https://github.com/MichaelAquilina/zsh-you-should-use
+		[zsh - navigation - tools]=https://github.com/psprint/zsh-navigation-tools
+		[zsh - autopair]=https://github.com/hlissner/zsh-autopair
+		[fzf - tab]=https://github.com/Aloxaf/fzf-tab
 
 		# Git
-		[git-open]=https://github.com/paulirish/git-open
+		[git - open]=https://github.com/paulirish/git-open
 	)
 
 	for name in "${!plugins[@]}"; do
@@ -126,8 +128,7 @@ install_lazygit() {
 	x86_64) url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_x86_64.tar.gz" ;;
 	aarch64 | armv7l) url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_arm64.tar.gz" ;;
 	*)
-		echo -e "${RED}Unsupported architecture: $arch${NC}"
-		return 1
+		abort "Unsupported architecture: $arch"
 		;;
 	esac
 	curl -sL "$url" | tar xz -C /tmp lazygit
@@ -156,27 +157,23 @@ function set_default_terminal_emulator() {
 	local priority=100
 
 	if [[ -z "$kitty_path" ]]; then
-		echo -e "${YELLOW}Kitty is not installed. Skipping terminal emulator setup.${NC}"
+		info "Kitty is not installed. Skipping terminal emulator setup."
 		return
 	fi
 	if command -v x-terminal-emulator &>/dev/null; then
 		if update-alternatives --query x-terminal-emulator 2>/dev/null | grep -q "$kitty_path"; then
-			echo "Removing existing kitty alternative..."
+			info "Removing existing kitty alternative..."
 			sudo update-alternatives --remove x-terminal-emulator "$kitty_path"
 		fi
-		echo "Installing kitty as x-terminal-emulator with priority $priority..."
+		info "Installing kitty as x-terminal-emulator with priority $priority..."
 		sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$kitty_path" "$priority"
-		echo "Setting kitty as default terminal emulator..."
+		info "Setting kitty as default terminal emulator..."
 		sudo update-alternatives --set x-terminal-emulator "$kitty_path"
 	else
-		echo "x-terminal-emulator is not available on this system."
-		return 1
+		abort "x-terminal-emulator is not available on this system."
 	fi
 }
 
-# -------------------------
-# Setup Logic
-# -------------------------
 function setup_cli_tools() {
 	header "Installing CLI packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}"
@@ -222,14 +219,10 @@ function apply_dotfiles() {
 	sudo cp -f "$CURRENT_DIR/.bashrc" /root/.bashrc
 }
 
-# -------------------------
-# Main Commands
-# -------------------------
 function cmd_setup_all() {
 	[[ "$USER" == "root" ]] && {
 		banner
-		echo -e "${RED}Do not run this as root!${NC}"
-		exit 1
+		abort "Do not run this as root!"
 	}
 	banner
 	require_cmd git
@@ -237,26 +230,54 @@ function cmd_setup_all() {
 	setup_cli_tools
 	setup_desktop_env
 	apply_dotfiles
-	echo -e "${GREEN}✔ Environment configured successfully.${NC}"
+	success "✔ Environment configured successfully."
 	read -rp "${TURQUOISE}Do you want to reboot now? (y/N):${NC} " reply
 	if [[ "$reply" =~ ^[Yy]$ ]]; then
-		echo -e "${GREEN}Rebooting...${NC}"
+		success "Rebooting..."
 		sudo reboot
 	else
-		echo -e "${YELLOW}Please reboot to apply changes.${NC}"
+		success "Please reboot to apply changes."
 	fi
 }
 
-# -------------------------
-# Main
-# -------------------------
-COMMAND="${1:-help}"
-shift || true
+# ===================================
+# MAIN LOGIC
+# ===================================
+function show_help() {
+	cat <<EOF
+Usage: $SCRIPT_NAME <command>
 
-case "$COMMAND" in
-all) cmd_setup_all ;;
-cli) setup_cli_tools ;;
-desktop) setup_desktop_env ;;
-dotfiles) apply_dotfiles ;;
-help | *) usage ;;
-esac
+Commands:
+  all           Run full environment setup
+  cli           Install terminal tools (zsh, starship, tmux, lazygit, CLI packages)
+  desktop       Install desktop packages and configs (bspwm, fonts, wallpapers)
+  dotfiles      Apply dotfiles and symlinks (user + root)
+  help          Show this help message
+  version       Show script version
+Examples:
+  $SCRIPT_NAME all
+EOF
+}
+
+main() {
+	local cmd="${1:-}"
+	shift || true
+
+	case "$cmd" in
+	all) cmd_setup_all ;;
+	cli) setup_cli_tools ;;
+	desktop) setup_desktop_env ;;
+	dotfiles) apply_dotfiles ;;
+	help | "")
+		show_help
+		;;
+	version)
+		cmd_version
+		;;
+	*)
+		abort "Unknown command: $cmd. Use '$SCRIPT_NAME help' to list available commands."
+		;;
+	esac
+}
+
+main "$@"
