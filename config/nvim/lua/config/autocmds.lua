@@ -6,3 +6,13 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+
+-- Set the LSP log level to debug
+-- vim.lsp.set_log_level("debug")
+
+-- Set the filetype for GitHub Actions workflow files
+vim.filetype.add({
+  pattern = {
+    [".*/%.github[%w/]+workflows[%w/]+.*%.ya?ml"] = "yaml.github",
+  },
+})
