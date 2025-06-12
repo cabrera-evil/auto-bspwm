@@ -29,7 +29,7 @@ plugins=(
   safe-paste
   colored-man-pages
   web-search
-
+  tmux
   # Git
   git
   git-auto-fetch
@@ -38,28 +38,24 @@ plugins=(
   github
   git-extras
   git-open
-
   # DevOps / Infrastructure
   docker
   kubectl
   kubectx
   helm
   terraform
-  # aws
+  # aws # Uncomment if you use AWS CLI
   vault
   1password
   gpg-agent
-
   # Node / Frontend
   npm
   yarn
   vscode
   httpie
-
   # Productivity
   you-should-use
   zsh-navigation-tools
-
   # Input & UX enhancements
   zsh-autopair
   zsh-history-substring-search
@@ -116,6 +112,7 @@ alias l='/usr/bin/lsd --group-dirs=first'
 alias lla='/usr/bin/lsd -lha --group-dirs=first'
 alias ls='/usr/bin/lsd --group-dirs=first'
 alias lg='lazygit'
+alias lr='lazydocker'
 alias cat='/usr/bin/batcat'
 alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
@@ -144,10 +141,11 @@ if command -v tmuxifier &> /dev/null; then
   eval "$(tmuxifier init -)"
 fi
 
+ZSH_TMUX_AUTOREFRESH=true
 ZSH_TMUX_AUTOQUIT=true
 ZSH_TMUX_FIXTERM=true
-ZSH_TMUX_FIXTERM_WITH_256COLOR="tmux-256color"
 ZSH_TMUX_AUTONAME_SESSION=true
+ZSH_TMUX_UNICODE=true
 
 ###################################
 # Kubernetes configuration
