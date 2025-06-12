@@ -4,7 +4,7 @@ return {
   enabled = true,
   init = false,
   opts = function(_, opts)
-    local logo = [[                                                                           
+    local logo = [[                                                        
                                                                          
            ████ ██████           █████      ██                     
           ███████████             █████                             
