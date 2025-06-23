@@ -1,23 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Define variables
 CONFIG_DIR="$HOME/.config"
 BSPWM_SCRIPTS="$CONFIG_DIR/bspwm/scripts"
-WALLPAPER_PATH="$HOME/Pictures/Wallpapers/archkali.png"
+WALLPAPER="$HOME/Pictures/Wallpapers/archkali.png"
 
-# Processes that should be restarted (kill existing instance first)
+# Restartable system processes
 declare -A RESTART_PROCESSES=(
 	[polybar]="$CONFIG_DIR/polybar/launch.sh"
 	[sxhkd]="sxhkd -c $CONFIG_DIR/sxhkd/sxhkdrc"
 	[picom]="picom --config $CONFIG_DIR/picom/picom.conf"
 	[dunst]="dunst -config $CONFIG_DIR/dunst/dunstrc"
-	[feh]="feh --bg-fill $WALLPAPER_PATH"
+	[feh]="feh --bg-fill $WALLPAPER"
 	[numlockx]="numlockx on"
 )
 
-# Processes that should keep running (ensure they start if not already running)
+# Background processes that should persist
 declare -A KEEP_ALIVE_PROCESSES=(
 	[1password]="1password --silent"
+)
+
+# Custom user scripts (can be keep-alive or run once)
+declare -A USER_SCRIPTS=(
+	[bspwm]="$BSPWM_SCRIPTS/bspwm.sh"
+	[monitor_config]="$BSPWM_SCRIPTS/monitor_config.sh"
+	[low_bat_notifier]="$BSPWM_SCRIPTS/low_bat_notifier.sh"
 )
 
 # Configure BSPWM
@@ -33,22 +39,19 @@ bspc config normal_border_color '#1f1f1f'
 bspc config focused_border_color '#30302f'
 bspc config presel_feedback_color '#512da8'
 
-# Kill and restart necessary processes
-for process in "${!RESTART_PROCESSES[@]}"; do
-	pkill -x "$process" && sleep 1
-	nohup ${RESTART_PROCESSES[$process]} >/dev/null 2>&1 &
+# Restart and launch system processes
+for name in "${!RESTART_PROCESSES[@]}"; do
+	pkill -x "$name" &>/dev/null && sleep 1
+	nohup ${RESTART_PROCESSES[$name]} &>/dev/null &
 done
 
-# Ensure essential scripts are running
-for script in "bspwm" "monitor_config"; do
-	[[ -x "$BSPWM_SCRIPTS/$script.sh" ]] && "$BSPWM_SCRIPTS/$script.sh" &
+# Launch persistent processes only if not already running
+for name in "${!KEEP_ALIVE_PROCESSES[@]}"; do
+	pgrep -x "$name" &>/dev/null || nohup ${KEEP_ALIVE_PROCESSES[$name]} &>/dev/null &
 done
 
-# Ensure KEEP_ALIVE_PROCESSES are running
-for process in "${!KEEP_ALIVE_PROCESSES[@]}"; do
-	if ! pgrep -x "$process" >/dev/null; then
-		nohup ${KEEP_ALIVE_PROCESSES[$process]} >/dev/null 2>&1 &
-	fi
+# Launch user scripts if executable and not already running
+for name in "${!USER_SCRIPTS[@]}"; do
+	path="${USER_SCRIPTS[$name]}"
+	[[ -x "$path" ]] && ! pgrep -f "$path" &>/dev/null && "$path" &
 done
-
-~CONFIG_DIR/bspwm/scripts/low_bat_notifier.sh
