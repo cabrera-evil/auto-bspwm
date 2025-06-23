@@ -1,66 +1,51 @@
 #!/bin/bash
 
-### VARIABLES
+POLL_INTERVAL=120
+LOW_BAT=33
 
-POLL_INTERVAL=120    # seconds at which to check battery level
-LOW_BAT=33           # lesser than this is considered low battery
+BAT_PATH="/sys/class/power_supply/BAT0"
+BAT_STAT="$BAT_PATH/status"
 
-# If BAT0 doesn't work for you, check available devices with command below
-#
-#   $ ls -1 /sys/class/power_supply/
-#
-BAT_PATH=/sys/class/power_supply/BAT0
-BAT_STAT=$BAT_PATH/status
-
-if [[ -f $BAT_PATH/charge_full ]]
-then
-    BAT_FULL=$BAT_PATH/charge_full
-    BAT_NOW=$BAT_PATH/charge_now
-elif [[ -f $BAT_PATH/energy_full ]]
-then
-    BAT_FULL=$BAT_PATH/energy_full
-    BAT_NOW=$BAT_PATH/energy_now
+if [[ -f "$BAT_PATH/charge_full" ]]; then
+	BAT_FULL="$BAT_PATH/charge_full"
+	BAT_NOW="$BAT_PATH/charge_now"
+elif [[ -f "$BAT_PATH/energy_full" ]]; then
+	BAT_FULL="$BAT_PATH/energy_full"
+	BAT_NOW="$BAT_PATH/energy_now"
 else
-    exit
+	exit 1
 fi
 
-### END OF VARIABLES
-
-kill_running() {     # stop older instances to not get multiple notifications
-   local mypid=$$
-
-   declare pids=($(pgrep -f ${0##*/}))
-
-   for pid in ${pids[@]/$mypid/}; do
-      kill $pid
-      sleep 1
-   done
+kill_running() {
+	local mypid=$$
+	pgrep -f "${0##*/}" | awk -v mypid="$mypid" '$1 != mypid { system("kill " $1) }'
 }
 
 launched=0
+notify_id=9999 # arbitrary ID for dunstify --replace
 
-# Run only if battery is detected
-if ls -1qA /sys/class/power_supply/ | grep -q BAT
-then 
+if [[ -d "$BAT_PATH" ]]; then
+	kill_running
 
-    kill_running
+	while :; do
+		read -r bf <"$BAT_FULL"
+		read -r bn <"$BAT_NOW"
+		read -r bs <"$BAT_STAT"
 
-    while true
-    do
-        bf=$(cat $BAT_FULL)
-        bn=$(cat $BAT_NOW)
-        bs=$(cat $BAT_STAT)
+		bat_percent=$((100 * bn / bf))
 
-        bat_percent=$(( 100 * $bn / $bf ))
+		case "$bs" in
+		"Discharging")
+			if ((bat_percent < LOW_BAT && launched < 3)); then
+				dunstify --urgency=critical --replace="$notify_id" "$bat_percent% : Low Battery!"
+				((launched++))
+			fi
+			;;
+		"Charging")
+			launched=0
+			;;
+		esac
 
-        if [[ $bat_percent -lt $LOW_BAT && "$bs" = "Discharging" && $launched -lt 3 ]]
-        then
-            notify-send --urgency=critical "$bat_percent% : Low Battery!"
-            launched=$((launched+1))
-        elif [[ "$bs" = "Charging" ]]
-        then
-            launched=0
-        fi
-        sleep $POLL_INTERVAL
-    done
+		sleep "$POLL_INTERVAL"
+	done
 fi
