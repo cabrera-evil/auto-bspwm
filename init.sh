@@ -81,16 +81,16 @@ function install_ohmyzsh() {
 
 	declare -A plugins=(
 		# UX Enhancements
-		[zsh - autosuggestions]=https://github.com/zsh-users/zsh-autosuggestions
-		[zsh - syntax - highlighting]=https://github.com/zsh-users/zsh-syntax-highlighting
-		[zsh - history - substring - search]=https://github.com/zsh-users/zsh-history-substring-search
-		[you - should - use]=https://github.com/MichaelAquilina/zsh-you-should-use
-		[zsh - navigation - tools]=https://github.com/psprint/zsh-navigation-tools
-		[zsh - autopair]=https://github.com/hlissner/zsh-autopair
-		[fzf - tab]=https://github.com/Aloxaf/fzf-tab
+		['zsh-autosuggestions']=https://github.com/zsh-users/zsh-autosuggestions
+		['zsh-syntax-highlighting']=https://github.com/zsh-users/zsh-syntax-highlighting
+		['zsh-history-substring-search']=https://github.com/zsh-users/zsh-history-substring-search
+		['you-should-use']=https://github.com/MichaelAquilina/zsh-you-should-use
+		['zsh-navigation-tools']=https://github.com/psprint/zsh-navigation-tools
+		['zsh-autopair']=https://github.com/hlissner/zsh-autopair
+		['fzf-tab']=https://github.com/Aloxaf/fzf-tab
 
 		# Git
-		[git - open]=https://github.com/paulirish/git-open
+		['git-open']=https://github.com/paulirish/git-open
 	)
 
 	for name in "${!plugins[@]}"; do
