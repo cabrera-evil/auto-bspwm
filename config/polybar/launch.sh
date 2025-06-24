@@ -1,46 +1,44 @@
 #!/usr/bin/env bash
 
-# Set global variables
-DIR="$HOME/.config/polybar"
-XRANDR_CACHE=""
-NETWORK_CACHE=""
+# Path to the Polybar config
+CONFIG="$HOME/.config/polybar/config.ini"
+CHECK_INTERVAL=5
 
-# Function to get the active network interface (Wi-Fi or Ethernet)
+# Return the first active network interface (Wi-Fi or Ethernet)
 get_active_network_interface() {
-    # Check for connected interfaces (Wi-Fi or Ethernet)
-    nmcli -t -f DEVICE,STATE d | awk -F: '$2 == "connected" {print $1}'
+	nmcli -t -f DEVICE,STATE d | awk -F: '$2 == "connected"' | head -n1 | cut -d: -f1
 }
 
-# Function to launch Polybar on each connected monitor
+# Launch Polybar on each connected monitor
 launch_polybar() {
-    # Kill existing Polybar instances
-    killall -q polybar
+	killall -q polybar
 
-    # Loop through all connected monitors
-    for monitor in $(xrandr -q | awk '/ connected/ {print $1}'); do
-        export MONITOR=$monitor
+	local net_iface
+	net_iface="$(get_active_network_interface)"
 
-        # Get the active network interface
-        export NETWORK_INTERFACE=$(get_active_network_interface)
-
-        # Launch Polybar for the current monitor
-        polybar -q -c "$DIR/config.ini" main &
-    done
+	while IFS= read -r monitor; do
+		MONITOR="$monitor" NETWORK_INTERFACE="$net_iface" polybar -q -c "$CONFIG" main &
+	done < <(xrandr --query | awk '/ connected/ {print $1}')
 }
 
-# Monitor and network setup watcher to automatically refresh Polybar
-while true; do
-    # Check the current monitor and network setup
-    XRANDR_CURRENT=$(xrandr --listmonitors)
-    NETWORK_CURRENT=$(get_active_network_interface)
+# Main execution function
+main() {
+	launch_polybar
 
-    # Refresh Polybar if monitors or network interface changes
-    if [ "$XRANDR_CURRENT" != "$XRANDR_CACHE" ] || [ "$NETWORK_CURRENT" != "$NETWORK_CACHE" ]; then
-        launch_polybar
-        XRANDR_CACHE=$XRANDR_CURRENT
-        NETWORK_CACHE=$NETWORK_CURRENT
-    fi
+	local last_xrandr last_net current_xrandr current_net
+	last_xrandr="$(xrandr --listmonitors)"
+	last_net="$(get_active_network_interface)"
 
-    # Sleep for a few seconds before re-checking
-    sleep 5
-done
+	while sleep "$CHECK_INTERVAL"; do
+		current_xrandr="$(xrandr --listmonitors)"
+		current_net="$(get_active_network_interface)"
+
+		if [[ "$current_xrandr" != "$last_xrandr" || "$current_net" != "$last_net" ]]; then
+			launch_polybar
+			last_xrandr="$current_xrandr"
+			last_net="$current_net"
+		fi
+	done
+}
+
+main "$@"

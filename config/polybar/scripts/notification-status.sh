@@ -1,16 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Get the notification status using dunstctl
-status=$(dunstctl is-paused | grep -q "false" && echo "enabled" || echo "disabled")
+# Icons
+ICON_ON=""
+ICON_OFF=""
 
-# Check if notifications are enabled or disabled
-if [ "$status" = "enabled" ]; then
-    icon=""
-    text="On"
-else
-    icon=""
-    text="Off"
-fi
+# Check if Dunst notifications are paused
+get_notification_status() {
+	dunstctl is-paused | grep -q "false" && echo "enabled" || echo "disabled"
+}
 
-# Print the icon and text
-echo "$icon $text"
+# Format the output
+format_output() {
+	local status="$1"
+	if [[ "$status" == "enabled" ]]; then
+		echo "$ICON_ON On"
+	else
+		echo "$ICON_OFF Off"
+	fi
+}
+
+# Main execution
+main() {
+	local status
+	status="$(get_notification_status)"
+	format_output "$status"
+}
+
+main "$@"

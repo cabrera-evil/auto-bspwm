@@ -1,41 +1,46 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -euo pipefail
+# Icon configuration (lock symbol)
+ICON=""
 
-# Function: Get the IP address of a given network interface
+# Return the first IP address for a given interface
 get_ip() {
 	local iface="$1"
 	ip addr show "$iface" 2>/dev/null | awk '/inet / { sub(/\/.*/, "", $2); print $2; exit }'
 }
 
-# Function: Format output with colors and icons
+# Format the output (no color)
 format_output() {
 	local iface="$1"
 	local ip="$2"
-	local icon=""
-	local color="#ffffff"
-	printf "%%{F%s}%s %%{F%s}%s: %s %%{u-}\n" "$color" "$icon" "$color" "$iface" "$ip"
+	echo "$ICON $iface: $ip"
 }
 
-found_iface=false
+# Main execution function
+main() {
+	local found_iface=false
+	local ip
 
-# Process WireGuard interfaces (wg*)
-while read -r iface; do
-	ip=$(get_ip "$iface")
-	ip=${ip:-"N/A"}
-	format_output "$iface" "$ip"
-	found_iface=true
-done < <(ip link show | awk -F: '/^[0-9]+: wg/ {gsub(/ /, "", $2); print $2}')
+	# WireGuard interfaces: wg*
+	while IFS= read -r iface; do
+		ip=$(get_ip "$iface" || true)
+		ip=${ip:-"N/A"}
+		format_output "$iface" "$ip"
+		found_iface=true
+	done < <(ip link show | awk -F: '/^[0-9]+: wg/ { gsub(/ /, "", $2); print $2 }')
 
-# Process Tailscale interface (tailscale0)
-if ip link show tailscale0 &>/dev/null; then
-	ip=$(get_ip "tailscale0")
-	ip=${ip:-"N/A"}
-	format_output "tailscale0" "$ip"
-	found_iface=true
-fi
+	# Tailscale interface
+	if ip link show tailscale0 &>/dev/null; then
+		ip=$(get_ip "tailscale0" || true)
+		ip=${ip:-"N/A"}
+		format_output "tailscale0" "$ip"
+		found_iface=true
+	fi
 
-# If no interfaces found
-if ! $found_iface; then
-	printf "%%{F#ffffff}%%{u-} N/A\n"
-fi
+	# Fallback if no interfaces found
+	if ! $found_iface; then
+		echo "$ICON N/A"
+	fi
+}
+
+main "$@"

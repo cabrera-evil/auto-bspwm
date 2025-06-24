@@ -1,51 +1,48 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+# Configuration
 POLL_INTERVAL=120
 LOW_BAT=33
+NOTIFY_ID=9999
+MAX_WARNINGS=3
 
-BAT_PATH="/sys/class/power_supply/BAT0"
-BAT_STAT="$BAT_PATH/status"
-
-if [[ -f "$BAT_PATH/charge_full" ]]; then
-	BAT_FULL="$BAT_PATH/charge_full"
-	BAT_NOW="$BAT_PATH/charge_now"
-elif [[ -f "$BAT_PATH/energy_full" ]]; then
-	BAT_FULL="$BAT_PATH/energy_full"
-	BAT_NOW="$BAT_PATH/energy_now"
-else
-	exit 1
-fi
-
-kill_running() {
-	local mypid=$$
-	pgrep -f "${0##*/}" | awk -v mypid="$mypid" '$1 != mypid { system("kill " $1) }'
+# Detect the correct BAT* device
+get_battery_path() {
+	find /sys/class/power_supply/ -maxdepth 1 -type d -name "BAT*" | head -n1
 }
 
-launched=0
-notify_id=9999 # arbitrary ID for dunstify --replace
+# Kill other instances of this script
+kill_running_instances() {
+	local self_pid=$$
+	pgrep -f "${0##*/}" | awk -v pid="$self_pid" '$1 != pid { system("kill " $1) }'
+}
 
-if [[ -d "$BAT_PATH" ]]; then
-	kill_running
+# Main monitor loop
+main() {
+	local BAT_PATH
+	BAT_PATH="$(get_battery_path)"
+	[[ -z "$BAT_PATH" ]] && echo "Battery not found" && exit 1
 
-	while :; do
-		read -r bf <"$BAT_FULL"
-		read -r bn <"$BAT_NOW"
-		read -r bs <"$BAT_STAT"
+	local status_file="$BAT_PATH/status"
+	local capacity_file="$BAT_PATH/capacity"
+	local launched=0
 
-		bat_percent=$((100 * bn / bf))
+	kill_running_instances
 
-		case "$bs" in
-		"Discharging")
-			if ((bat_percent < LOW_BAT && launched < 3)); then
-				dunstify --urgency=critical --replace="$notify_id" "$bat_percent% : Low Battery!"
+	while sleep "$POLL_INTERVAL"; do
+		local percent status
+		read -r percent <"$capacity_file"
+		read -r status <"$status_file"
+
+		if [[ "$status" == "Discharging" ]]; then
+			if ((percent < LOW_BAT && launched < MAX_WARNINGS)); then
+				dunstify --urgency=critical --replace="$NOTIFY_ID" "$percent% : Low Battery!"
 				((launched++))
 			fi
-			;;
-		"Charging")
+		elif [[ "$status" == "Charging" ]]; then
 			launched=0
-			;;
-		esac
-
-		sleep "$POLL_INTERVAL"
+		fi
 	done
-fi
+}
+
+main "$@"
