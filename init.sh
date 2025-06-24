@@ -15,7 +15,7 @@ SILENT=false
 USER=$(whoami)
 CURRENT_DIR=$(pwd)
 CLI_PACKAGES=(
-	bat fzf btop htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip ripgrep
+	bat fzf btop htop kitty lsd neofetch python3-pip ranger rsync scrub tmux wmname xclip ripgrep dos2unix yq jq
 )
 DESKTOP_PACKAGES=(
 	blueman bluez brightnessctl bspwm cmatrix dunst exo-utils feh flameshot firejail i3lock-fancy imagemagick

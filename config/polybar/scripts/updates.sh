@@ -1,46 +1,58 @@
 #!/usr/bin/env bash
 
-NOTIFY_ICON=/usr/share/icons/Numix-Circle/48@2x/apps/system-software-update.svg
+# Configuration
+NOTIFY_ICON="/usr/share/icons/Numix-Circle/48@2x/apps/system-software-update.svg"
+NOTIFY_ID=2593
+POLL_NO_UPDATES=1800 # 30 minutes
+POLL_WITH_UPDATES=5  # 5 seconds
 
-# Function to get the number of available updates
+# Return the number of available APT updates
 get_total_updates() {
-    UPDATES=$(apt list --upgradable 2>/dev/null | grep -c "upgradable")
+	apt list --upgradable 2>/dev/null | grep -c "upgradable"
 }
 
-# Function to send notifications based on the number of updates
+# Show a notification based on how many updates are available
 send_notification() {
-    if hash dunstify &>/dev/null; then
-        case $UPDATES in
-        [5-9][0-9] | [1-9][0-9][0-9]*)
-            dunstify -r 2593 -u critical -i $NOTIFY_ICON \
-                "You really need to update!!" "$UPDATES New packages"
-            ;;
-        [2-4][0-9])
-            dunstify -r 2593 -u normal -i $NOTIFY_ICON \
-                "You should update soon" "$UPDATES New packages"
-            ;;
-        [3-9])
-            dunstify -r 2593 -u low -i $NOTIFY_ICON \
-                "You have updates" "$UPDATES New packages"
-            ;;
-        esac
-    fi
+	local count="$1"
+
+	if ! command -v dunstify &>/dev/null; then
+		return
+	fi
+
+	if ((count >= 100)); then
+		urgency="critical"
+		title="You really need to update!!"
+	elif ((count >= 20)); then
+		urgency="normal"
+		title="You should update soon"
+	elif ((count >= 3)); then
+		urgency="low"
+		title="You have updates"
+	else
+		return
+	fi
+
+	dunstify -r "$NOTIFY_ID" -u "$urgency" -i "$NOTIFY_ICON" "$title" "$count New packages"
 }
 
 # Main loop
-while true; do
-    get_total_updates
-    send_notification
+main() {
+	while true; do
+		local updates
+		updates=$(get_total_updates)
+		send_notification "$updates"
 
-    while ((UPDATES > 0)); do
-        echo " $UPDATES"
-        sleep 5
-        get_total_updates
-    done
+		if ((updates > 0)); then
+			while ((updates > 0)); do
+				echo " $updates"
+				sleep "$POLL_WITH_UPDATES"
+				updates=$(get_total_updates)
+			done
+		else
+			echo " None"
+			sleep "$POLL_NO_UPDATES"
+		fi
+	done
+}
 
-    while ((UPDATES == 0)); do
-        echo " None"
-        sleep 1800
-        get_total_updates
-    done
-done
+main "$@"

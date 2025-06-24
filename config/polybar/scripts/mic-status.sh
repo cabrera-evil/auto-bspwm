@@ -1,16 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Get the Capture status using amixer and extract the dB value
-status=$(amixer sget Capture | awk -F"[][]" '/\[on\]/ {print "enabled"; exit} /\[off\]/ {print "disabled"; exit}')
+# Icons
+ICON_ON=""
+ICON_OFF=""
 
-# Check if Capture is enabled or disabled
-if [ "$status" = "enabled" ]; then
-    icon=""
-    text="On"
-else
-    icon=""
-    text="Off"
-fi
+# Get capture status via amixer (returns "enabled" or "disabled")
+get_mic_status() {
+	amixer sget Capture | awk -F'[][]' '
+        /\[on\]/  { print "enabled"; exit }
+        /\[off\]/ { print "disabled"; exit }
+    '
+}
 
-# Print the icon and text
-echo "$icon $text"
+# Format output for bar or CLI
+format_output() {
+	local status="$1"
+	if [[ "$status" == "enabled" ]]; then
+		echo "$ICON_ON On"
+	else
+		echo "$ICON_OFF Off"
+	fi
+}
+
+# Main function
+main() {
+	local status
+	status="$(get_mic_status)"
+	format_output "$status"
+}
+
+main "$@"
