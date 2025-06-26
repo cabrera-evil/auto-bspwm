@@ -1,107 +1,181 @@
-# auto-bspwm
-> This is a Bash script that automates the setup of a professional hacking environment for Kali Linux using the tiled window manager [bspwm](https://github.com/baskerville/bspwm).
+<!--
 
-## Installation
-1. Install available updates.
+********************************************************************************
 
-```shell
+WARNING:
+
+    DO NOT EDIT "auto-bspwm/README.md"
+
+    IT IS PARTIALLY AUTO-GENERATED
+
+    (based on init.sh, keybindings, and system configuration)
+
+********************************************************************************
+
+-->
+
+# Quick reference
+
+- **Maintained by**:  
+  [Douglas Cabrera](https://cabrera-dev.com)
+
+- **Where to get help**:  
+  [GitHub Issues](https://github.com/cabrera-evil/auto-bspwm/issues)
+
+# What is auto-bspwm?
+
+**auto-bspwm** is a Bash-based automation script that provisions a customized, keyboard-centric, and professional desktop environment for Kali Linux using the [bspwm](https://github.com/baskerville/bspwm) window manager. It includes curated defaults for hacking, productivity, and aesthetics with minimal post-install configuration.
+
+# Installation
+
+1. **Update the system**
+
+```bash
 sudo apt update
 sudo apt upgrade -y
 ```
 
-2. Clone the repository and navigate to it.
+2. **Clone the repository**
 
-```shell
+```bash
 git clone https://github.com/cabrera-evil/auto-bspwm.git
 cd auto-bspwm
 ```
 
-3. Grant execution permissions to the script.
+3. **Make the script executable**
 
-```shell
+```bash
 chmod +x init.sh
 ```
 
-4. Execute the script.
+4. **Run the setup**
 
-```shell
+```bash
 ./init.sh
 ```
 
-5. After the script has finished, you will be prompted to restart the system. Once you have rebooted, select `bspwm` as the window manager and then log in.
+5. **Reboot and select `bspwm`**
 
-## Overview of the environment
-![overview1](/assets/overview1.png "overview1")
+After rebooting, select the `bspwm` session from your login manager.
 
-![overview2](/assets/overview2.png "overview2")
+# Environment overview
 
-![overview3](/assets/overview3.png "overview3")
+![overview1](/assets/overview1.png)
+![overview2](/assets/overview2.png)
+![overview3](/assets/overview3.png)
 
+# Keyboard shortcuts
 
-## Keyboard shortcuts
-- <kbd>Windows</kbd> + <kbd>Enter</kbd>: Open a terminal emulator window (kitty).
-- <kbd>Windows</kbd> + <kbd>W</kbd>: Close the current window.
-- <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>: Restart the bspwm configuration.
-- <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>Q</kbd>: Log out.
-- <kbd>Windows</kbd> + <kbd>(⬆⬅⬇➡)</kbd>: Navigate through windows in the current workspace.
-- <kbd>Windows</kbd> + <kbd>D</kbd>: Open Rofi. Press <kbd>Esc</kbd> to exit.
-- <kbd>Windows</kbd> + <kbd>(1,2,3,4,5,6,7,8,9,0)</kbd>: Switch to the respective workspace.
-- <kbd>Windows</kbd> + <kbd>T</kbd>: Change the current window to tile mode.
-- <kbd>Windows</kbd> + <kbd>M</kbd>: Toggle the current window to "full" mode (doesn't occupy the polybar). Press the same keys to return to tile mode.
-- <kbd>Windows</kbd> + <kbd>F</kbd>: Change the current window to fullscreen mode (occupies the entire screen, including the polybar).
-- <kbd>Windows</kbd> + <kbd>S</kbd>: Change the current window to floating mode.
-- <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>(1,2,3,4,5,6,7,8,9,0)</kbd>: Move the current window to another workspace.
-- <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>(⬆⬅⬇➡)</kbd>: Resize the current window (only works if it's in floating mode).
-- <kbd>Windows</kbd> + <kbd>Ctrl</kbd> + <kbd>(⬆⬅⬆➡)</kbd>: Change the position of the current window (only works if it's in floating mode).
-- <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>: Open Firefox.
-- <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>: Open Burpsuite.
-- <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>: Lock the screen.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>⬆⬇</kbd>: Increase/decrease volume.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd>: Mute/unmute volume.
-- <kbd>Windows</kbd> + <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>(⬆⬅⬇➡)</kbd>: Show a preselection and then open a window (kitty, Firefox, File manager, etc.). 
-   - <kbd>Windows</kbd> + <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Space</kbd>: Undo the preselection.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>: Open a sub-window in the current window.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd>: Zoom in on the current sub-window.
-- <kbd>Ctrl</kbd> + <kbd>(⬆⬅⬇➡)</kbd>: Navigate between sub-windows in the current window.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>: Resize the current sub-window. Afterward, use:
-   - <kbd>W</kbd> for 'Wider'
-   - <kbd>N</kbd> for 'Narrower'
-   - <kbd>T</kbd> for 'Taller'
-   - <kbd>S</kbd> for 'Shorter'
-   - <kbd>R</kbd> for 'Reset'
-   - <kbd>Esc</kbd> to quit resize mode.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>: Toggle the arrangement of sub-windows.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd>: Close the current sub-window or tab.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd>: Open a tab in the current window.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>: Rename the title of the current tab.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>(⬅➡)</kbd>: Navigate between current tabs.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>: Copy to the clipboard.
-- <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd>: Paste from the clipboard.
-- <kbd>F1</kbd>: Copy to buffer A.
-- <kbd>F2</kbd>: Paste from buffer A.
-- <kbd>F3</kbd>: Copy to buffer B.
-- <kbd>F4</kbd>: Paste from buffer B.
+Below is a categorized list of keybindings configured via `sxhkd`. This environment uses the Super (<kbd>Windows</kbd>) key as the primary modifier.
 
-## Software
-This configuration uses the following software:
-- **WM**: [bspwm](https://github.com/baskerville/bspwm)
-- **Hotkey**: [sxhkd](https://github.com/baskerville/sxhkd)
-- **Locker**: [i3lock-fancy](https://github.com/meskarune/i3lock-fancy)
-- **Shell**: [zsh](https://www.zsh.org/)
-- **Shell Theme**: [powerlevel10k](https://github.com/romkatv/powerlevel10k)
-- **Shell configuration manager**: [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
-- **Bars**: [polybar](https://github.com/polybar/polybar)
-- **Bars Theme**: [polybar-themes](https://github.com/adi1090x/polybar-themes)
-- **Compositor**: [picom](https://github.com/yshui/picom)
-- **File Manager**: [thunar](https://docs.xfce.org/xfce/thunar/start)
-- **Fonts**: [iosevka](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka) and [hack](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack)
-- **Application Launcher**: [rofi](https://github.com/davatorium/rofi)
-- **Browsers**: [firefox](https://www.mozilla.org/en-US/firefox/new/)
-- **Terminals**: [kitty](https://sw.kovidgoyal.net/kitty/) and [qterminal](https://github.com/lxqt/qterminal)
-- **Static Wallpaper**: [feh](https://github.com/derf/feh)
-- **Color Scheme**: [pywal](https://github.com/dylanaraps/pywal)
-- **Screenshot**: [flameshot](https://flameshot.org/)
+## Window Manager Hotkeys
 
-## Credits
-- This environment has been inspired by the functionalities of [S4vitar's](https://github.com/s4vitar) environment.
-- Thanks to [Cube](https://github.com/ZLCube) for their contribution to the creation of the `archkali.png` wallpaper.
+- <kbd>Super</kbd> + <kbd>Return</kbd>: Launch terminal (Kitty)
+- <kbd>Super</kbd> + <kbd>D</kbd>: Launch Rofi
+- <kbd>Super</kbd> + <kbd>Escape</kbd>: Reload `sxhkd`
+
+## BSPWM Control
+
+- <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>Q</kbd>: Quit `bspwm`
+- <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>: Restart `bspwm`
+- <kbd>Super</kbd> + <kbd>W</kbd>: Close window
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd>: Kill window
+- <kbd>Super</kbd> + <kbd>M</kbd>: Toggle layout (monocle/tiled)
+- <kbd>Super</kbd> + <kbd>Y</kbd>: Send marked node to preselected node
+- <kbd>Super</kbd> + <kbd>G</kbd>: Swap with biggest window
+
+## State & Flags
+
+- <kbd>Super</kbd> + <kbd>T</kbd>: Set tiled mode
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd>: Set pseudo-tiled
+- <kbd>Super</kbd> + <kbd>S</kbd>: Set floating
+- <kbd>Super</kbd> + <kbd>F</kbd>: Set fullscreen
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>M</kbd>: Toggle mark
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>X</kbd>: Toggle lock
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>Y</kbd>: Toggle sticky
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>Z</kbd>: Toggle private
+
+## Focus & Swap
+
+- <kbd>Super</kbd> + <kbd>H/J/K/L</kbd>: Move focus (←↓↑→)
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>H/J/K/L</kbd>: Swap windows
+- <kbd>Super</kbd> + <kbd>P</kbd>: Focus parent
+- <kbd>Super</kbd> + <kbd>B</kbd>: Focus brother
+- <kbd>Super</kbd> + <kbd>,</kbd> / <kbd>.</kbd>: Focus first/second child
+- <kbd>Super</kbd> + <kbd>C</kbd>: Focus next
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>: Focus previous
+- <kbd>Super</kbd> + <kbd>\[</kbd> / <kbd>]</kbd>: Switch desktop
+- <kbd>Super</kbd> + <kbd>Grave</kbd>: Focus last node
+- <kbd>Super</kbd> + <kbd>Tab</kbd>: Focus last desktop
+- <kbd>Super</kbd> + <kbd>O</kbd>: Focus older
+- <kbd>Super</kbd> + <kbd>I</kbd>: Focus newer
+- <kbd>Super</kbd> + <kbd>1–9</kbd> / <kbd>0</kbd>: Switch to workspace
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>1–9</kbd> / <kbd>0</kbd>: Move window to workspace
+
+## Preselection
+
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>H/J/K/L</kbd>: Preselect direction
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>1–9</kbd>: Preselect ratio
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>Space</kbd>: Cancel preselection (node)
+- <kbd>Super</kbd> + <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Space</kbd>: Cancel preselection (desktop)
+
+## Resize & Move
+
+- <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>H/J/K/L</kbd>: Expand window
+- <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>H/J/K/L</kbd>: Contract window
+- <kbd>Super</kbd> + <kbd>←/↓/↑/→</kbd>: Move floating window
+
+## Monitors
+
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd>: Focus next monitor
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd>: Focus previous monitor
+
+## Application Shortcuts
+
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>: Launch Blueman
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>: Launch Google Chrome
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>: Launch Ranger in Kitty
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>: Launch Spotify
+
+## System Controls
+
+- <kbd>Ctrl</kbd> + <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>P</kbd>: Power off
+- <kbd>Ctrl</kbd> + <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>: Reboot
+- <kbd>Ctrl</kbd> + <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>: Lock (i3lock-fancy)
+
+## Media & Audio
+
+- <kbd>XF86AudioPlay</kbd> / <kbd>Prev</kbd> / <kbd>Next</kbd> / <kbd>Stop</kbd>: Media control via `playerctl`
+- <kbd>XF86AudioMute</kbd> / <kbd>LowerVolume</kbd> / <kbd>RaiseVolume</kbd>: Volume control via `amixer`
+- <kbd>XF86AudioMicMute</kbd>: Toggle microphone
+
+## Brightness
+
+- <kbd>XF86MonBrightnessDown</kbd> / <kbd>Up</kbd>: Adjust screen brightness
+
+## Screenshots
+
+- <kbd>Print</kbd>: Full screenshot to clipboard (`flameshot`)
+- <kbd>Ctrl</kbd> + <kbd>Print</kbd>: GUI selection screenshot to clipboard
+
+# Software stack
+
+Includes the following tools and components:
+
+- **WM**: bspwm
+- **Hotkey Daemon**: sxhkd
+- **Bar**: polybar + polybar-themes
+- **Terminal**: kitty, qterminal
+- **Launcher**: rofi
+- **Compositor**: picom
+- **File Manager**: thunar
+- **Wallpaper**: feh
+- **Shell**: zsh + powerlevel10k + oh-my-zsh
+- **Color Scheme**: pywal
+- **Browsers**: firefox, google-chrome
+- **Screenshot**: flameshot
+- **Fonts**: iosevka, hack
+
+# License
+
+This project is released under the [MIT License](LICENSE).
