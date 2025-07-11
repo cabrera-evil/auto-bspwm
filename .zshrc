@@ -106,23 +106,26 @@ SAVEHIST=2000
 ###################################
 # Aliases
 ###################################
-alias ll='/usr/bin/lsd -lh --group-dirs=first'
-alias la='/usr/bin/lsd -a --group-dirs=first'
 alias l='/usr/bin/lsd --group-dirs=first'
+alias la='/usr/bin/lsd -a --group-dirs=first'
+alias ll='/usr/bin/lsd -lh --group-dirs=first'
 alias lla='/usr/bin/lsd -lha --group-dirs=first'
 alias ls='/usr/bin/lsd --group-dirs=first'
-alias lg='lazygit'
-alias lr='lazydocker'
 alias cat='/usr/bin/batcat'
 alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
-alias v='nvim'
+alias weather='curl wttr.in'
+alias reload='source ~/.zshrc'
 alias tmxn='tmuxifier new-session'
 alias tmxe='tmuxifier edit-session'
 alias tmxl='tmuxifier list-sessions'
 alias tmxs='tmuxifier load-session'
+alias lg='lazygit'
+alias lr='lazydocker'
+alias v='nvim'
+alias or='ollama run $ZSH_OLLAMA_MODEL'
 
 ###################################
 # FZF configuration
@@ -142,7 +145,6 @@ if command -v tmuxifier &> /dev/null; then
 fi
 
 ZSH_TMUX_AUTOREFRESH=true
-ZSH_TMUX_AUTOQUIT=true
 ZSH_TMUX_FIXTERM=true
 ZSH_TMUX_AUTONAME_SESSION=true
 ZSH_TMUX_UNICODE=true
@@ -192,3 +194,8 @@ export AWS_PROFILE=default
 # Docker configuration
 ###################################
 export DOCKER_VOLUMES=/opt/docker/volumes
+
+###################################
+# Ollama configuration
+###################################
+export ZSH_OLLAMA_MODEL=gemma3:4b
