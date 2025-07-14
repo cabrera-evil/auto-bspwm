@@ -87,6 +87,7 @@ function install_ohmyzsh() {
 		['you-should-use']=https://github.com/MichaelAquilina/zsh-you-should-use
 		['zsh-navigation-tools']=https://github.com/psprint/zsh-navigation-tools
 		['zsh-autopair']=https://github.com/hlissner/zsh-autopair
+		['zsh-ascii-art']=https://github.com/cabrera-evil/zsh-ascii-art
 		['fzf-tab']=https://github.com/Aloxaf/fzf-tab
 
 		# Git

@@ -61,6 +61,7 @@ plugins=(
   zsh-history-substring-search
   zsh-autosuggestions
   zsh-syntax-highlighting
+  zsh-ascii-art
   fzf-tab
 )
 
@@ -199,3 +200,9 @@ export DOCKER_VOLUMES=/opt/docker/volumes
 # Ollama configuration
 ###################################
 export ZSH_OLLAMA_MODEL=gemma3:4b
+
+###################################
+# ASCII Art configuration
+###################################
+export ZSH_ASCII_ART=bruh
+export ZSH_ASCII_OPEN=true
