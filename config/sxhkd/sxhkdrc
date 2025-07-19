@@ -136,29 +136,21 @@ super + shift + n
 # Application Shortcuts
 #
 
-# Open Blueman
-super + shift + b
-	blueman-manager
+# Open Nautilus
+super + e
+  nautilus --no-desktop
 
-# Open Chrome
-super + shift + g
-	google-chrome
-
-# Open Ranger
-super + shift + r
-	kitty -e ranger
-
-# Open Spotify
-super + shift + s
-	spotify
+# Open Tools
+super + shift + {b,g,r,s}
+  {blueman-manager,google-chrome,ranger,spotify}
 
 #
 # System Controls
 #
 
-# Power off, Reboot, Lock
-ctrl + super + alt + {p,r,l}
-	{systemctl poweroff, systemctl reboot, i3lock-fancy}
+# Power off, Reboot, Suspend, Lock
+ctrl + super + alt + {p,r,s,l}
+	{systemctl poweroff, systemctl reboot, systemctl suspend,i3lock-fancy}
 
 #
 # Media Controls
