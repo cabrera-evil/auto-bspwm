@@ -17,6 +17,9 @@ declare -A RESTART_PROCESSES=(
 # Background processes that should persist
 declare -A KEEP_ALIVE_PROCESSES=(
 	[1password]="1password --silent"
+	['bell-off']="xset -b &"
+	['xss-lock']="xss-lock -- i3lock-fancy"
+	['xset-timeout']="xset s 900 300"
 )
 
 # Custom user scripts (can be keep-alive or run once)
