@@ -1,43 +1,51 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# Path to the Polybar config
 CONFIG="$HOME/.config/polybar/config.ini"
 CHECK_INTERVAL=5
 
-# Return the first active wireless network interface
-get_wireless_interface() {
-	nmcli -t -f DEVICE,STATE,TYPE d | awk -F: '$2 == "connected" && $3 == "wifi" {print $1; exit}'
+# Get the first active network interface of a given type
+get_interface_by_type() {
+	local type="$1"
+	nmcli -t -f DEVICE,STATE,TYPE d |
+		awk -F: -v t="$type" '$2 == "connected" && $3 == t { print $1; exit }'
 }
 
-# Return the first active wired network interface
-get_wired_interface() {
-	nmcli -t -f DEVICE,STATE,TYPE d | awk -F: '$2 == "connected" && $3 == "ethernet" {print $1; exit}'
-}
-
-# Launch Polybar on each connected monitor
+# Export env vars and launch polybar on each connected monitor
 launch_polybar() {
-	killall -q polybar
-	wireless_iface="$(get_wireless_interface)"
-	wired_iface="$(get_wired_interface)"
-	xrandr --query | awk '/ connected/ {print $1}' | while read -r monitor; do
-		MONITOR="$monitor" WIRELESS_INTERFACE="$wireless_iface" WIRED_INTERFACE="$wired_iface" polybar -q -c "$CONFIG" main &
-	done
+	local wireless_iface wired_iface
+	wireless_iface="$(get_interface_by_type wifi)"
+	wired_iface="$(get_interface_by_type ethernet)"
+
+	while IFS= read -r monitor; do
+		MONITOR="$monitor" \
+			WIRELESS_INTERFACE="$wireless_iface" \
+			WIRED_INTERFACE="$wired_iface" \
+			polybar -q -c "$CONFIG" main &
+	done < <(xrandr --query | awk '/ connected/ {print $1}')
 }
 
-# Main execution function
 main() {
 	launch_polybar
-	last_xrandr=$(xrandr --listmonitors)
-	last_wireless=$(get_wireless_interface)
-	last_wired=$(get_wired_interface)
+
+	local last_monitors last_wireless last_wired
+	last_monitors="$(xrandr --listmonitors)"
+	last_wireless="$(get_interface_by_type wifi)"
+	last_wired="$(get_interface_by_type ethernet)"
+
 	while sleep "$CHECK_INTERVAL"; do
-		if [[ "$(xrandr --listmonitors)" != "$last_xrandr" ||
-		"$(get_wireless_interface)" != "$last_wireless" ||
-		"$(get_wired_interface)" != "$last_wired" ]]; then
+		local current_monitors current_wireless current_wired
+		current_monitors="$(xrandr --listmonitors)"
+		current_wireless="$(get_interface_by_type wifi)"
+		current_wired="$(get_interface_by_type ethernet)"
+
+		if [[ "$current_monitors" != "$last_monitors" ||
+			"$current_wireless" != "$last_wireless" ||
+			"$current_wired" != "$last_wired" ]]; then
 			launch_polybar
-			last_xrandr=$(xrandr --listmonitors)
-			last_wireless=$(get_wireless_interface)
-			last_wired=$(get_wired_interface)
+			last_monitors="$current_monitors"
+			last_wireless="$current_wireless"
+			last_wired="$current_wired"
 		fi
 	done
 }
