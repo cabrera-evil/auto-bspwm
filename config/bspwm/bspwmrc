@@ -17,14 +17,15 @@ declare -A RESTART_PROCESSES=(
 # Background processes that should persist
 declare -A KEEP_ALIVE_PROCESSES=(
 	[1password]="1password --silent"
-	['bell-off']="xset -b &"
+	[autorandr]="autorandr --change"
+	['bell-off']="xset -b"
 	['xss-lock']="xss-lock -- i3lock-fancy"
 	['xset-timeout']="xset s 900 300"
 )
 
 # Custom user scripts (can be keep-alive or run once)
 declare -A USER_SCRIPTS=(
-	[monitor_config]="$BSPWM_SCRIPTS/monitor_config.sh"
+	[workspaces]="$BSPWM_SCRIPTS/workspaces.sh"
 	[low_bat_notifier]="$BSPWM_SCRIPTS/low_bat_notifier.sh"
 )
 

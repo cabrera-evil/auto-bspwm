@@ -55,6 +55,8 @@ CLI_PACKAGES=(
 	zoxide      # smarter directory jumper
 )
 DESKTOP_PACKAGES=(
+	arandr                  # XRandr GUI
+	autorandr               # Automatic display configuration tool
 	blueman                 # Bluetooth GUI manager
 	bluez                   # Bluetooth protocol stack
 	brightnessctl           # control screen brightness
