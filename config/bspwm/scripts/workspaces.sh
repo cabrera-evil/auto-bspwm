@@ -1,4 +1,4 @@
-#!/usr/bin/env bas:
+#!/usr/bin/env bash
 
 # Workspace (desktop) names
 workspace_names=(I II III IV V VI VII VIII IX X)
