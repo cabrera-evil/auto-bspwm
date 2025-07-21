@@ -44,7 +44,6 @@ CLI_PACKAGES=(
 	tmux        # terminal multiplexer
 	xclip       # clipboard tool for X11
 	yq          # YAML processor with jq-like syntax
-	exa         # another modern ls alternative (if not using lsd)
 	fd-find     # fast and user-friendly find replacement
 	tree        # visual directory tree
 	shellcheck  # shell script linter
@@ -310,7 +309,7 @@ function setup_cli_tools() {
 	install_lazygit
 	set_default_shell
 	set_default_terminal_emulator
-	setup_fonts
+	cmd_fonts
 	setup_tz
 	success "CLI tools installed successfully."
 }
@@ -324,7 +323,7 @@ function setup_desktop_env() {
 	sudo pip3 install pywal --break-system
 	sudo mkdir -p "$xorg_dir"
 	sudo cp -rv "$CURRENT_DIR/xorg/"* "$xorg_dir"
-	setup_fonts
+	cmd_fonts
 	setup_wallpapers
 	setup_tz
 	success "Desktop environment configured successfully."
