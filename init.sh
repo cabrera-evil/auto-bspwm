@@ -333,18 +333,21 @@ function cmd_dotfiles() {
 	local config_dir="$HOME/.config"
 
 	log "Applying dotfiles to user and root..."
+
 	# Create symlinks for non-root user
 	mkdir -p "$config_dir"
 	ln -sfv "$CURRENT_DIR/config/"* "$config_dir/"
 	ln -sfv "$CURRENT_DIR/.zshrc" "$HOME/.zshrc"
 	ln -sfv "$CURRENT_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 	ln -sfv "$CURRENT_DIR/.bashrc" "$HOME/.bashrc"
-	# Copy dotfiles to root user
+
+	# Symlink dotfiles to root (forces override and keeps synced)
 	sudo mkdir -p /root/.config
-	sudo cp -rf "$config_dir/"* /root/.config/
-	sudo cp -f "$CURRENT_DIR/.zshrc" /root/.zshrc
-	sudo cp -f "$CURRENT_DIR/.p10k.zsh" /root/.p10k.zsh
-	sudo cp -f "$CURRENT_DIR/.bashrc" /root/.bashrc
+	sudo ln -sfv "$CURRENT_DIR/config/"* /root/.config/
+	sudo ln -sfv "$CURRENT_DIR/.zshrc" /root/.zshrc
+	sudo ln -sfv "$CURRENT_DIR/.p10k.zsh" /root/.p10k.zsh
+	sudo ln -sfv "$CURRENT_DIR/.bashrc" /root/.bashrc
+
 	success "Dotfiles applied successfully."
 }
 
