@@ -28,62 +28,69 @@ USER=$(whoami)
 TIMEZONE="America/El_Salvador"
 CURRENT_DIR=$(pwd)
 CLI_PACKAGES=(
-	bat         # cat with syntax highlighting
-	btop        # modern resource monitor (htop replacement)
-	dos2unix    # convert text file formats (Windows ↔ Unix)
-	fzf         # fuzzy finder for terminal
-	htop        # process viewer
-	jq          # JSON processor
-	lsd         # modern ls alternative with icons
-	neofetch    # system info tool
-	python3-pip # Python package installer
-	ranger      # terminal file manager
-	ripgrep     # fast grep alternative
-	rsync       # file sync tool
-	scrub       # secure file wiping
-	tmux        # terminal multiplexer
-	xclip       # clipboard tool for X11
-	yq          # YAML processor with jq-like syntax
-	fd-find     # fast and user-friendly find replacement
-	tree        # visual directory tree
-	shellcheck  # shell script linter
-	ncdu        # terminal disk usage analyzer
-	trash-cli   # safe file deletion to trash
-	unzip       # unzip utility
-	zip         # archive utilities
-	zoxide      # smarter directory jumper
+	atool         # archive extractor
+	bat           # cat clone with syntax highlighting
+	bluez         # bluetooth protocol stack
+	bc            # precision calculator
+	btop          # modern resource monitor
+	brightnessctl # control screen brightness
+	chafa         # image-to-ascii converter (fallback for previews)
+	cmatrix       # matrix-style terminal animation
+	dos2unix      # convert text file line endings
+	ffmpeg        # media processing and conversion
+	fzf           # fuzzy finder for terminal
+	fd-find       # fast and user-friendly find alternative
+	highlight     # syntax highlighter (used in ranger previews)
+	htop          # process viewer
+	imagemagick   # image conversion and manipulation
+	jq            # json processor
+	lsd           # modern ls with icons and colors
+	mediainfo     # display media metadata
+	neofetch      # system information tool
+	ncdu          # terminal disk usage analyzer
+	poppler-utils # pdf text and metadata tools
+	python3-pip   # python package manager
+	playerctl     # media control from cli
+	pamixer       # pulseaudio volume control
+	ranger        # terminal file manager
+	ripgrep       # fast recursive search (grep alternative)
+	rsync         # file synchronization tool
+	scrub         # secure file eraser
+	shellcheck    # shell script linter
+	tmux          # terminal multiplexer
+	trash-cli     # move files to trash
+	tree          # recursive directory listing
+	tty-clock     # terminal-based clock
+	ueberzug      # image previews in terminal (for ranger)
+	unzip         # unzip utility
+	w3m           # terminal web browser (html preview fallback)
+	xclip         # x11 clipboard manager
+	yq            # yaml processor (jq-like syntax)
+	zip           # archive utility
+	zoxide        # smarter directory navigator
 )
 DESKTOP_PACKAGES=(
-	arandr                  # XRandr GUI
-	autorandr               # Automatic display configuration tool
-	blueman                 # Bluetooth GUI manager
-	bluez                   # Bluetooth protocol stack
-	brightnessctl           # control screen brightness
+	arandr                  # gui for xrandr
+	autorandr               # auto display profile loader
+	blueman                 # gui bluetooth manager
 	bspwm                   # tiling window manager
-	bc                      # arbitrary precision calculator language
-	cmatrix                 # Matrix terminal animation
 	dunst                   # lightweight notification daemon
-	exo-utils               # open files/URLs with default apps
-	feh                     # image viewer, also used for wallpapers
-	flameshot               # screenshot utility
-	firejail                # sandbox for apps
-	kitty                   # GPU-based terminal emulator
-	i3lock-fancy            # screen locker with style
-	imagemagick             # command-line image editor
-	lxappearance            # GTK theme switcher
-	numlockx                # enable Num Lock on startup
-	numix-icon-theme        # icon theme
-	numix-icon-theme-circle # icon theme variant
-	pamixer                 # PulseAudio volume control
+	exo-utils               # open files and urls with default apps
+	feh                     # image viewer and wallpaper setter
+	flameshot               # screenshot tool
+	firejail                # application sandboxing
+	kitty                   # gpu-accelerated terminal
+	i3lock-fancy            # stylish screen locker
+	lxappearance            # gtk theme and icon manager
+	numlockx                # enable num lock at startup
+	numix-icon-theme-circle # numix circle icon variant
 	picom                   # compositor (transparency, shadows)
-	playerctl               # media control via CLI
-	polybar                 # highly customizable status bar
-	rofi                    # launcher and window switcher
-	sxhkd                   # keybinding daemon (for bspwm)
-	tty-clock               # terminal-based clock
-	nitrogen                # wallpaper setter (alternative to feh)
-	redshift                # night light color temperature adjuster
-	xss-lock                # automatic screen lock based on X idle time
+	polybar                 # customizable status bar
+	rofi                    # app launcher and window switcher
+	sxhkd                   # simple hotkey daemon
+	nitrogen                # wallpaper manager (alternative to feh)
+	redshift                # adjust screen color temperature
+	xss-lock                # auto screen lock based on inactivity
 )
 
 # ===================================
