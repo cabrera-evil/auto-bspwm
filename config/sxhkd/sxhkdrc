@@ -141,8 +141,8 @@ super + e
   nautilus --no-desktop
 
 # Open Tools
-super + shift + {b,g,r,s}
-  {blueman-manager,google-chrome,ranger,spotify}
+super + shift + {b,g,e,s}
+  {blueman-manager,google-chrome,kitty -e ranger,spotify}
 
 #
 # System Controls
