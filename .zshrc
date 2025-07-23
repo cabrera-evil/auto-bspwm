@@ -146,6 +146,9 @@ if command -v tmuxifier &> /dev/null; then
   eval "$(tmuxifier init -)"
 fi
 
+###################################
+# Tmux
+###################################
 ZSH_TMUX_AUTOREFRESH=true
 ZSH_TMUX_FIXTERM=true
 ZSH_TMUX_AUTONAME_SESSION=true
@@ -163,11 +166,6 @@ fi
 # Editor configuration
 ###################################
 export EDITOR='nvim'
-
-###################################
-# Console Ninja configuration
-###################################
-PATH=~/.console-ninja/.bin:$PATH
 
 ###################################
 # NVM configuration
