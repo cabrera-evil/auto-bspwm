@@ -22,48 +22,59 @@ compinit -d ~/.cache/zcompdump
 # Plugins configuration
 ###################################
 plugins=(
-  # Core utilities
-  fasd
-  z
-  extract
-  safe-paste
-  colored-man-pages
-  web-search
-  tmux
-  # Git
+  # Shell Utilities & Navigation
+  zsh-syntax-highlighting
+  zsh-autopair
+  zsh-history-substring-search
+  zsh-ascii-art
+  aliases
+  debian
+  command-not-found
+  zsh-navigation-tools
+  fzf-tab
+  # Git & Version Control
   git
   git-auto-fetch
   git-flow
   gitignore
+  git
   github
   git-extras
   git-open
+  # Productivity & Input
+  fzf
+  jsontools
+  httpie
+  you-should-use
+  # Node/Frontend Dev
+  nvm
+  npm
+  yarn
+  vscode
+  gh
+  # Utilities & System Info
+  extract
+  kitty
+  encode64
+  battery
+  nmap
+  ngrok
+  starship
+  sudo
+  tailscale
   # DevOps / Infrastructure
   docker
   kubectl
-  kubectx
   helm
   terraform
-  # aws # Uncomment if you use AWS CLI
   vault
   1password
   gpg-agent
-  # Node / Frontend
-  npm
-  nvm
-  yarn
-  vscode
-  httpie
-  # Productivity
-  you-should-use
-  zsh-navigation-tools
-  # Input & UX enhancements
-  zsh-autopair
-  zsh-history-substring-search
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  zsh-ascii-art
-  fzf-tab
+  # Miscellaneous / Utility
+  safe-paste
+  colored-man-pages
+  z
+  fasd
 )
 
 ###################################
@@ -166,12 +177,6 @@ fi
 # Editor configuration
 ###################################
 export EDITOR='nvim'
-
-###################################
-# NVM configuration
-###################################
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 ###################################
 # PNPM configuration
