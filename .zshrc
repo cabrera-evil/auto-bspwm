@@ -6,9 +6,6 @@ export PATH=~/.console-ninja/.bin:$PATH
 # Oh My Zsh
 export ZSH=$HOME/.oh-my-zsh
 
-# Starship prompt
-eval "$(starship init zsh)"
-
 ###################################
 # Compinit configuration
 ###################################
@@ -22,59 +19,72 @@ compinit -d ~/.cache/zcompdump
 # Plugins configuration
 ###################################
 plugins=(
-  # Shell Utilities & Navigation
-  zsh-syntax-highlighting
-  zsh-autopair
-  zsh-history-substring-search
-  zsh-ascii-art
+  # Core Shell Utilities
   aliases
-  debian
   command-not-found
-  zsh-navigation-tools
-  fzf-tab
+  debian
+  extract
+  safe-paste
+  sudo
+
   # Git & Version Control
   git
   git-auto-fetch
-  git-flow
-  gitignore
-  git
-  github
   git-extras
+  git-flow
   git-open
-  # Productivity & Input
-  fzf
-  jsontools
-  httpie
-  you-should-use
-  # Node/Frontend Dev
-  nvm
+  gitignore
+  github
+
+  # Node / Frontend Development
   npm
-  yarn
+  nvm
   vscode
-  gh
-  # Utilities & System Info
-  extract
-  kitty
-  encode64
+  yarn
+
+  # Productivity & API Tools
+  fzf
+  httpie
+  jsontools
+  web-search
+  you-should-use
+
+  # System Tools & Information
   battery
-  nmap
+  encode64
+  kitty
   ngrok
+  nmap
   starship
-  sudo
   tailscale
-  # DevOps / Infrastructure
+  tmux
+
+  # DevOps / Cloud / Infrastructure
+  1password
   docker
-  kubectl
+  gpg-agent
   helm
+  kubectl
+  kubectx
   terraform
   vault
-  1password
-  gpg-agent
-  # Miscellaneous / Utility
-  safe-paste
-  colored-man-pages
-  z
+  ssh
+  ssh-agent
+
+  # UX & Input Enhancements
+  fzf-tab
+  zsh-ascii-art
+  zsh-autopair
+  zsh-history-substring-search
+  zsh-navigation-tools
+
+  # Navigation / History Helpers
   fasd
+  z
+
+  # Syntax Highlighting (must be last)
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 ###################################
