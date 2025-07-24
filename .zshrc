@@ -66,12 +66,13 @@ plugins=(
   helm
   kubectl
   kubectx
-  terraform
-  vault
   ssh
   ssh-agent
+  terraform
+  vault
 
   # UX & Input Enhancements
+  colored-man-pages
   fzf-tab
   zsh-ascii-art
   zsh-autopair
@@ -82,7 +83,7 @@ plugins=(
   fasd
   z
 
-  # Syntax Highlighting (must be last)
+  # Syntax & Suggestions (Must be last)
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
