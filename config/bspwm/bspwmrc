@@ -10,7 +10,7 @@ declare -A RESTART_PROCESSES=(
 	[sxhkd]="sxhkd -c $CONFIG_DIR/sxhkd/sxhkdrc"
 	[picom]="picom --config $CONFIG_DIR/picom/picom.conf --experimental-backends"
 	[dunst]="dunst -config $CONFIG_DIR/dunst/dunstrc"
-	[feh]="feh --bg-fill $WALLPAPER"
+	[feh]="feh-prompt restore || feh --bg-fill \"\$WALLPAPER\""
 	[numlockx]="numlockx on"
 )
 
