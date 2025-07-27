@@ -177,28 +177,6 @@ function install_starship() {
 	success "Starship installed successfully."
 }
 
-install_lazygit() {
-	arch=$(uname -m)
-	version=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep -Po '"tag_name":\s*"v\K[^"]+')
-	local url
-
-	command -v lazygit &>/dev/null && {
-		log "lazygit already installed"
-		return
-	}
-	log "Installing lazygit..."
-	case "$arch" in
-	x86_64) url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_x86_64.tar.gz" ;;
-	aarch64 | armv7l) url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_arm64.tar.gz" ;;
-	*)
-		abort "Unsupported architecture: $arch"
-		;;
-	esac
-	curl -sL "$url" | tar xz -C /tmp lazygit
-	sudo install /tmp/lazygit -D -t /usr/local/bin/
-	success "lazygit installed successfully."
-}
-
 function install_tpm() {
 	[[ -d "$HOME/.tmux/plugins/tpm" ]] || {
 		log "Installing Tmux Plugin Manager..."
@@ -274,7 +252,7 @@ Usage: $SCRIPT_NAME <command>
 
 Commands:
   all           Run full environment setup
-  cli           Install terminal tools (zsh, starship, tmux, lazygit, CLI packages)
+  cli           Install terminal tools (zsh, starship, tmux, CLI packages)
   desktop       Install desktop packages and configs (bspwm, fonts, wallpapers)
   dotfiles      Apply dotfiles and symlinks (user + root)
   fonts         Install custom fonts
@@ -313,7 +291,6 @@ function setup_cli_tools() {
 	install_ohmyzsh
 	install_starship
 	install_tpm
-	install_lazygit
 	set_default_shell
 	set_default_terminal_emulator
 	cmd_fonts
@@ -340,6 +317,13 @@ function cmd_dotfiles() {
 	local config_dir="$HOME/.config"
 
 	log "Applying dotfiles to user and root..."
+
+	# Backup old .zshrc if it exists
+	if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
+		local backup="$HOME/.zshrc.backup"
+		mv "$HOME/.zshrc" "$backup"
+		success "Backed up existing .zshrc to $backup"
+	fi
 
 	# Create symlinks for non-root user
 	mkdir -p "$config_dir"
