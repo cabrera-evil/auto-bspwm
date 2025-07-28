@@ -88,8 +88,6 @@ DESKTOP_PACKAGES=(
 	polybar                 # customizable status bar
 	rofi                    # app launcher and window switcher
 	sxhkd                   # simple hotkey daemon
-	nitrogen                # wallpaper manager (alternative to feh)
-	redshift                # adjust screen color temperature
 	xss-lock                # auto screen lock based on inactivity
 )
 
