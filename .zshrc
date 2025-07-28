@@ -224,4 +224,4 @@ export ZSH_OLLAMA_MODEL=gemma3:4b
 # ASCII Art configuration
 ###################################
 export ZSH_ASCII_ART=bruh
-export ZSH_ASCII_OPEN=true
+export ZSH_ASCII_OPEN=false

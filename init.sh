@@ -185,40 +185,6 @@ function install_tpm() {
 	}
 }
 
-function set_default_shell() {
-	if [[ "$SHELL" != /usr/bin/zsh ]]; then
-		log "Changing default shell to zsh..."
-		chsh -s "$(which zsh)"
-		sudo chsh -s "$(which zsh)" root
-		success "Default shell changed to zsh."
-	else
-		log "Default shell is already zsh."
-	fi
-}
-
-function set_default_terminal_emulator() {
-	kitty_path="$(command -v kitty)"
-	local priority=100
-
-	if [[ -z "$kitty_path" ]]; then
-		warn "Kitty is not installed. Skipping terminal emulator setup."
-		return
-	fi
-	if command -v x-terminal-emulator &>/dev/null; then
-		if update-alternatives --query x-terminal-emulator 2>/dev/null | grep -q "$kitty_path"; then
-			log "Removing existing kitty alternative..."
-			sudo update-alternatives --remove x-terminal-emulator "$kitty_path"
-		fi
-		log "Installing kitty as x-terminal-emulator with priority $priority..."
-		sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$kitty_path" "$priority"
-		log "Setting kitty as default terminal emulator..."
-		sudo update-alternatives --set x-terminal-emulator "$kitty_path"
-		success "Kitty set as default terminal emulator."
-	else
-		warn "x-terminal-emulator is not available on this system."
-	fi
-}
-
 function setup_wallpapers() {
 	local wallpapers_dir="$HOME/Pictures/Wallpapers"
 	log "Setting up wallpapers..."
@@ -226,12 +192,6 @@ function setup_wallpapers() {
 	cp -rv "$CURRENT_DIR/wallpapers/"* "$wallpapers_dir"
 	wal -nqi "$wallpapers_dir/archkali.png" || warn "Failed to set wallpaper with pywal."
 	success "Wallpapers set up successfully."
-}
-
-function setup_tz() {
-	log "Setting timezone to ${TIMEZONE}..."
-	sudo timedatectl set-timezone $TIMEZONE
-	success "Timezone set to ${TIMEZONE}."
 }
 
 function banner() {
@@ -257,6 +217,8 @@ Commands:
   dotfiles      Apply dotfiles and symlinks (user + root)
   fonts         Install custom fonts
   tz            Set timezone to $TIMEZONE
+  shell         Set default shell to $(zsh)
+  terminal      Set default terminal emulator to $(kitty)
   help          Show this help message
   version       Show script version
 Examples:
@@ -264,7 +226,7 @@ Examples:
 EOF
 }
 
-function cmd_setup_all() {
+function cmd_all() {
 	[[ "$USER" == "root" ]] && {
 		banner
 		abort "Do not run this as root!"
@@ -285,31 +247,29 @@ function cmd_setup_all() {
 	fi
 }
 
-function setup_cli_tools() {
+function cmd_cli() {
 	log "Installing CLI packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}"
 	install_ohmyzsh
 	install_starship
 	install_tpm
-	set_default_shell
-	set_default_terminal_emulator
 	cmd_fonts
-	setup_tz
+	cmd_tz
 	success "CLI tools installed successfully."
 }
 
-function setup_desktop_env() {
+function cmd_desktop() {
 	local font_dir="$HOME/.local/share/fonts"
 	local xorg_dir="/etc/X11/xorg.conf.d"
 
 	log "Installing Desktop packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
-	sudo pip3 install pywal --break-system
+	#sudo pip3 install pywal --break-system
 	sudo mkdir -p "$xorg_dir"
 	sudo cp -rv "$CURRENT_DIR/xorg/"* "$xorg_dir"
-	cmd_fonts
 	setup_wallpapers
-	setup_tz
+	cmd_fonts
+	cmd_tz
 	success "Desktop environment configured successfully."
 }
 
@@ -327,17 +287,17 @@ function cmd_dotfiles() {
 
 	# Create symlinks for non-root user
 	mkdir -p "$config_dir"
-	ln -sfv "$CURRENT_DIR/config/"* "$config_dir/"
 	ln -sfv "$CURRENT_DIR/.zshrc" "$HOME/.zshrc"
 	ln -sfv "$CURRENT_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 	ln -sfv "$CURRENT_DIR/.bashrc" "$HOME/.bashrc"
+	ln -sfv "$CURRENT_DIR/config/"* "$config_dir/"
 
 	# Symlink dotfiles to root (forces override and keeps synced)
 	sudo mkdir -p /root/.config
-	sudo ln -sfv "$CURRENT_DIR/config/"* /root/.config/
 	sudo ln -sfv "$CURRENT_DIR/.zshrc" /root/.zshrc
 	sudo ln -sfv "$CURRENT_DIR/.p10k.zsh" /root/.p10k.zsh
 	sudo ln -sfv "$CURRENT_DIR/.bashrc" /root/.bashrc
+	sudo ln -sfv "$CURRENT_DIR/config/"* /root/.config/
 
 	success "Dotfiles applied successfully."
 }
@@ -349,6 +309,46 @@ function cmd_fonts() {
 	cp -rv "$CURRENT_DIR/fonts/"* "$font_dir"
 	fc-cache -fv "$font_dir"
 	success "Fonts installed successfully."
+}
+
+function cmd_tz() {
+	log "Setting timezone to ${TIMEZONE}..."
+	sudo timedatectl set-timezone $TIMEZONE
+	success "Timezone set to ${TIMEZONE}."
+}
+
+function cmd_default_shell() {
+	if [[ "$SHELL" != /usr/bin/zsh ]]; then
+		log "Changing default shell to zsh..."
+		chsh -s "$(which zsh)"
+		sudo chsh -s "$(which zsh)" root
+		success "Default shell changed to zsh."
+	else
+		log "Default shell is already zsh."
+	fi
+}
+
+function cmd_default_terminal_emulator() {
+	kitty_path="$(command -v kitty)"
+	local priority=100
+
+	if [[ -z "$kitty_path" ]]; then
+		warn "Kitty is not installed. Skipping terminal emulator setup."
+		return
+	fi
+	if command -v x-terminal-emulator &>/dev/null; then
+		if update-alternatives --query x-terminal-emulator 2>/dev/null | grep -q "$kitty_path"; then
+			log "Removing existing kitty alternative..."
+			sudo update-alternatives --remove x-terminal-emulator "$kitty_path"
+		fi
+		log "Installing kitty as x-terminal-emulator with priority $priority..."
+		sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$kitty_path" "$priority"
+		log "Setting kitty as default terminal emulator..."
+		sudo update-alternatives --set x-terminal-emulator "$kitty_path"
+		success "Kitty set as default terminal emulator."
+	else
+		warn "x-terminal-emulator is not available on this system."
+	fi
 }
 
 cmd_version() {
@@ -363,12 +363,14 @@ main() {
 	shift || true
 
 	case "$cmd" in
-	all) cmd_setup_all ;;
-	cli) setup_cli_tools ;;
-	desktop) setup_desktop_env ;;
+	all) cmd_all ;;
+	cli) cmd_cli ;;
+	desktop) cmd_desktop ;;
 	dotfiles) cmd_dotfiles ;;
 	fonts) cmd_fonts ;;
-	tz) setup_tz ;;
+	tz) cmd_tz ;;
+	shell) cmd_default_shell ;;
+	terminal) cmd_default_terminal_emulator ;;
 	help | "")
 		cmd_help
 		;;
