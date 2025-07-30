@@ -215,8 +215,8 @@ Commands:
   dotfiles      Apply dotfiles and symlinks (user + root)
   fonts         Install custom fonts
   tz            Set timezone to $TIMEZONE
-  shell         Set default shell to $(zsh)
-  terminal      Set default terminal emulator to $(kitty)
+  shell         Set default shell to 'zsh'
+  terminal      Set default terminal emulator to 'kitty'
   help          Show this help message
   version       Show script version
 Examples:
