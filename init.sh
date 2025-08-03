@@ -56,6 +56,7 @@ CLI_PACKAGES=(
 	ripgrep       # fast recursive search (grep alternative)
 	rsync         # file synchronization tool
 	scrub         # secure file eraser
+	screen        # terminal multiplexer (alternative to tmux)
 	shellcheck    # shell script linter
 	tmux          # terminal multiplexer
 	trash-cli     # move files to trash

@@ -26,7 +26,6 @@ plugins=(
   extract
   safe-paste
   sudo
-
   # Git & Version Control
   git
   git-auto-fetch
@@ -35,20 +34,17 @@ plugins=(
   git-open
   gitignore
   github
-
   # Node / Frontend Development
   npm
   nvm
   vscode
   yarn
-
   # Productivity & API Tools
   fzf
   httpie
   jsontools
   web-search
   you-should-use
-
   # System Tools & Information
   battery
   encode64
@@ -58,7 +54,6 @@ plugins=(
   starship
   tailscale
   tmux
-
   # DevOps / Cloud / Infrastructure
   1password
   docker
@@ -70,7 +65,6 @@ plugins=(
   ssh-agent
   terraform
   vault
-
   # UX & Input Enhancements
   colored-man-pages
   fzf-tab
@@ -78,11 +72,9 @@ plugins=(
   zsh-autopair
   zsh-history-substring-search
   zsh-navigation-tools
-
   # Navigation / History Helpers
   fasd
   z
-
   # Syntax & Suggestions (Must be last)
   zsh-autosuggestions
   zsh-syntax-highlighting
@@ -142,6 +134,7 @@ alias c='clear'
 alias e='exit'
 alias weather='curl wttr.in'
 alias reload='source ~/.zshrc'
+alias ra='ranger'
 alias tmxn='tmuxifier new-session'
 alias tmxe='tmuxifier edit-session'
 alias tmxl='tmuxifier list-sessions'
