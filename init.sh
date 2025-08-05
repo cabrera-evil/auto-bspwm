@@ -264,7 +264,7 @@ function cmd_desktop() {
 
 	log "Installing Desktop packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
-	#sudo pip3 install pywal --break-system
+	sudo pip3 install pywal --break-system
 	sudo mkdir -p "$xorg_dir"
 	sudo cp -rv "$CURRENT_DIR/xorg/"* "$xorg_dir"
 	setup_wallpapers
