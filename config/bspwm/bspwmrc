@@ -7,7 +7,7 @@ BSPWM_SCRIPTS="$CONFIG_DIR/bspwm/scripts"
 # Restartable system services (always restart)
 # ================================================
 declare -A RESTART_PROCESSES=(
-	[polybar]="$CONFIG_DIR/polybar/launch.sh --theme cuts"
+	[polybar]="$CONFIG_DIR/polybar/launch.sh --theme cuts --watch"
 	[sxhkd]="sxhkd -c $CONFIG_DIR/sxhkd/sxhkdrc"
 	[picom]="picom --config $CONFIG_DIR/picom/picom.conf --experimental-backends"
 	[dunst]="dunst -config $CONFIG_DIR/dunst/dunstrc"
