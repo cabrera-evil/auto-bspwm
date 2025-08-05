@@ -85,6 +85,7 @@ DESKTOP_PACKAGES=(
 	lxappearance            # gtk theme and icon manager
 	numlockx                # enable num lock at startup
 	numix-icon-theme-circle # numix circle icon variant
+	mpd                     # music server
 	picom                   # compositor (transparency, shadows)
 	polybar                 # customizable status bar
 	rofi                    # app launcher and window switcher
