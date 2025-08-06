@@ -187,6 +187,10 @@ function install_tpm() {
 }
 
 install_zscroll() {
+		if command -v zscroll &>/dev/null; then
+		log "Zscroll already installed"
+		return
+	fi
 	local tmp_dir
 	tmp_dir=$(mktemp -d)
 	git clone https://github.com/noctuid/zscroll "$tmp_dir/zscroll"
