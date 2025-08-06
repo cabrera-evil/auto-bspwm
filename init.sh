@@ -49,6 +49,7 @@ CLI_PACKAGES=(
 	neofetch      # system information tool
 	ncdu          # terminal disk usage analyzer
 	poppler-utils # pdf text and metadata tools
+	python3       # python interpreter
 	python3-pip   # python package manager
 	playerctl     # media control from cli
 	pamixer       # pulseaudio volume control
@@ -185,6 +186,14 @@ function install_tpm() {
 	}
 }
 
+install_zscroll() {
+	local tmp_dir
+	tmp_dir=$(mktemp -d)
+	git clone https://github.com/noctuid/zscroll "$tmp_dir/zscroll"
+	cd "$tmp_dir/zscroll"
+	sudo python3 setup.py install
+}
+
 function setup_wallpapers() {
 	local wallpapers_dir="$HOME/Pictures/Wallpapers"
 	log "Setting up wallpapers..."
@@ -234,9 +243,11 @@ function cmd_all() {
 	banner
 	require_cmd git
 	require_cmd curl
-	setup_cli_tools
-	setup_desktop_env
+	cmd_cli
+	cmd_desktop
 	cmd_dotfiles
+	cmd_fonts
+	cmd_tz
 	success "Environment configured successfully."
 	read -rp "${TURQUOISE}Do you want to reboot now? (y/N):${NC} " reply
 	if [[ "$reply" =~ ^[Yy]$ ]]; then
@@ -253,8 +264,7 @@ function cmd_cli() {
 	install_ohmyzsh
 	install_starship
 	install_tpm
-	cmd_fonts
-	cmd_tz
+	install_zscroll
 	success "CLI tools installed successfully."
 }
 
@@ -268,8 +278,6 @@ function cmd_desktop() {
 	sudo mkdir -p "$xorg_dir"
 	sudo cp -rv "$CURRENT_DIR/xorg/"* "$xorg_dir"
 	setup_wallpapers
-	cmd_fonts
-	cmd_tz
 	success "Desktop environment configured successfully."
 }
 
