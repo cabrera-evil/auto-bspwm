@@ -43,14 +43,7 @@ get_interface_by_type() {
 }
 
 list_themes() {
-	for dir in "$CONFIG_DIR"/*; do
-		[[ -d "$dir" ]] || continue
-		basename "$dir"
-	done
-}
-
-theme_exists() {
-	[[ -d "$CONFIG_DIR/$1" ]] && return 0 || return 1
+	for dir in "$CONFIG_DIR"/*; do [[ -d "$dir" ]] && basename "$dir"; done
 }
 
 choose_theme() {
@@ -64,11 +57,9 @@ choose_theme() {
 launch_polybar() {
 	local theme="$1"
 	local theme_dir="$CONFIG_DIR/$theme"
-	local config="$theme_dir/config.ini"
-	local fallback="$theme_dir/bars.ini"
-
-	killall -q polybar || true
-	while pgrep -u "$UID" -x polybar >/dev/null; do sleep 1; done
+	local config_file="$theme_dir/config.ini"
+	[[ -f "$config_file" ]] || config_file="$theme_dir/bars.ini"
+	[[ -f "$config_file" ]] || abort "Theme '$theme' lacks config.ini or bars.ini"
 
 	if [[ "$theme" == "pwidgets" ]]; then
 		bash "$theme_dir/launch.sh" --main
@@ -76,23 +67,13 @@ launch_polybar() {
 		return
 	fi
 
-	local config_file=""
-	if [[ -f "$config" ]]; then
-		config_file="$config"
-	elif [[ -f "$fallback" ]]; then
-		config_file="$fallback"
-	else
-		abort "Theme '$theme' does not contain config.ini or bars.ini"
-	fi
-
 	local wifi_iface ethernet_iface
 	wifi_iface=$(get_interface_by_type wifi)
 	ethernet_iface=$(get_interface_by_type ethernet)
 
-	local bars=(top bottom)
-
+	killall -q polybar || true
 	xrandr --query | awk '/ connected/ {print $1}' | while read -r monitor; do
-		for bar in "${bars[@]}"; do
+		for bar in top bottom; do
 			MONITOR="$monitor" \
 				WIRELESS_INTERFACE="$wifi_iface" \
 				WIRED_INTERFACE="$ethernet_iface" \
@@ -100,12 +81,11 @@ launch_polybar() {
 		done
 	done
 
-	success "Launched polybar: ${bars[*]} bars for theme '$theme' on all monitors"
+	success "Launched polybar: top + bottom for '$theme' on all monitors"
 }
 
 watch_for_changes() {
-	local theme="$1"
-	local last_mon last_wifi last_wired
+	local theme="$1" last_mon last_wifi last_wired is_restarting=false
 	last_mon=$(xrandr --listmonitors)
 	last_wifi=$(get_interface_by_type wifi)
 	last_wired=$(get_interface_by_type ethernet)
@@ -116,28 +96,31 @@ watch_for_changes() {
 		cur_wifi=$(get_interface_by_type wifi)
 		cur_wired=$(get_interface_by_type ethernet)
 
-		if [[ "$cur_mon" != "$last_mon" || "$cur_wifi" != "$last_wifi" || "$cur_wired" != "$last_wired" ]]; then
+		if [[ "$is_restarting" == false && ("$cur_mon" != "$last_mon" || "$cur_wifi" != "$last_wifi" || "$cur_wired" != "$last_wired") ]]; then
+			is_restarting=true
 			log "Change detected. Relaunching Polybar..."
 			launch_polybar "$theme"
 			last_mon="$cur_mon"
 			last_wifi="$cur_wifi"
 			last_wired="$cur_wired"
+			sleep 2
+			is_restarting=false
 		fi
 	done
 }
 
 cmd_help() {
 	cat <<EOF
-Usage: $SCRIPT_NAME [--theme <name>] [--watch] [--silent] [--debug] [--help]
+Usage: $SCRIPT_NAME [--theme <name>] [--watch] [--interval <sec>] [--silent] [--debug] [--help]
 
 Options:
   --theme <name>   Launch specific theme directly
   --watch          Re-launch on monitor/network interface change
-  --inverval       Set check interval in seconds (default: $CHECK_INTERVAL)
+  --interval <n>   Set check interval in seconds (default: $CHECK_INTERVAL)
   --silent         Disable output
   --debug          Enable debug logs
-  --help           Show this help message
-  --version        Show script version
+  --help, -h       Show this help message
+  --version, -v    Show script version
 
 If --theme is not provided, an interactive selector will launch.
 EOF
@@ -148,42 +131,39 @@ cmd_version() {
 }
 
 main() {
-	local theme=""
-	local watch_mode=false
-
+	local theme="" watch_mode=false
+	require_cmd polybar
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
 		--theme)
-			shift || abort "Missing theme name after --theme"
+			shift
 			theme="$1"
 			;;
 		--watch) watch_mode=true ;;
 		--interval)
 			shift
-			[[ "$1" =~ ^[0-9]+$ ]] || abort "Invalid interval: must be a number"
+			[[ "$1" =~ ^[0-9]+$ ]] || abort "Invalid interval"
 			CHECK_INTERVAL="$1"
 			;;
 		--silent) SILENT=true ;;
 		--debug) DEBUG=true ;;
-		--help | -h | '')
+		--help | -h)
 			cmd_help
+			exit 0
 			;;
 		--version | -v)
 			cmd_version
+			exit 0
 			;;
 		*) abort "Unknown argument: $1" ;;
 		esac
 		shift
 	done
-
-	if [[ -z "$theme" ]]; then
-		log "No theme specified. Launching selector..."
-		theme="$(choose_theme)"
-	fi
-
+	[[ -z "$theme" ]] && log "No theme specified. Launching selector..." && theme="$(choose_theme)"
 	theme_exists "$theme" || abort "Invalid theme: $theme"
 	launch_polybar "$theme"
-	[[ "$watch_mode" == true ]] && watch_for_changes "$theme"
+	[[ "$watch_mode" == true ]] && watch_for_changes "$theme" &
+	wait
 }
 
 main "$@"
