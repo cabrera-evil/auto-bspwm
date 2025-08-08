@@ -67,11 +67,13 @@ launch_polybar() {
 		return
 	fi
 
+	pkill -x polybar || true
+	sleep 2
+
 	local wifi_iface ethernet_iface
 	wifi_iface=$(get_interface_by_type wifi)
 	ethernet_iface=$(get_interface_by_type ethernet)
 
-	killall -q polybar || true
 	xrandr --query | awk '/ connected/ {print $1}' | while read -r monitor; do
 		for bar in top bottom; do
 			MONITOR="$monitor" \
