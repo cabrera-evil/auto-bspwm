@@ -17,7 +17,7 @@ notify() {
 
 show_help() {
 	cat <<EOF
-Usage: ${0##*/} <command> [options]
+Usage: $(basename "$0") <command> [options]
 
 Commands:
   check [--watch]     Show number of available updates. If --watch is set, keep checking.
@@ -35,7 +35,7 @@ cmd_check() {
 	local count
 	count=$(get_updates)
 
-	if (( count > 0 )); then
+	if ((count > 0)); then
 		echo " $count"
 		notify "$count updates available" "normal"
 	else
@@ -46,17 +46,20 @@ cmd_check() {
 cmd_update() {
 	echo "Updating packages..."
 	sudo apt update
-    sudo apt upgrade -y
+	sudo apt upgrade -y
 	echo "Update finished"
 	notify "System updated successfully" "low"
 }
 
 main() {
 	case "${1:-}" in
-		check) shift; cmd_check "$@" ;;
-		update) cmd_update ;;
-		help|"") show_help ;;
-		*) echo "Unknown command: $1" ;;
+	check)
+		shift
+		cmd_check "$@"
+		;;
+	update) cmd_update ;;
+	help | "") show_help ;;
+	*) echo "Unknown command: $1" ;;
 	esac
 }
 

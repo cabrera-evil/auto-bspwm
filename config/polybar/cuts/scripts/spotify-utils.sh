@@ -13,7 +13,7 @@ SCROLL_PADDING=" "
 
 show_help() {
 	cat <<EOF
-Usage: ${0##*/} <command>
+Usage: $(basename "$0") <command>
 
 Commands:
   status        Show play/pause icon or 'Offline'
@@ -41,9 +41,9 @@ get_metadata() {
 
 cmd_status() {
 	case "$(get_status)" in
-		Playing) echo "$ICON_PAUSE" ;;
-		Paused)  echo "$ICON_PLAY" ;;
-		*)       echo "" ;;
+	Playing) echo "$ICON_PAUSE" ;;
+	Paused) echo "$ICON_PLAY" ;;
+	*) echo "" ;;
 	esac
 }
 
@@ -73,13 +73,16 @@ cmd_next() {
 
 main() {
 	case "${1:-}" in
-		status) cmd_status ;;
-		info) cmd_info ;;
-		metadata) cmd_metadata ;;
-		prev) cmd_prev ;;
-		next) cmd_next ;;
-		help|"") show_help ;;
-		*) echo "Unknown command: $1" >&2; exit 1 ;;
+	status) cmd_status ;;
+	info) cmd_info ;;
+	metadata) cmd_metadata ;;
+	prev) cmd_prev ;;
+	next) cmd_next ;;
+	help | "") show_help ;;
+	*)
+		echo "Unknown command: $1" >&2
+		exit 1
+		;;
 	esac
 }
 

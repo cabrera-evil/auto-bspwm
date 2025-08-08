@@ -14,7 +14,7 @@ NC='\e[0m'
 # =============================
 # CONFIG
 # =============================
-SCRIPT_NAME="${0##*/}"
+SCRIPT_NAME="$(basename "$0")"
 SCRIPT_VERSION="1.0.0"
 DEBUG=false
 SILENT=false
@@ -133,12 +133,18 @@ Usage: $SCRIPT_NAME [--theme <name>] [--watch] [--silent] [--debug] [--help]
 Options:
   --theme <name>   Launch specific theme directly
   --watch          Re-launch on monitor/network interface change
+  --inverval       Set check interval in seconds (default: $CHECK_INTERVAL)
   --silent         Disable output
   --debug          Enable debug logs
   --help           Show this help message
+  --version        Show script version
 
 If --theme is not provided, an interactive selector will launch.
 EOF
+}
+
+cmd_version() {
+	echo "$SCRIPT_NAME version $SCRIPT_VERSION"
 }
 
 main() {
@@ -152,11 +158,18 @@ main() {
 			theme="$1"
 			;;
 		--watch) watch_mode=true ;;
+		--interval)
+			shift
+			[[ "$1" =~ ^[0-9]+$ ]] || abort "Invalid interval: must be a number"
+			CHECK_INTERVAL="$1"
+			;;
 		--silent) SILENT=true ;;
 		--debug) DEBUG=true ;;
-		--help | -h)
+		--help | -h | '')
 			cmd_help
-			exit 0
+			;;
+		--version | -v)
+			cmd_version
 			;;
 		*) abort "Unknown argument: $1" ;;
 		esac
