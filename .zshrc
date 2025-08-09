@@ -62,7 +62,6 @@ plugins=(
   kubectl
   kubectx
   ssh
-  ssh-agent
   terraform
   vault
   # UX & Input Enhancements
