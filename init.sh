@@ -187,7 +187,7 @@ function install_tpm() {
 }
 
 install_zscroll() {
-		if command -v zscroll &>/dev/null; then
+	if command -v zscroll &>/dev/null; then
 		log "Zscroll already installed"
 		return
 	fi
@@ -314,13 +314,13 @@ function cmd_dotfiles() {
 	success "Dotfiles applied successfully."
 }
 
-function cmd_fonts() {
+cmd_fonts() {
 	local font_dir="$HOME/.local/share/fonts"
 	log "Installing fonts..."
 	mkdir -p "$font_dir"
-	cp -rv "$CURRENT_DIR/fonts/"* "$font_dir"
+	ln -sfn "$CURRENT_DIR/fonts" "$font_dir/custom-fonts"
 	fc-cache -fv "$font_dir"
-	success "Fonts installed successfully."
+	success "Fonts installed successfully (symlink created)."
 }
 
 function cmd_tz() {
