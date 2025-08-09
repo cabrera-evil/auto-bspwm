@@ -39,7 +39,11 @@ debug() { [[ $DEBUG == true ]] && echo -e "${MAGENTA}🐞 DEBUG: $1${NC}"; }
 require_cmd() { command -v "$1" >/dev/null 2>&1 || abort "'$1' is not installed."; }
 
 get_interface_by_type() {
-	nmcli -t -f DEVICE,STATE,TYPE device | awk -F: -v t="$1" '$2 == "connected" && $3 == t { print $1; exit }'
+	nmcli -t -f DEVICE,STATE,TYPE device | awk -F: -v t="$1" '$3 == t { print $1; exit }'
+}
+
+get_monitors() {
+	xrandr --query | awk '/ connected/ {print $1}'
 }
 
 list_themes() {
@@ -66,15 +70,10 @@ launch_polybar() {
 	local theme_dir="$CONFIG_DIR/$theme"
 	local config="$theme_dir/config.ini"
 	local fallback="$theme_dir/bars.ini"
-
-	killall -q polybar || true
-	while pgrep -u "$UID" -x polybar >/dev/null; do sleep 1; done
-
-	if [[ "$theme" == "pwidgets" ]]; then
-		bash "$theme_dir/launch.sh" --main
-		success "Launched pwidgets via its own script"
-		return
-	fi
+	local bars=(top bottom)
+	local wifi_iface ethernet_iface
+	wifi_iface=$(get_interface_by_type wifi)
+	ethernet_iface=$(get_interface_by_type ethernet)
 
 	local config_file=""
 	if [[ -f "$config" ]]; then
@@ -85,13 +84,9 @@ launch_polybar() {
 		abort "Theme '$theme' does not contain config.ini or bars.ini"
 	fi
 
-	local wifi_iface ethernet_iface
-	wifi_iface=$(get_interface_by_type wifi)
-	ethernet_iface=$(get_interface_by_type ethernet)
+	pkill -x polybar &>/dev/null && sleep 1
 
-	local bars=(top bottom)
-
-	xrandr --query | awk '/ connected/ {print $1}' | while read -r monitor; do
+	get_monitors | while read -r monitor; do
 		for bar in "${bars[@]}"; do
 			MONITOR="$monitor" \
 				WIRELESS_INTERFACE="$wifi_iface" \
@@ -106,13 +101,13 @@ launch_polybar() {
 watch_for_changes() {
 	local theme="$1"
 	local last_mon last_wifi last_wired
-	last_mon=$(xrandr --listmonitors)
+	last_mon=$(get_monitors)
 	last_wifi=$(get_interface_by_type wifi)
 	last_wired=$(get_interface_by_type ethernet)
 
 	while sleep "$CHECK_INTERVAL"; do
 		local cur_mon cur_wifi cur_wired
-		cur_mon=$(xrandr --listmonitors)
+		cur_mon=$(get_monitors)
 		cur_wifi=$(get_interface_by_type wifi)
 		cur_wired=$(get_interface_by_type ethernet)
 
