@@ -1,14 +1,13 @@
 return {
   "yetone/avante.nvim",
-  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  -- ⚠️ must add this setting! ! !
   build = vim.fn.has("win32") ~= 0 and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
     or "make",
   event = "VeryLazy",
-  version = false, -- Never set this value to "*"! Never!
+  version = false,
   ---@module 'avante'
   ---@type avante.Config
   opts = {
+    provider = "copilot",
     providers = {
       openai = {
         endpoint = "https://api.openai.com",
@@ -21,7 +20,7 @@ return {
       },
       ollama = {
         endpoint = "http://localhost:11434",
-        model = "gemma3:4b",
+        model = "deepseek-coder:1.3b",
         timeout = 30000, -- Timeout in milliseconds
         extra_request_body = {
           temperature = 0.75,
