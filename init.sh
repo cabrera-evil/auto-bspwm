@@ -51,6 +51,7 @@ CLI_PACKAGES=(
 	poppler-utils # pdf text and metadata tools
 	python3       # python interpreter
 	python3-pip   # python package manager
+	pipx          # python package installer for user-level packages
 	playerctl     # media control from cli
 	pamixer       # pulseaudio volume control
 	ranger        # terminal file manager
