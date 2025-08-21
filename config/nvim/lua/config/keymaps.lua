@@ -19,9 +19,9 @@ vim.keymap.set("n", "<leader>cp", function()
       vim.schedule(function()
         if code == 0 then
           vim.cmd("edit")
-          vim.notify("✔ Converted to Unix format: " .. file, vim.log.levels.INFO)
+          vim.notify(" Converted to Unix format: " .. file, vim.log.levels.INFO)
         else
-          vim.notify("✘ Failed to convert file: " .. file, vim.log.levels.ERROR)
+          vim.notify(" Failed to convert file: " .. file, vim.log.levels.ERROR)
         end
       end)
     end,
