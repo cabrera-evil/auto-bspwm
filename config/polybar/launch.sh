@@ -100,23 +100,16 @@ launch_polybar() {
 
 watch_for_changes() {
 	local theme="$1"
-	local last_mon last_wifi last_wired
+	local last_mon
 	last_mon=$(get_monitors)
-	last_wifi=$(get_interface_by_type wifi)
-	last_wired=$(get_interface_by_type ethernet)
 
 	while sleep "$CHECK_INTERVAL"; do
-		local cur_mon cur_wifi cur_wired
+		local cur_mon
 		cur_mon=$(get_monitors)
-		cur_wifi=$(get_interface_by_type wifi)
-		cur_wired=$(get_interface_by_type ethernet)
-
-		if [[ "$cur_mon" != "$last_mon" || "$cur_wifi" != "$last_wifi" || "$cur_wired" != "$last_wired" ]]; then
-			log "Change detected. Relaunching Polybar..."
+		if [[ "$cur_mon" != "$last_mon" ]]; then
+			log "Monitor change detected. Relaunching Polybar..."
 			launch_polybar "$theme"
 			last_mon="$cur_mon"
-			last_wifi="$cur_wifi"
-			last_wired="$cur_wired"
 		fi
 	done
 }
