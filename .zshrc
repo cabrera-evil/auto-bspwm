@@ -203,11 +203,6 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 export AWS_PROFILE=default
 
 ###################################
-# Docker configuration
-###################################
-export DOCKER_VOLUMES=/opt/docker/volumes
-
-###################################
 # Ollama configuration
 ###################################
 export ZSH_OLLAMA_MODEL=gemma3:4b
