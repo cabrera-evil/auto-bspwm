@@ -25,6 +25,7 @@ plugins=(
   debian
   extract
   safe-paste
+  copypath
   sudo
   # Git & Version Control
   git
@@ -34,11 +35,16 @@ plugins=(
   git-open
   gitignore
   github
-  # Node / Frontend Development
+  # Node Development
   npm
+  yarn
   nvm
   vscode
-  yarn
+  # Go Development
+  golang
+  mise
+  # Python Development
+  python
   # Productivity & API Tools
   fzf
   httpie
