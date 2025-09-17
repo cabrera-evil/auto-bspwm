@@ -8,6 +8,10 @@ return {
   ---@type avante.Config
   opts = {
     provider = "copilot",
+    behaviour = {
+      auto_suggestions = false,
+      auto_apply_diff_after_generation = true,
+    },
     providers = {
       openai = {
         endpoint = "https://api.openai.com",
