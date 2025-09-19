@@ -28,49 +28,50 @@ USER=$(whoami)
 TIMEZONE="America/El_Salvador"
 CURRENT_DIR=$(pwd)
 CLI_PACKAGES=(
-	atool         # archive extractor
-	bat           # cat clone with syntax highlighting
-	bluez         # bluetooth protocol stack
-	bc            # precision calculator
-	btop          # modern resource monitor
-	brightnessctl # control screen brightness
-	chafa         # image-to-ascii converter (fallback for previews)
-	cmatrix       # matrix-style terminal animation
-	dos2unix      # convert text file line endings
-	ffmpeg        # media processing and conversion
-	fzf           # fuzzy finder for terminal
-	fd-find       # fast and user-friendly find alternative
-	highlight     # syntax highlighter (used in ranger previews)
-	htop          # process viewer
-	imagemagick   # image conversion and manipulation
-	jq            # json processor
-	lsd           # modern ls with icons and colors
-	mediainfo     # display media metadata
-	neofetch      # system information tool
-	ncdu          # terminal disk usage analyzer
-	poppler-utils # pdf text and metadata tools
-	python3       # python interpreter
-	python3-pip   # python package manager
-	pipx          # python package installer for user-level packages
-	playerctl     # media control from cli
-	pamixer       # pulseaudio volume control
-	ranger        # terminal file manager
-	ripgrep       # fast recursive search (grep alternative)
-	rsync         # file synchronization tool
-	scrub         # secure file eraser
-	screen        # terminal multiplexer (alternative to tmux)
-	shellcheck    # shell script linter
-	tmux          # terminal multiplexer
-	trash-cli     # move files to trash
-	tree          # recursive directory listing
-	tty-clock     # terminal-based clock
-	ueberzug      # image previews in terminal (for ranger)
-	unzip         # unzip utility
-	w3m           # terminal web browser (html preview fallback)
-	xclip         # x11 clipboard manager
-	yq            # yaml processor (jq-like syntax)
-	zip           # archive utility
-	zoxide        # smarter directory navigator
+	atool             # archive extractor
+	bat               # cat clone with syntax highlighting
+	bluez             # bluetooth protocol stack
+	bc                # precision calculator
+	btop              # modern resource monitor
+	brightnessctl     # control screen brightness
+	chafa             # image-to-ascii converter (fallback for previews)
+	cmatrix           # matrix-style terminal animation
+	dos2unix          # convert text file line endings
+	ffmpeg            # media processing and conversion
+	fzf               # fuzzy finder for terminal
+	fd-find           # fast and user-friendly find alternative
+	highlight         # syntax highlighter (used in ranger previews)
+	htop              # process viewer
+	imagemagick       # image conversion and manipulation
+	jq                # json processor
+	lsd               # modern ls with icons and colors
+	mediainfo         # display media metadata
+	neofetch          # system information tool
+	ncdu              # terminal disk usage analyzer
+	poppler-utils     # pdf text and metadata tools
+	python3           # python interpreter
+	python3-pip       # python package manager
+	pipx              # python package installer for user-level packages
+	playerctl         # media control from cli
+	pamixer           # pulseaudio volume control
+	ranger            # terminal file manager
+	ripgrep           # fast recursive search (grep alternative)
+	rsync             # file synchronization tool
+	scrub             # secure file eraser
+	screen            # terminal multiplexer (alternative to tmux)
+	shellcheck        # shell script linter
+	systemd-timesyncd # time synchronization service
+	tmux              # terminal multiplexer
+	trash-cli         # move files to trash
+	tree              # recursive directory listing
+	tty-clock         # terminal-based clock
+	ueberzug          # image previews in terminal (for ranger)
+	unzip             # unzip utility
+	w3m               # terminal web browser (html preview fallback)
+	xclip             # x11 clipboard manager
+	yq                # yaml processor (jq-like syntax)
+	zip               # archive utility
+	zoxide            # smarter directory navigator
 )
 DESKTOP_PACKAGES=(
 	arandr                  # gui for xrandr
@@ -326,8 +327,23 @@ cmd_fonts() {
 
 function cmd_tz() {
 	log "Setting timezone to ${TIMEZONE}..."
-	sudo timedatectl set-timezone $TIMEZONE
+	sudo timedatectl set-timezone "$TIMEZONE"
 	success "Timezone set to ${TIMEZONE}."
+
+	log "Configuring RTC to UTC..."
+	sudo timedatectl set-local-rtc 0
+	success "RTC set to UTC."
+
+	log "Enabling NTP synchronization..."
+	sudo timedatectl set-ntp true || {
+		warning "NTP not available, trying to start systemd-timesyncd..."
+		if command -v systemctl &>/dev/null; then
+			sudo systemctl enable --now systemd-timesyncd || warning "systemd-timesyncd not installed."
+		fi
+	}
+	success "NTP synchronization enabled."
+
+	timedatectl
 }
 
 function cmd_default_shell() {
