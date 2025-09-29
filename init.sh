@@ -2,31 +2,35 @@
 set -euo pipefail
 
 # ===================================
+# METADATA
+# ===================================
+readonly SCRIPT_NAME="$(basename "$0")"
+readonly VERSION="1.0.0"
+
+# ===================================
 # COLORS
 # ===================================
-RED='\e[0;31m'
-GREEN='\e[0;32m'
-YELLOW='\e[1;33m'
-BLUE='\e[0;34m'
-PURPLE='\e[0;35m'
-TURQUOISE='\e[0;36m'
-GRAY='\e[0;37m'
-NC='\e[0m'
+if [[ -t 1 ]] && [[ "${TERM:-}" != "dumb" ]]; then
+	readonly RED=$'\033[0;31m'
+	readonly GREEN=$'\033[0;32m'
+	readonly YELLOW=$'\033[0;33m'
+	readonly BLUE=$'\033[0;34m'
+	readonly MAGENTA=$'\033[0;35m'
+	readonly BOLD=$'\033[1m'
+	readonly DIM=$'\033[2m'
+	readonly NC=$'\033[0m'
+else
+	readonly RED='' GREEN='' YELLOW='' BLUE='' MAGENTA='' BOLD='' DIM='' NC=''
+fi
 
 # ===================================
-# GLOBAL CONFIGURATION
+# CONFIGURATION
 # ===================================
-SCRIPT_NAME="$(basename "$0")"
-SCRIPT_VERSION="1.0.0"
 DEBUG=false
-SILENT=false
-
-# ===================================
-# DEFAULT CONFIGURATION
-# ===================================
+QUIET=false
+BASE_DIR=$(pwd)
 USER=$(whoami)
 TIMEZONE="America/El_Salvador"
-CURRENT_DIR=$(pwd)
 CLI_PACKAGES=(
 	atool             # archive extractor
 	bat               # cat clone with syntax highlighting
@@ -38,7 +42,6 @@ CLI_PACKAGES=(
 	cmatrix           # matrix-style terminal animation
 	dos2unix          # convert text file line endings
 	ffmpeg            # media processing and conversion
-	fzf               # fuzzy finder for terminal
 	fd-find           # fast and user-friendly find alternative
 	highlight         # syntax highlighter (used in ranger previews)
 	htop              # process viewer
@@ -99,31 +102,14 @@ DESKTOP_PACKAGES=(
 # ===================================
 # LOGGING
 # ===================================
-log() {
-	if [ "$SILENT" != "true" ]; then
-		echo -e "${BLUE}==> $1${NC}"
-	fi
-}
-warn() {
-	if [ "$SILENT" != "true" ]; then
-		echo -e "${YELLOW}⚠️  $1${NC}" >&2
-	fi
-}
-success() {
-	if [ "$SILENT" != "true" ]; then
-		echo -e "${GREEN}✓ $1${NC}"
-	fi
-}
+log() { [[ "$QUIET" != true ]] && printf "${BLUE}▶${NC} %s\n" "$*" || true; }
+warn() { printf "${YELLOW}⚠${NC} %s\n" "$*" >&2; }
+error() { printf "${RED}✗${NC} %s\n" "$*" >&2; }
+success() { [[ "$QUIET" != true ]] && printf "${GREEN}✓${NC} %s\n" "$*" || true; }
+debug() { [[ "$DEBUG" == true ]] && printf "${MAGENTA}⚈${NC} DEBUG: %s\n" "$*" >&2 || true; }
 abort() {
-	if [ "$SILENT" != "true" ]; then
-		echo -e "${RED}✗ $1${NC}" >&2
-	fi
+	error "$*"
 	exit 1
-}
-debug() {
-	if [ "$DEBUG" = "true" ]; then
-		echo -e "${MAGENTA}🐞 DEBUG: $1${NC}"
-	fi
 }
 
 # ===================================
@@ -200,17 +186,27 @@ install_zscroll() {
 	sudo python3 setup.py install
 }
 
+install_fzf() {
+	if command -v fzf &>/dev/null; then
+		log "fzf already installed"
+		return
+	fi
+	log "Installing fzf..."
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install --all
+}
+
 function setup_wallpapers() {
 	local wallpapers_dir="$HOME/Pictures/Wallpapers"
 	log "Setting up wallpapers..."
 	mkdir -p "$wallpapers_dir"
-	cp -rv "$CURRENT_DIR/wallpapers/"* "$wallpapers_dir"
+	cp -rv "$BASE_DIR/wallpapers/"* "$wallpapers_dir"
 	wal -nqi "$wallpapers_dir/archkali.png" || warn "Failed to set wallpaper with pywal."
 	success "Wallpapers set up successfully."
 }
 
 function banner() {
-	echo -e "${TURQUOISE}              _____            ______"
+	echo -e "${MAGENTA}              _____            ______"
 	echo -e "______ ____  ___  /______      ___  /___________________      ________ ___"
 	echo -e "_  __ \`/  / / /  __/  __ \     __  __ \_  ___/__  __ \_ | /| / /_  __ \`__ \\"
 	echo -e "/ /_/ // /_/ // /_ / /_/ /     _  /_/ /(__  )__  /_/ /_ |/ |/ /_  / / / / /"
@@ -223,20 +219,31 @@ function banner() {
 # ===================================
 function cmd_help() {
 	cat <<EOF
-Usage: $SCRIPT_NAME <command>
+${BOLD}${SCRIPT_NAME}${NC} - A script to bootstrap and configure your environment.
 
-Commands:
-  all           Run full environment setup
-  cli           Install terminal tools (zsh, starship, tmux, CLI packages)
-  desktop       Install desktop packages and configs (bspwm, fonts, wallpapers)
-  dotfiles      Apply dotfiles and symlinks (user + root)
-  fonts         Install custom fonts
-  tz            Set timezone to $TIMEZONE
-  shell         Set default shell to 'zsh'
-  terminal      Set default terminal emulator to 'kitty'
-  help          Show this help message
-  version       Show script version
-Examples:
+${BOLD}USAGE:${NC}
+  $SCRIPT_NAME [OPTIONS] COMMAND
+
+${BOLD}COMMANDS:${NC}
+  ${GREEN}all${NC}            Run full environment setup
+  ${GREEN}cli${NC}            Install terminal tools (zsh, starship, tmux, CLI packages)
+  ${GREEN}desktop${NC}        Install desktop packages and configs (bspwm, fonts, wallpapers)
+  ${GREEN}dotfiles${NC}       Apply dotfiles and symlinks (user + root)
+  ${GREEN}fonts${NC}          Install custom fonts
+  ${GREEN}tz${NC}             Set timezone to \$TIMEZONE
+  ${GREEN}shell${NC}          Set default shell to 'zsh'
+  ${GREEN}terminal${NC}       Set default terminal emulator to 'kitty'
+  ${GREEN}help${NC}           Show this help message
+  ${GREEN}version${NC}        Show script version
+
+${BOLD}OPTIONS:${NC}
+  ${YELLOW}-q, --quiet${NC}                  Minimize output
+  ${YELLOW}-d, --debug${NC}                  Enable debug output
+  ${YELLOW}-h, --help${NC}                   Show help
+  ${YELLOW}-v, --version${NC}                Show version
+
+${BOLD}EXAMPLES:${NC}
+  # Run full environment setup
   $SCRIPT_NAME all
 EOF
 }
@@ -271,6 +278,7 @@ function cmd_cli() {
 	install_starship
 	install_tpm
 	install_zscroll
+	install_fzf
 	success "CLI tools installed successfully."
 }
 
@@ -282,7 +290,7 @@ function cmd_desktop() {
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
 	sudo pip3 install pywal --break-system
 	sudo mkdir -p "$xorg_dir"
-	sudo cp -rv "$CURRENT_DIR/xorg/"* "$xorg_dir"
+	sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
 	setup_wallpapers
 	success "Desktop environment configured successfully."
 }
@@ -301,17 +309,17 @@ function cmd_dotfiles() {
 
 	# Create symlinks for non-root user
 	mkdir -p "$config_dir"
-	ln -sfv "$CURRENT_DIR/.zshrc" "$HOME/.zshrc"
-	ln -sfv "$CURRENT_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
-	ln -sfv "$CURRENT_DIR/.bashrc" "$HOME/.bashrc"
-	ln -sfv "$CURRENT_DIR/config/"* "$config_dir/"
+	ln -sfv "$BASE_DIR/.zshrc" "$HOME/.zshrc"
+	ln -sfv "$BASE_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
+	ln -sfv "$BASE_DIR/.bashrc" "$HOME/.bashrc"
+	ln -sfv "$BASE_DIR/config/"* "$config_dir/"
 
 	# Symlink dotfiles to root (forces override and keeps synced)
 	sudo mkdir -p /root/.config
-	sudo ln -sfv "$CURRENT_DIR/.zshrc" /root/.zshrc
-	sudo ln -sfv "$CURRENT_DIR/.p10k.zsh" /root/.p10k.zsh
-	sudo ln -sfv "$CURRENT_DIR/.bashrc" /root/.bashrc
-	sudo ln -sfv "$CURRENT_DIR/config/"* /root/.config/
+	sudo ln -sfv "$BASE_DIR/.zshrc" /root/.zshrc
+	sudo ln -sfv "$BASE_DIR/.p10k.zsh" /root/.p10k.zsh
+	sudo ln -sfv "$BASE_DIR/.bashrc" /root/.bashrc
+	sudo ln -sfv "$BASE_DIR/config/"* /root/.config/
 
 	success "Dotfiles applied successfully."
 }
@@ -320,7 +328,7 @@ cmd_fonts() {
 	local font_dir="$HOME/.local/share/fonts"
 	log "Installing fonts..."
 	mkdir -p "$font_dir"
-	ln -sfn "$CURRENT_DIR/fonts" "$font_dir/custom-fonts"
+	ln -sfn "$BASE_DIR/fonts" "$font_dir/custom-fonts"
 	fc-cache -fv "$font_dir"
 	success "Fonts installed successfully (symlink created)."
 }
@@ -381,17 +389,49 @@ function cmd_default_terminal_emulator() {
 }
 
 cmd_version() {
-	echo "$SCRIPT_NAME version $SCRIPT_VERSION"
+	printf "%s %s\n" "$SCRIPT_NAME" "$VERSION"
+}
+
+# ===================================
+# ARGUMENT PARSING
+# ===================================
+parse_arguments() {
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		-q | --quiet)
+			QUIET=true
+			shift
+			;;
+		-d | --debug)
+			DEBUG=true
+			shift
+			;;
+		-h | --help)
+			cmd_help
+			exit 0
+			;;
+		-v | --version)
+			cmd_version
+			exit 0
+			;;
+		-*)
+			abort "Unknown option: $1"
+			;;
+		*)
+			shift
+			;;
+		esac
+	done
 }
 
 # ===================================
 # MAIN LOGIC
 # ===================================
 main() {
-	local cmd="${1:-}"
-	shift || true
+	local command="${1:-help}"
+	parse_arguments "$@"
 
-	case "$cmd" in
+	case "$command" in
 	all) cmd_all ;;
 	cli) cmd_cli ;;
 	desktop) cmd_desktop ;;
@@ -407,7 +447,7 @@ main() {
 		cmd_version
 		;;
 	*)
-		abort "Unknown command: $cmd. Use '$SCRIPT_NAME help' to list available commands."
+		abort "Unknown command: '$command'. Use '$SCRIPT_NAME help'."
 		;;
 	esac
 }
