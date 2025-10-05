@@ -49,7 +49,7 @@ CLI_PACKAGES=(
 	jq                # json processor
 	lsd               # modern ls with icons and colors
 	mediainfo         # display media metadata
-	neofetch          # system information tool
+	fastfetch         # system information tool
 	ncdu              # terminal disk usage analyzer
 	poppler-utils     # pdf text and metadata tools
 	python3           # python interpreter
@@ -121,12 +121,10 @@ require_cmd() {
 
 function install_ohmyzsh() {
 	local ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-
 	[[ -d "$HOME/.oh-my-zsh" ]] || {
 		log "Installing Oh My Zsh..."
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 	}
-
 	declare -A plugins=(
 		# UX Enhancements
 		['zsh-autosuggestions']=https://github.com/zsh-users/zsh-autosuggestions
@@ -137,22 +135,17 @@ function install_ohmyzsh() {
 		['zsh-autopair']=https://github.com/hlissner/zsh-autopair
 		['zsh-ascii-art']=https://github.com/cabrera-evil/zsh-ascii-art
 		['fzf-tab']=https://github.com/Aloxaf/fzf-tab
-
 		# Git
 		['git-open']=https://github.com/paulirish/git-open
 	)
-
 	for name in "${!plugins[@]}"; do
 		[[ -d "$ZSH_CUSTOM/plugins/$name" ]] || git clone "${plugins[$name]}" "$ZSH_CUSTOM/plugins/$name"
 	done
-
 	[[ -d "$ZSH_CUSTOM/themes/powerlevel10k" ]] || git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
-
 	# Copy Oh My Zsh setup to root
 	if [[ $EUID -ne 0 ]]; then
 		sudo rsync -a --chown=root:root "$HOME/.oh-my-zsh" /root/
 	fi
-
 	success "Oh My Zsh plugins installed successfully."
 }
 
@@ -277,7 +270,6 @@ function cmd_cli() {
 	install_ohmyzsh
 	install_starship
 	install_tpm
-	install_zscroll
 	install_fzf
 	success "CLI tools installed successfully."
 }
@@ -285,42 +277,37 @@ function cmd_cli() {
 function cmd_desktop() {
 	local font_dir="$HOME/.local/share/fonts"
 	local xorg_dir="/etc/X11/xorg.conf.d"
-
 	log "Installing Desktop packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
 	sudo pip3 install pywal --break-system
 	sudo mkdir -p "$xorg_dir"
 	sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
 	setup_wallpapers
+	install_zscroll
 	success "Desktop environment configured successfully."
 }
 
 function cmd_dotfiles() {
 	local config_dir="$HOME/.config"
-
 	log "Applying dotfiles to user and root..."
-
 	# Backup old .zshrc if it exists
 	if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
 		local backup="$HOME/.zshrc.backup"
 		mv "$HOME/.zshrc" "$backup"
 		success "Backed up existing .zshrc to $backup"
 	fi
-
 	# Create symlinks for non-root user
 	mkdir -p "$config_dir"
 	ln -sfv "$BASE_DIR/.zshrc" "$HOME/.zshrc"
 	ln -sfv "$BASE_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 	ln -sfv "$BASE_DIR/.bashrc" "$HOME/.bashrc"
 	ln -sfv "$BASE_DIR/config/"* "$config_dir/"
-
 	# Symlink dotfiles to root (forces override and keeps synced)
 	sudo mkdir -p /root/.config
 	sudo ln -sfv "$BASE_DIR/.zshrc" /root/.zshrc
 	sudo ln -sfv "$BASE_DIR/.p10k.zsh" /root/.p10k.zsh
 	sudo ln -sfv "$BASE_DIR/.bashrc" /root/.bashrc
 	sudo ln -sfv "$BASE_DIR/config/"* /root/.config/
-
 	success "Dotfiles applied successfully."
 }
 
@@ -337,11 +324,9 @@ function cmd_tz() {
 	log "Setting timezone to ${TIMEZONE}..."
 	sudo timedatectl set-timezone "$TIMEZONE"
 	success "Timezone set to ${TIMEZONE}."
-
 	log "Configuring RTC to UTC..."
 	sudo timedatectl set-local-rtc 0
 	success "RTC set to UTC."
-
 	log "Enabling NTP synchronization..."
 	sudo timedatectl set-ntp true || {
 		warning "NTP not available, trying to start systemd-timesyncd..."
@@ -350,7 +335,6 @@ function cmd_tz() {
 		fi
 	}
 	success "NTP synchronization enabled."
-
 	timedatectl
 }
 
