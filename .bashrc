@@ -119,7 +119,7 @@ if ! shopt -oq posix; then
 fi
 
 ###################################
-# Aliases configuration
+# Aliases
 ###################################
 alias l='/usr/bin/lsd --group-dirs=first'
 alias la='/usr/bin/lsd -a --group-dirs=first'
@@ -132,7 +132,8 @@ alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
 alias weather='curl wttr.in'
-alias reload='source ~/.bashrc'
+alias reload='source ~/.zshrc'
+alias ra='ranger'
 alias tmxn='tmuxifier new-session'
 alias tmxe='tmuxifier edit-session'
 alias tmxl='tmuxifier list-sessions'
@@ -140,7 +141,17 @@ alias tmxs='tmuxifier load-session'
 alias lg='lazygit'
 alias lr='lazydocker'
 alias v='nvim'
-alias or='ollama run $BASH_OLLAMA_MODEL'
+alias or='ollama run $ZSH_OLLAMA_MODEL'
+
+###################################
+# FZF configuration
+###################################
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8 \
+--color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC \
+--color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
+--color=selected-bg:#45475A \
+--color=border:#6C7086,label:#CDD6F4"
 
 ###################################
 # Tmuxifier
@@ -181,6 +192,19 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 ###################################
+# Kubernetes configuration
+###################################
+if [ -d "$HOME/.kube" ]; then
+	configs=($HOME/.kube/config*)
+	export KUBECONFIG="${KUBECONFIG:+${KUBECONFIG}:}$(printf "%s:" "${configs[@]}" | sed 's/:$//')"
+fi
+
+###################################
+# Editor configuration
+###################################
+export EDITOR='nvim'
+
+###################################
 # PNPM configuration
 ###################################
 export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -199,18 +223,12 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ###################################
 # AWS configuration
 ###################################
-#SHOW_AWS_PROMPT=false
 export AWS_PROFILE=default
-
-###################################
-# Docker configuration
-###################################
-export DOCKER_VOLUMES=/opt/docker/volumes
 
 ###################################
 # Ollama configuration
 ###################################
-export BASH_OLLAMA_MODEL=gemma3:4b
+export ZSH_OLLAMA_MODEL=gemma3:4b
 
 ###################################
 # Autocompletion configuration
