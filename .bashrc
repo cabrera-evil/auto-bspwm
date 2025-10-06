@@ -233,5 +233,9 @@ export ZSH_OLLAMA_MODEL=gemma3:4b
 ###################################
 # Autocompletion configuration
 ###################################
-source <(kubectl completion bash)
-source <(helm completion bash)
+if command -v kubectl &>/dev/null; then
+	source <(kubectl completion bash)
+fi
+if command -v helm &>/dev/null; then
+	source <(helm completion bash)
+fi
