@@ -22,6 +22,17 @@ return {
           max_tokens = 20480,
         },
       },
+      claude = {
+        endpoint = "https://api.anthropic.com",
+        model = "claude-3-5-sonnet",
+        api_key = os.getenv("ANTHROPIC_API_KEY"),
+        timeout = 30000, -- Timeout in milliseconds
+        extra_request_body = {
+          temperature = 0.75,
+          max_tokens = 20480,
+        },
+        disable_tools = true,
+      },
       ollama = {
         endpoint = "http://localhost:11434",
         model = "deepseek-coder:1.3b",
@@ -29,6 +40,24 @@ return {
         extra_request_body = {
           temperature = 0.75,
           max_tokens = 20480,
+        },
+      },
+    },
+    acp_providers = {
+      ["gemini-cli"] = {
+        command = "gemini",
+        args = { "--experimental-acp" },
+        env = {
+          NODE_NO_WARNINGS = "1",
+          GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+        },
+      },
+      ["claude-code"] = {
+        command = "npx",
+        args = { "@zed-industries/claude-code-acp" },
+        env = {
+          NODE_NO_WARNINGS = "1",
+          ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
         },
       },
     },

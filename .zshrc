@@ -148,6 +148,7 @@ alias lg='lazygit'
 alias lr='lazydocker'
 alias v='nvim'
 alias or='ollama run $ZSH_OLLAMA_MODEL'
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
 ###################################
 # FZF configuration
