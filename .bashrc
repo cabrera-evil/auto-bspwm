@@ -132,6 +132,7 @@ alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
 alias weather='curl wttr.in'
+alias fastfetch='fastfetch --logo ~/.config/ascii/$ZSH_ASCII_ART.txt'
 alias reload='source ~/.zshrc'
 alias ra='ranger'
 alias tmxn='tmuxifier new-session'
@@ -142,6 +143,7 @@ alias lg='lazygit'
 alias lr='lazydocker'
 alias v='nvim'
 alias or='ollama run $ZSH_OLLAMA_MODEL'
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
 ###################################
 # FZF configuration
@@ -229,6 +231,11 @@ export AWS_PROFILE=default
 # Ollama configuration
 ###################################
 export ZSH_OLLAMA_MODEL=gemma3:4b
+
+###################################
+# ASCII Art configuration
+###################################
+export ZSH_ASCII_ART=bruh
 
 ###################################
 # Autocompletion configuration

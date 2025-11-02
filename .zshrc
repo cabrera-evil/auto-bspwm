@@ -73,7 +73,6 @@ plugins=(
   # UX & Input Enhancements
   colored-man-pages
   fzf-tab
-  zsh-ascii-art
   zsh-autopair
   zsh-history-substring-search
   zsh-navigation-tools
@@ -138,6 +137,7 @@ alias catnl='/usr/bin/batcat --paging=never'
 alias c='clear'
 alias e='exit'
 alias weather='curl wttr.in'
+alias fastfetch='fastfetch --logo ~/.config/ascii/$ZSH_ASCII_ART.txt'
 alias reload='source ~/.zshrc'
 alias ra='ranger'
 alias tmxn='tmuxifier new-session'
@@ -219,4 +219,3 @@ export ZSH_OLLAMA_MODEL=gemma3:4b
 # ASCII Art configuration
 ###################################
 export ZSH_ASCII_ART=bruh
-export ZSH_ASCII_OPEN=false
