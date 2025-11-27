@@ -6,4 +6,9 @@ return {
     "nvim-mini/mini.pick",
     "folke/snacks.nvim",
   },
+  keys = {
+    { "<leader>ps", ":LivePreview start<CR>", desc = "Start Live Preview" },
+    { "<leader>pc", ":LivePreview close<CR>", desc = "Stop Live Preview" },
+    { "<leader>pp", ":LivePreview pick<CR>", desc = "Pick file to preview" },
+  },
 }
