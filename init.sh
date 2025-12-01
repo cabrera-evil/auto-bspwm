@@ -203,7 +203,7 @@ function banner() {
 	echo -e "______ ____  ___  /______      ___  /___________________      ________ ___"
 	echo -e "_  __ \`/  / / /  __/  __ \     __  __ \_  ___/__  __ \_ | /| / /_  __ \`__ \\"
 	echo -e "/ /_/ // /_/ // /_ / /_/ /     _  /_/ /(__  )__  /_/ /_ |/ |/ /_  / / / / /"
-	echo -e "\__,_/ \__,_/ \__/ \____/      /_.___//____/ _  .___/____/|__/ /_/ /_/ /_/    ${NC}${YELLOW}(${NC}${GRAY}By ${NC}${PURPLE}@cabrera-evil${NC}${YELLOW})${NC}${TURQUOISE}"
+	echo -e "\__,_/ \__,_/ \__/ \____/      /_.___//____/ _  .___/____/|__/ /_/ /_/ /_/    ${NC}${YELLOW}(${NC}${DIM}By ${NC}${MAGENTA}@cabrera-evil${NC}${YELLOW})${NC}${BLUE}"
 	echo -e "                                             /_/${NC}"
 }
 
@@ -255,7 +255,7 @@ function cmd_all() {
 	cmd_fonts
 	cmd_tz
 	success "Environment configured successfully."
-	read -rp "${TURQUOISE}Do you want to reboot now? (y/N):${NC} " reply
+	read -rp "${BLUE}Do you want to reboot now? (y/N):${NC} " reply
 	if [[ "$reply" =~ ^[Yy]$ ]]; then
 		success "Rebooting..."
 		sudo reboot
