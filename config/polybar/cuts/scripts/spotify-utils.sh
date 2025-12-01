@@ -52,15 +52,19 @@ cmd_metadata() {
 }
 
 cmd_info() {
-	zscroll -l "$SCROLL_LENGTH" \
-		--delay "$SCROLL_DELAY" \
-		--scroll-padding "$SCROLL_PADDING" \
-		--match-command "$0 status" \
-		--match-text "$ICON_PLAY" "--scroll 0" \
-		--match-text "$ICON_PAUSE" "--scroll 1" \
-		--match-text "Offline" "--scroll 0" \
-		--update-check true "$0 metadata" &
-	wait
+	if command -v zscroll &>/dev/null; then
+		zscroll -l "$SCROLL_LENGTH" \
+			--delay "$SCROLL_DELAY" \
+			--scroll-padding "$SCROLL_PADDING" \
+			--match-command "$0 status" \
+			--match-text "$ICON_PLAY" "--scroll 0" \
+			--match-text "$ICON_PAUSE" "--scroll 1" \
+			--match-text "Offline" "--scroll 0" \
+			--update-check true "$0 metadata" &
+		wait
+	else
+		cmd_metadata
+	fi
 }
 
 cmd_prev() {
