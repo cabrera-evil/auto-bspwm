@@ -1,5 +1,6 @@
 return {
   "yetone/avante.nvim",
+  lazy = true,
   build = vim.fn.has("win32") ~= 0 and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
     or "make",
   event = "VeryLazy",
@@ -62,6 +63,18 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    local ok, avante = pcall(require, "avante")
+    if not ok then
+      vim.notify(string.format("avante.nvim not available: %s", avante), vim.log.levels.WARN)
+      return
+    end
+
+    local ok_setup, err = pcall(avante.setup, opts)
+    if not ok_setup then
+      vim.notify(string.format("avante.nvim setup failed: %s", err), vim.log.levels.ERROR)
+    end
+  end,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
