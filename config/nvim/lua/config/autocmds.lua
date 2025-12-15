@@ -13,18 +13,6 @@
 -- LSP Configuration
 local lspconfig = require("lspconfig")
 
--- GitHub Actions Language Server
-lspconfig.gh_actions_ls.setup({
-  filetypes = { "yaml", "yml" },
-  root_dir = lspconfig.util.root_pattern(".github/workflows", ".github"),
-})
-
--- Go Linter Language Server
-lspconfig.golangci_lint_ls.setup({
-  filetypes = { "go", "gomod" },
-  root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
-})
-
 -- Prisma Language Server
 lspconfig.prismals.setup({
   filetypes = { "prisma" },
