@@ -4,46 +4,11 @@ This document provides comprehensive documentation for all plugins configured in
 
 ## Table of Contents
 
-- [AI & Code Assistance](#ai--code-assistance)
 - [User Interface & Theming](#user-interface--theming)
 - [Editor Enhancements](#editor-enhancements)
 - [Navigation & File Management](#navigation--file-management)
 - [Development Tools](#development-tools)
 - [Data & Collaboration](#data--collaboration)
-
----
-
-## AI & Code Assistance
-
-### Avante.nvim
-**Repository:** `yetone/avante.nvim`  
-**Purpose:** AI-powered code assistant and chat interface for Neovim
-
-#### Features
-- AI-powered code completion and suggestions
-- Interactive chat interface for code discussions
-- Support for multiple AI providers (OpenAI, Copilot, Ollama)
-- Image pasting support for enhanced documentation
-- Markdown rendering for better readability
-
-#### Configuration
-- **Default Provider:** Copilot
-- **OpenAI Model:** gpt-4.1-nano (temperature: 0.75, max tokens: 20,480)
-- **Ollama Model:** deepseek-coder:1.3b (local endpoint: http://localhost:11434)
-- **Timeout:** 30 seconds for all providers
-
-#### Dependencies
-- `nvim-lua/plenary.nvim` - Core utility functions
-- `MunifTanjim/nui.nvim` - UI components
-- `zbirenbaum/copilot.lua` - Copilot integration
-- `HakonHarnes/img-clip.nvim` - Image pasting support
-- `MeanderingProgrammer/render-markdown.nvim` - Markdown rendering
-- Multiple file selector providers (telescope, fzf, mini.pick)
-
-#### Usage
-- Lazy loaded on `VeryLazy` event
-- Supports drag-and-drop for images
-- Integrated with nvim-cmp for autocompletion
 
 ---
 
@@ -181,6 +146,24 @@ This document provides comprehensive documentation for all plugins configured in
 
 ## Development Tools
 
+### Live Preview
+**Repository:** `cabrera-evil/live-preview.nvim`  
+**Purpose:** Live preview for markdown and other file types
+
+#### Features
+- Live preview server for supported filetypes
+- Multiple picker backends (telescope, fzf-lua, mini.pick, snacks)
+- Simple start/stop workflow
+
+#### Configuration
+- **Key Bindings:** `<leader>ps` (start), `<leader>pc` (close), `<leader>pp` (pick file)
+- **Dependencies:** `nvim-telescope/telescope.nvim`, `ibhagwan/fzf-lua`, `nvim-mini/mini.pick`, `folke/snacks.nvim`
+
+#### Usage
+1. Run `:LivePreview start` or `<leader>ps`
+2. Stop with `:LivePreview close` or `<leader>pc`
+3. Pick a file with `:LivePreview pick` or `<leader>pp`
+
 ### Live Share
 **Repository:** `azratul/live-share.nvim`  
 **Purpose:** Real-time collaborative editing
@@ -243,7 +226,6 @@ All plugins are managed through lazy.nvim and follow these general patterns:
 ### Dependencies
 - Many plugins share common dependencies like `plenary.nvim` for utility functions
 - UI-related plugins often depend on `nui.nvim` for consistent interface components
-- AI features require appropriate API keys and network connectivity
 
 ### Performance Considerations
 - Plugins are configured for minimal startup impact
@@ -255,13 +237,10 @@ All plugins are managed through lazy.nvim and follow these general patterns:
 ## Troubleshooting
 
 ### Common Issues
-1. **AI Provider Issues:** Ensure API keys are properly configured for OpenAI/Copilot
-2. **Ollama Connection:** Verify Ollama is running on localhost:11434 for local AI features
-3. **Build Dependencies:** Some plugins require external tools (make, etc.) for compilation
-4. **Network Dependencies:** Live Share and Carbon Now require internet connectivity
+1. **Build Dependencies:** Some plugins require external tools (make, etc.) for compilation
+2. **Network Dependencies:** Live Share and Carbon Now require internet connectivity
 
 ### Plugin-Specific Notes
-- **Avante:** Requires either Copilot or OpenAI API setup
 - **Pipeline:** May need additional CI/CD service configuration
 - **Live Share:** Firewall settings may affect connectivity
 - **Data Viewer:** Large files may impact performance
@@ -278,4 +257,3 @@ When adding new plugins:
 5. Document any new key bindings or commands
 
 For questions or issues with specific plugins, refer to their respective GitHub repositories linked in each section.
-
