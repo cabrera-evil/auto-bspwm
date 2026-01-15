@@ -69,6 +69,7 @@ plugins=(
   kubectx
   ssh
   terraform
+  ansible
   vault
   # UX & Input Enhancements
   colored-man-pages
