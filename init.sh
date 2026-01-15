@@ -28,6 +28,7 @@ fi
 # ===================================
 DEBUG=false
 QUIET=false
+SKIP_BANNER=false
 BASE_DIR=$(pwd)
 USER=$(whoami)
 TIMEZONE="America/El_Salvador"
@@ -198,6 +199,36 @@ function setup_wallpapers() {
 	success "Wallpapers set up successfully."
 }
 
+function install_desktop_packages() {
+	local xorg_dir="/etc/X11/xorg.conf.d"
+	log "Installing Desktop packages..."
+	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
+	sudo pip3 install pywal --break-system-packages
+	sudo mkdir -p "$xorg_dir"
+	sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
+	setup_wallpapers
+	success "Desktop packages installed successfully."
+}
+
+function prompt_install_zscroll() {
+	if [[ "$QUIET" != true ]]; then
+		read -rp "${BLUE}Install zscroll? (y/N):${NC} " reply
+		if [[ "$reply" =~ ^[Yy]$ ]]; then
+			install_zscroll
+		fi
+	fi
+}
+
+function prompt_reboot() {
+	read -rp "${BLUE}Do you want to reboot now? (y/N):${NC} " reply
+	if [[ "$reply" =~ ^[Yy]$ ]]; then
+		success "Rebooting..."
+		sudo reboot
+	else
+		success "Please reboot to apply changes."
+	fi
+}
+
 function banner() {
 	echo -e "${MAGENTA}              _____            ______"
 	echo -e "______ ____  ___  /______      ___  /___________________      ________ ___"
@@ -211,6 +242,7 @@ function banner() {
 # COMMANDS
 # ===================================
 function cmd_help() {
+	banner
 	cat <<EOF
 ${BOLD}${SCRIPT_NAME}${NC} - A script to bootstrap and configure your environment.
 
@@ -218,9 +250,8 @@ ${BOLD}USAGE:${NC}
   $SCRIPT_NAME [OPTIONS] COMMAND
 
 ${BOLD}COMMANDS:${NC}
-  ${GREEN}all${NC}            Run full environment setup
   ${GREEN}cli${NC}            Install terminal tools (zsh, starship, tmux, CLI packages)
-  ${GREEN}desktop${NC}        Install desktop packages and configs (bspwm, fonts, wallpapers)
+  ${GREEN}desktop${NC}        Install complete desktop environment (cli, packages, fonts, dotfiles, timezone)
   ${GREEN}dotfiles${NC}       Apply dotfiles and symlinks (user + root)
   ${GREEN}fonts${NC}          Install custom fonts
   ${GREEN}tz${NC}             Set timezone to \$TIMEZONE
@@ -237,34 +268,12 @@ ${BOLD}OPTIONS:${NC}
 
 ${BOLD}EXAMPLES:${NC}
   # Run full environment setup
-  $SCRIPT_NAME all
+  $SCRIPT_NAME desktop
 EOF
 }
 
-function cmd_all() {
-	[[ "$USER" == "root" ]] && {
-		banner
-		abort "Do not run this as root!"
-	}
-	banner
-	require_cmd git
-	require_cmd curl
-	cmd_cli
-	cmd_desktop
-	cmd_dotfiles
-	cmd_fonts
-	cmd_tz
-	success "Environment configured successfully."
-	read -rp "${BLUE}Do you want to reboot now? (y/N):${NC} " reply
-	if [[ "$reply" =~ ^[Yy]$ ]]; then
-		success "Rebooting..."
-		sudo reboot
-	else
-		success "Please reboot to apply changes."
-	fi
-}
-
 function cmd_cli() {
+	[[ "$SKIP_BANNER" != true ]] && banner
 	log "Installing CLI packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}"
 	install_ohmyzsh
@@ -275,19 +284,42 @@ function cmd_cli() {
 }
 
 function cmd_desktop() {
-	local font_dir="$HOME/.local/share/fonts"
-	local xorg_dir="/etc/X11/xorg.conf.d"
-	log "Installing Desktop packages..."
-	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
-	sudo pip3 install pywal --break-system
-	sudo mkdir -p "$xorg_dir"
-	sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
-	setup_wallpapers
-	install_zscroll
-	success "Desktop environment configured successfully."
+	# Root user check
+	[[ "$USER" == "root" ]] && {
+		banner
+		abort "Do not run this as root!"
+	}
+
+	# Display banner and check prerequisites
+	banner
+	require_cmd git
+	require_cmd curl
+
+	# Skip banner for sub-commands
+	SKIP_BANNER=true
+
+	# Install CLI tools first
+	cmd_cli
+
+	# Install desktop packages
+	install_desktop_packages
+
+	# Interactive zscroll prompt
+	prompt_install_zscroll
+
+	# Apply dotfiles, fonts, and timezone
+	cmd_dotfiles
+	cmd_fonts
+	cmd_tz
+
+	success "Environment configured successfully."
+
+	# Reboot prompt
+	prompt_reboot
 }
 
 function cmd_dotfiles() {
+	[[ "$SKIP_BANNER" != true ]] && banner
 	local config_dir="$HOME/.config"
 	log "Applying dotfiles to user and root..."
 	# Backup old .zshrc if it exists
@@ -312,6 +344,7 @@ function cmd_dotfiles() {
 }
 
 cmd_fonts() {
+	[[ "$SKIP_BANNER" != true ]] && banner
 	local font_dir="$HOME/.local/share/fonts"
 	log "Installing fonts..."
 	mkdir -p "$font_dir"
@@ -321,6 +354,7 @@ cmd_fonts() {
 }
 
 function cmd_tz() {
+	[[ "$SKIP_BANNER" != true ]] && banner
 	log "Setting timezone to ${TIMEZONE}..."
 	sudo timedatectl set-timezone "$TIMEZONE"
 	success "Timezone set to ${TIMEZONE}."
@@ -329,9 +363,9 @@ function cmd_tz() {
 	success "RTC set to UTC."
 	log "Enabling NTP synchronization..."
 	sudo timedatectl set-ntp true || {
-		warning "NTP not available, trying to start systemd-timesyncd..."
+		warn "NTP not available, trying to start systemd-timesyncd..."
 		if command -v systemctl &>/dev/null; then
-			sudo systemctl enable --now systemd-timesyncd || warning "systemd-timesyncd not installed."
+			sudo systemctl enable --now systemd-timesyncd || warn "systemd-timesyncd not installed."
 		fi
 	}
 	success "NTP synchronization enabled."
@@ -339,6 +373,7 @@ function cmd_tz() {
 }
 
 function cmd_default_shell() {
+	[[ "$SKIP_BANNER" != true ]] && banner
 	if [[ "$SHELL" != /usr/bin/zsh ]]; then
 		log "Changing default shell to zsh..."
 		chsh -s "$(which zsh)"
@@ -350,6 +385,7 @@ function cmd_default_shell() {
 }
 
 function cmd_default_terminal_emulator() {
+	[[ "$SKIP_BANNER" != true ]] && banner
 	kitty_path="$(command -v kitty)"
 	local priority=100
 
@@ -373,6 +409,7 @@ function cmd_default_terminal_emulator() {
 }
 
 cmd_version() {
+	banner
 	printf "%s %s\n" "$SCRIPT_NAME" "$VERSION"
 }
 
@@ -416,7 +453,6 @@ main() {
 	parse_arguments "$@"
 
 	case "$command" in
-	all) cmd_all ;;
 	cli) cmd_cli ;;
 	desktop) cmd_desktop ;;
 	dotfiles) cmd_dotfiles ;;
