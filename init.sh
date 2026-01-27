@@ -199,13 +199,27 @@ function setup_wallpapers() {
 	success "Wallpapers set up successfully."
 }
 
-function install_desktop_packages() {
+function setup_xorg() {
 	local xorg_dir="/etc/X11/xorg.conf.d"
+	log "Applying Xorg configuration..."
+	sudo mkdir -p "$xorg_dir"
+	sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
+}
+
+function setup_sysctl() {
+	local sysctl_dir="/etc/sysctl.d"
+	log "Applying sysctl configuration..."
+	sudo mkdir -p "$sysctl_dir"
+	sudo cp -rv "$BASE_DIR/sysctl/"* "$sysctl_dir"
+	sudo sysctl --system
+}
+
+function install_desktop_packages() {
 	log "Installing Desktop packages..."
 	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
 	sudo pip3 install pywal --break-system-packages
-	sudo mkdir -p "$xorg_dir"
-	sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
+	setup_xorg
+	setup_sysctl
 	setup_wallpapers
 	success "Desktop packages installed successfully."
 }
