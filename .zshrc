@@ -202,9 +202,15 @@ esac
 ###################################
 # Android SDK configuration
 ###################################
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+if [[ -d /usr/lib/android-sdk ]]; then
+	export ANDROID_HOME=/usr/lib/android-sdk
+elif [[ -d "$HOME/Android/Sdk" ]]; then
+	export ANDROID_HOME=$HOME/Android/Sdk
+fi
+if [[ -n "${ANDROID_HOME:-}" ]]; then
+	export PATH=$PATH:$ANDROID_HOME/emulator
+	export PATH=$PATH:$ANDROID_HOME/platform-tools
+fi
 
 ###################################
 # AWS configuration
