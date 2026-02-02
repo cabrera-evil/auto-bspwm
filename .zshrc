@@ -202,10 +202,10 @@ esac
 ###################################
 # Android SDK configuration
 ###################################
-if [[ -d /usr/lib/android-sdk ]]; then
-	export ANDROID_HOME=/usr/lib/android-sdk
-elif [[ -d "$HOME/Android/Sdk" ]]; then
+if [[ -d "$HOME/Android/Sdk" ]]; then
 	export ANDROID_HOME=$HOME/Android/Sdk
+elif [[ -d /usr/lib/android-sdk ]]; then
+	export ANDROID_HOME=/usr/lib/android-sdk
 fi
 if [[ -n "${ANDROID_HOME:-}" ]]; then
 	export PATH=$PATH:$ANDROID_HOME/emulator
