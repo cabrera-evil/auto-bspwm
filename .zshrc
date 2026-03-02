@@ -226,3 +226,8 @@ export ZSH_OLLAMA_MODEL=gemma3:4b
 # ASCII Art configuration
 ###################################
 export ZSH_ASCII_ART=bruh
+
+# OpenClaw Completion
+if [[ -f "$HOME/.openclaw/completions/openclaw.zsh" ]]; then
+  source "$HOME/.openclaw/completions/openclaw.zsh"
+fi
