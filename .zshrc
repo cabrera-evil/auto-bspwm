@@ -167,6 +167,14 @@ SAVEHIST=2000
 ###################################
 # Aliases
 ###################################
+# Core shell
+alias c='clear'
+alias e='exit'
+alias reload='source ~/.zshrc'
+alias weather='curl wttr.in'
+alias myip='curl -s ifconfig.me && echo'
+
+# File listing / viewing
 alias l='/usr/bin/lsd --group-dirs=first'
 alias la='/usr/bin/lsd -a --group-dirs=first'
 alias ll='/usr/bin/lsd -lh --group-dirs=first'
@@ -175,21 +183,70 @@ alias ls='/usr/bin/lsd --group-dirs=first'
 alias cat='/usr/bin/batcat'
 alias catn='/usr/bin/cat'
 alias catnl='/usr/bin/batcat --paging=never'
-alias c='clear'
-alias e='exit'
-alias weather='curl wttr.in'
+
+# Tools / apps
 alias fastfetch='fastfetch --logo ~/.config/ascii/$ZSH_ASCII_ART.txt'
-alias reload='source ~/.zshrc'
 alias ra='ranger'
+alias v='nvim'
+alias lg='lazygit'
+alias lr='lazydocker'
+alias or='ollama run $ZSH_OLLAMA_MODEL'
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+
+# Tmuxifier
 alias tmxn='tmuxifier new-session'
 alias tmxe='tmuxifier edit-session'
 alias tmxl='tmuxifier list-sessions'
 alias tmxs='tmuxifier load-session'
-alias lg='lazygit'
-alias lr='lazydocker'
-alias v='nvim'
-alias or='ollama run $ZSH_OLLAMA_MODEL'
-alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+
+# Security / Fail2ban
+alias f2b='sudo fail2ban-client'
+alias f2bs='sudo fail2ban-client status'
+alias f2bj='sudo fail2ban-client status sshd'
+alias f2br='sudo systemctl restart fail2ban'
+alias f2bl='sudo fail2ban-client set sshd unbanip'
+alias f2bb='sudo fail2ban-client set sshd banip'
+alias f2blog='sudo journalctl -u fail2ban -f'
+alias f2bcfg='sudo ${EDITOR:-nvim} /etc/fail2ban/jail.local'
+
+# PNPM
+alias pi='pnpm install'
+alias pa='pnpm add'
+alias pad='pnpm add -D'
+alias prm='pnpm remove'
+alias pr='pnpm run'
+alias pd='pnpm dev'
+alias pb='pnpm build'
+alias pt='pnpm test'
+alias pl='pnpm lint'
+alias pfix='pnpm lint --fix'
+alias pwhy='pnpm why'
+alias pout='pnpm outdated'
+alias pup='pnpm up -Lri'
+alias pstore='pnpm store path'
+alias pdlx='pnpm dlx'
+
+# Docker / Compose
+alias d='docker'
+alias dcdown='docker compose down'
+alias dprune='docker system prune -af --volumes'
+alias dcrs='docker compose restart'
+alias dcrsd='docker compose restart && docker compose ps'
+alias dcrsl='docker compose restart && docker compose logs -f --tail=200'
+alias dcreset='docker compose down && docker compose up -d'
+alias dcrecreate='docker compose up -d --force-recreate'
+alias dcupw='docker compose up -d --wait'
+alias dctop='docker compose top'
+
+# Kubernetes
+alias ke='kubectl exec -it'
+alias kd='kubectl describe'
+
+# System helpers
+alias ss='systemctl status'
+alias sr='sudo systemctl restart'
+alias sj='journalctl -xeu'
+alias ports='ss -tulpen'
 
 ###################################
 # FZF configuration
