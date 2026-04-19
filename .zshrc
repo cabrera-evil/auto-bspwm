@@ -21,22 +21,29 @@ compinit -d ~/.cache/zcompdump
 plugins=(
   # Core Shell Utilities
   aliases
+  common-aliases
   command-not-found
   debian
   extract
+  history
   safe-paste
   copypath
+  rsync
   sudo
   # Git & Version Control
   git
   git-auto-fetch
   git-extras
   git-flow
+  gh
   git-open
   gitignore
   github
   # Node Development
+  bun
+  deno
   npm
+  pm2
   yarn
   nvm
   vscode
@@ -45,6 +52,7 @@ plugins=(
   mise
   # Python Development
   python
+  uv
   # Productivity & API Tools
   fzf
   httpie
@@ -57,17 +65,26 @@ plugins=(
   kitty
   ngrok
   nmap
+  systemd
   starship
   tailscale
   tmux
+  ufw
   # DevOps / Cloud / Infrastructure
   1password
+  aws
+  azure
   docker
+  docker-compose
+  gcloud
   gpg-agent
   helm
+  k9s
+  kube-ps1
   kubectl
   kubectx
   ssh
+  ssh-agent
   terraform
   ansible
   vault
@@ -84,6 +101,24 @@ plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
+
+###################################
+# Optional plugin loading
+###################################
+if command -v direnv &> /dev/null; then
+  plugins+=(direnv)
+fi
+
+# Remove stale global alias from previously loaded common-aliases plugin.
+# Prevents `pygmentize` errors on `reload` when `P` remains in current shell state.
+unalias 'P' 2>/dev/null || true
+
+###################################
+# Plugin settings
+###################################
+export SHOW_AWS_PROMPT=false
+zstyle :omz:plugins:ssh-agent quiet yes
+zstyle :omz:plugins:ssh-agent lazy yes
 
 ###################################
 # Completion configuration
@@ -111,6 +146,11 @@ zstyle ':completion:*' use-compctl false
 # Oh My Zsh startup
 ###################################
 source $ZSH/oh-my-zsh.sh
+
+# Keep `common-aliases` loaded but avoid errors when pygmentize is missing.
+if ! command -v pygmentize &> /dev/null; then
+  alias -g P='2>&1 | cat'
+fi
 
 ###################################
 # Prompt configuration
