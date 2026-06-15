@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x *)",
+      "Bash(COLUMNS=160 python3 __HOME__/.claude/statusline.py)",
+      "Bash(COLUMNS=100 python3 __HOME__/.claude/statusline.py)",
+      "Bash(COLUMNS=80 python3 __HOME__/.claude/statusline.py)"
+    ]
+  }
+}
