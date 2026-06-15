@@ -26,6 +26,10 @@ url = "https://stitch.googleapis.com/mcp"
 # Replace with your actual Google API key for Stitch MCP
 "X-Goog-Api-Key" = "REPLACE_ME"
 
+[mcp_servers.sentry]
+command = "npx"
+args = ["-y", "mcp-remote@latest", "https://mcp.sentry.dev/mcp"]
+
 [marketplaces.claude-code-skills]
 source_type = "git"
 source = "https://github.com/alirezarezvani/claude-skills.git"

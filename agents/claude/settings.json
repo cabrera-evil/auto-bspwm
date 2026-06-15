@@ -22,7 +22,8 @@
     "cloudflare@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "dbx@cabrera-evil-skills": true,
-    "cabrera-evil@cabrera-evil-skills": true
+    "cabrera-evil@cabrera-evil-skills": true,
+    "sentry@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-code-skills": {
