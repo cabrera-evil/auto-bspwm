@@ -1,7 +1,7 @@
 ---@module "neominimap.config.meta"
 return {
   "Isrothy/neominimap.nvim",
-  lazy = false,
+  event = "BufReadPost",
   -- keys = {
   --   -- Global Minimap Controls
   --   { "<leader>nm", "<cmd>Neominimap Toggle<cr>", desc = "Toggle global minimap" },
