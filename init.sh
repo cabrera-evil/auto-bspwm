@@ -271,6 +271,7 @@ ${BOLD}COMMANDS:${NC}
   ${GREEN}tz${NC}             Set timezone to \$TIMEZONE
   ${GREEN}shell${NC}          Set default shell to 'zsh'
   ${GREEN}terminal${NC}       Set default terminal emulator to 'kitty'
+  ${GREEN}agents${NC}         Install AI agent configs (Claude Code, Codex)
   ${GREEN}help${NC}           Show this help message
   ${GREEN}version${NC}        Show script version
 
@@ -386,6 +387,57 @@ function cmd_tz() {
 	timedatectl
 }
 
+function cmd_agents() {
+	[[ "$SKIP_BANNER" != true ]] && banner
+	log "Setting up AI agent configurations..."
+
+	local claude_dir="$HOME/.claude"
+	local codex_dir="$HOME/.codex"
+
+	# --- Claude Code ---
+	if ! command -v claude &>/dev/null; then
+		if command -v npm &>/dev/null; then
+			log "Installing Claude Code..."
+			npm install -g @anthropic-ai/claude-code
+		else
+			warn "npm not found — install Node.js then run: npm install -g @anthropic-ai/claude-code"
+		fi
+	fi
+
+	mkdir -p "$claude_dir"
+
+	# Symlink statusline script
+	ln -sfv "$BASE_DIR/agents/claude/statusline.py" "$claude_dir/statusline.py"
+	chmod +x "$claude_dir/statusline.py"
+
+	# Copy settings with home path substitution (__HOME__ → $HOME)
+	sed "s|__HOME__|${HOME}|g" "$BASE_DIR/agents/claude/settings.json" > "$claude_dir/settings.json"
+	sed "s|__HOME__|${HOME}|g" "$BASE_DIR/agents/claude/settings.local.json" > "$claude_dir/settings.local.json"
+
+	success "Claude Code configuration applied."
+
+	# --- Codex ---
+	if ! command -v codex &>/dev/null; then
+		if command -v npm &>/dev/null; then
+			log "Installing Codex CLI..."
+			npm install -g @openai/codex
+		else
+			warn "npm not found — install Node.js then run: npm install -g @openai/codex"
+		fi
+	fi
+
+	mkdir -p "$codex_dir"
+
+	if [[ ! -f "$codex_dir/config.toml" ]]; then
+		cp "$BASE_DIR/agents/codex/config.toml" "$codex_dir/config.toml"
+		warn "Codex config installed. Edit $codex_dir/config.toml and replace REPLACE_ME with real API keys."
+	else
+		warn "Codex config already exists — skipping. Manually merge from $BASE_DIR/agents/codex/config.toml if needed."
+	fi
+
+	success "AI agent configurations applied."
+}
+
 function cmd_default_shell() {
 	[[ "$SKIP_BANNER" != true ]] && banner
 	if [[ "$SHELL" != /usr/bin/zsh ]]; then
@@ -472,6 +524,7 @@ main() {
 	dotfiles) cmd_dotfiles ;;
 	fonts) cmd_fonts ;;
 	tz) cmd_tz ;;
+	agents) cmd_agents ;;
 	shell) cmd_default_shell ;;
 	terminal) cmd_default_terminal_emulator ;;
 	help | "")
