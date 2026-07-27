@@ -328,3 +328,8 @@ export ZSH_ASCII_ART=bruh
 if [[ -f "$HOME/.openclaw/completions/openclaw.zsh" ]]; then
   source "$HOME/.openclaw/completions/openclaw.zsh"
 fi
+
+# Opencode Binary
+if [[ -d "/home/douglas/.opencode/bin" ]]; then
+  export PATH="/home/douglas/.opencode/bin:$PATH"
+fi
