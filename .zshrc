@@ -333,3 +333,8 @@ fi
 if [[ -d "/home/douglas/.opencode/bin" ]]; then
   export PATH="/home/douglas/.opencode/bin:$PATH"
 fi
+
+# LM Studio CLI (lms)
+if [[ -d "/home/douglas/.lmstudio/bin" ]]; then
+  export PATH="/home/douglas/.lmstudio/bin:$PATH"
+fi
