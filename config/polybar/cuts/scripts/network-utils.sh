@@ -11,4 +11,7 @@ ip="$(ip -o -4 addr show up dev "$interface" scope global 2>/dev/null | awk 'NR 
 # Do not reserve bar space for interfaces that are absent, down, or unaddressed.
 if [[ -n "$ip" ]]; then
 	printf '%s %s@%s\n' "$icon" "$name" "${ip%%/*}"
+else
+	# Polybar needs an empty line to replace a previous custom-script value.
+	printf '\n'
 fi
