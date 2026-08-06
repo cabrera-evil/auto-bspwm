@@ -11,16 +11,16 @@ readonly VERSION="1.0.0"
 # COLORS
 # ===================================
 if [[ -t 1 ]] && [[ "${TERM:-}" != "dumb" ]]; then
-	readonly RED=$'\033[0;31m'
-	readonly GREEN=$'\033[0;32m'
-	readonly YELLOW=$'\033[0;33m'
-	readonly BLUE=$'\033[0;34m'
-	readonly MAGENTA=$'\033[0;35m'
-	readonly BOLD=$'\033[1m'
-	readonly DIM=$'\033[2m'
-	readonly NC=$'\033[0m'
+  readonly RED=$'\033[0;31m'
+  readonly GREEN=$'\033[0;32m'
+  readonly YELLOW=$'\033[0;33m'
+  readonly BLUE=$'\033[0;34m'
+  readonly MAGENTA=$'\033[0;35m'
+  readonly BOLD=$'\033[1m'
+  readonly DIM=$'\033[2m'
+  readonly NC=$'\033[0m'
 else
-	readonly RED='' GREEN='' YELLOW='' BLUE='' MAGENTA='' BOLD='' DIM='' NC=''
+  readonly RED='' GREEN='' YELLOW='' BLUE='' MAGENTA='' BOLD='' DIM='' NC=''
 fi
 
 # ===================================
@@ -32,72 +32,74 @@ SKIP_BANNER=false
 BASE_DIR=$(pwd)
 USER=$(whoami)
 TIMEZONE="America/El_Salvador"
+GREENCLIP_URL="https://github.com/erebe/greenclip/releases/latest/download/greenclip"
 CLI_PACKAGES=(
-	atool             # archive extractor
-	bat               # cat clone with syntax highlighting
-	bluez             # bluetooth protocol stack
-	bc                # precision calculator
-	btop              # modern resource monitor
-	brightnessctl     # control screen brightness
-	chafa             # image-to-ascii converter (fallback for previews)
-	cmatrix           # matrix-style terminal animation
-	dos2unix          # convert text file line endings
-	ffmpeg            # media processing and conversion
-	fd-find           # fast and user-friendly find alternative
-	highlight         # syntax highlighter (used in ranger previews)
-	htop              # process viewer
-	imagemagick       # image conversion and manipulation
-	jq                # json processor
-	lsd               # modern ls with icons and colors
-	mediainfo         # display media metadata
-	fastfetch         # system information tool
-	ncdu              # terminal disk usage analyzer
-	poppler-utils     # pdf text and metadata tools
-	python3           # python interpreter
-	python3-pip       # python package manager
-	pipx              # python package installer for user-level packages
-	playerctl         # media control from cli
-	pamixer           # pulseaudio volume control
-	ranger            # terminal file manager
-	ripgrep           # fast recursive search (grep alternative)
-	rsync             # file synchronization tool
-	scrub             # secure file eraser
-	screen            # terminal multiplexer (alternative to tmux)
-	shellcheck        # shell script linter
-	systemd-timesyncd # time synchronization service
-	tmux              # terminal multiplexer
-	trash-cli         # move files to trash
-	tree              # recursive directory listing
-	tty-clock         # terminal-based clock
-	ueberzug          # image previews in terminal (for ranger)
-	unzip             # unzip utility
-	w3m               # terminal web browser (html preview fallback)
-	xclip             # x11 clipboard manager
-	yq                # yaml processor (jq-like syntax)
-	zip               # archive utility
-	zoxide            # smarter directory navigator
+  atool             # archive extractor
+  bat               # cat clone with syntax highlighting
+  bluez             # bluetooth protocol stack
+  bc                # precision calculator
+  btop              # modern resource monitor
+  brightnessctl     # control screen brightness
+  chafa             # image-to-ascii converter (fallback for previews)
+  cmatrix           # matrix-style terminal animation
+  dos2unix          # convert text file line endings
+  ffmpeg            # media processing and conversion
+  fd-find           # fast and user-friendly find alternative
+  highlight         # syntax highlighter (used in ranger previews)
+  htop              # process viewer
+  imagemagick       # image conversion and manipulation
+  jq                # json processor
+  lsd               # modern ls with icons and colors
+  mediainfo         # display media metadata
+  fastfetch         # system information tool
+  ncdu              # terminal disk usage analyzer
+  poppler-utils     # pdf text and metadata tools
+  python3           # python interpreter
+  python3-pip       # python package manager
+  pipx              # python package installer for user-level packages
+  playerctl         # media control from cli
+  pamixer           # pulseaudio volume control
+  ranger            # terminal file manager
+  ripgrep           # fast recursive search (grep alternative)
+  rsync             # file synchronization tool
+  scrub             # secure file eraser
+  screen            # terminal multiplexer (alternative to tmux)
+  shellcheck        # shell script linter
+  systemd-timesyncd # time synchronization service
+  tmux              # terminal multiplexer
+  trash-cli         # move files to trash
+  tree              # recursive directory listing
+  tty-clock         # terminal-based clock
+  ueberzug          # image previews in terminal (for ranger)
+  unzip             # unzip utility
+  w3m               # terminal web browser (html preview fallback)
+  yq                # yaml processor (jq-like syntax)
+  zip               # archive utility
+  zoxide            # smarter directory navigator
 )
 DESKTOP_PACKAGES=(
-	arandr                  # gui for xrandr
-	autorandr               # auto display profile loader
-	blueman                 # gui bluetooth manager
-	bspwm                   # tiling window manager
-	dunst                   # lightweight notification daemon
-	exo-utils               # open files and urls with default apps
-	feh                     # image viewer and wallpaper setter
-	flameshot               # screenshot tool
-	firejail                # application sandboxing
-	kitty                   # gpu-accelerated terminal
-	i3lock-fancy            # stylish screen locker
-	lxappearance            # gtk theme and icon manager
-	numlockx                # enable num lock at startup
-	numix-icon-theme-circle # numix circle icon variant
-	mpd                     # music server
-	picom                   # compositor (transparency, shadows)
-	polybar                 # customizable status bar
-	rofi                    # app launcher and window switcher
-	sxhkd                   # simple hotkey daemon
-	xss-lock                # auto screen lock based on inactivity
+  arandr                  # gui for xrandr
+  autorandr               # auto display profile loader
+  blueman                 # gui bluetooth manager
+  bspwm                   # tiling window manager
+  curl                    # download utility (used for Greenclip)
+  dunst                   # lightweight notification daemon
+  exo-utils               # open files and urls with default apps
+  feh                     # image viewer and wallpaper setter
+  flameshot               # screenshot tool
+  firejail                # application sandboxing
+  kitty                   # gpu-accelerated terminal
+  i3lock-fancy            # stylish screen locker
+  lxappearance            # gtk theme and icon manager
+  numlockx                # enable num lock at startup
+  numix-icon-theme-circle # numix circle icon variant
+  mpd                     # music server
+  picom                   # compositor (transparency, shadows)
+  polybar                 # customizable status bar
+  rofi                    # launcher and clipboard-history UI
+  sxhkd                   # simple hotkey daemon
+  xclip                   # X11 clipboard support for Greenclip
+  xss-lock                # auto screen lock based on inactivity
 )
 
 # ===================================
@@ -109,155 +111,174 @@ error() { printf "${RED}✗${NC} %s\n" "$*" >&2; }
 success() { [[ "$QUIET" != true ]] && printf "${GREEN}✓${NC} %s\n" "$*" || true; }
 debug() { [[ "$DEBUG" == true ]] && printf "${MAGENTA}⚈${NC} DEBUG: %s\n" "$*" >&2 || true; }
 abort() {
-	error "$*"
-	exit 1
+  error "$*"
+  exit 1
 }
 
 # ===================================
 # UTILITIES
 # ===================================
 require_cmd() {
-	command -v "$1" >/dev/null 2>&1 || abort "'$1' is not installed or not in PATH."
+  command -v "$1" >/dev/null 2>&1 || abort "'$1' is not installed or not in PATH."
 }
 
 function install_ohmyzsh() {
-	local ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-	[[ -d "$HOME/.oh-my-zsh" ]] || {
-		log "Installing Oh My Zsh..."
-		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-	}
-	declare -A plugins=(
-		# UX Enhancements
-		['zsh-autosuggestions']=https://github.com/zsh-users/zsh-autosuggestions
-		['zsh-syntax-highlighting']=https://github.com/zsh-users/zsh-syntax-highlighting
-		['zsh-history-substring-search']=https://github.com/zsh-users/zsh-history-substring-search
-		['you-should-use']=https://github.com/MichaelAquilina/zsh-you-should-use
-		['zsh-navigation-tools']=https://github.com/psprint/zsh-navigation-tools
-		['zsh-autopair']=https://github.com/hlissner/zsh-autopair
-		['zsh-ascii-art']=https://github.com/cabrera-evil/zsh-ascii-art
-		['fzf-tab']=https://github.com/Aloxaf/fzf-tab
-		# Git
-		['git-open']=https://github.com/paulirish/git-open
-	)
-	for name in "${!plugins[@]}"; do
-		[[ -d "$ZSH_CUSTOM/plugins/$name" ]] || git clone "${plugins[$name]}" "$ZSH_CUSTOM/plugins/$name"
-	done
-	[[ -d "$ZSH_CUSTOM/themes/powerlevel10k" ]] || git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
-	# Copy Oh My Zsh setup to root
-	if [[ $EUID -ne 0 ]]; then
-		sudo rsync -a --chown=root:root "$HOME/.oh-my-zsh" /root/
-	fi
-	success "Oh My Zsh plugins installed successfully."
+  local ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+  [[ -d "$HOME/.oh-my-zsh" ]] || {
+    log "Installing Oh My Zsh..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  }
+  declare -A plugins=(
+    # UX Enhancements
+    ['zsh-autosuggestions']=https://github.com/zsh-users/zsh-autosuggestions
+    ['zsh-syntax-highlighting']=https://github.com/zsh-users/zsh-syntax-highlighting
+    ['zsh-history-substring-search']=https://github.com/zsh-users/zsh-history-substring-search
+    ['you-should-use']=https://github.com/MichaelAquilina/zsh-you-should-use
+    ['zsh-navigation-tools']=https://github.com/psprint/zsh-navigation-tools
+    ['zsh-autopair']=https://github.com/hlissner/zsh-autopair
+    ['zsh-ascii-art']=https://github.com/cabrera-evil/zsh-ascii-art
+    ['fzf-tab']=https://github.com/Aloxaf/fzf-tab
+    # Git
+    ['git-open']=https://github.com/paulirish/git-open
+  )
+  for name in "${!plugins[@]}"; do
+    [[ -d "$ZSH_CUSTOM/plugins/$name" ]] || git clone "${plugins[$name]}" "$ZSH_CUSTOM/plugins/$name"
+  done
+  [[ -d "$ZSH_CUSTOM/themes/powerlevel10k" ]] || git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
+  # Copy Oh My Zsh setup to root
+  if [[ $EUID -ne 0 ]]; then
+    sudo rsync -a --chown=root:root "$HOME/.oh-my-zsh" /root/
+  fi
+  success "Oh My Zsh plugins installed successfully."
 }
 
 function install_starship() {
-	if command -v starship &>/dev/null; then
-		log "Starship already installed"
-		return
-	fi
-	log "Installing Starship..."
-	curl -sS https://starship.rs/install.sh | sh -s -- --yes
-	success "Starship installed successfully."
+  if command -v starship &>/dev/null; then
+    log "Starship already installed"
+    return
+  fi
+  log "Installing Starship..."
+  curl -sS https://starship.rs/install.sh | sh -s -- --yes
+  success "Starship installed successfully."
+}
+
+function install_greenclip() {
+  local tmp_file
+  tmp_file=$(mktemp)
+
+  log "Installing the latest Greenclip release..."
+  if ! curl -fL "$GREENCLIP_URL" -o "$tmp_file"; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  if ! sudo install -m 0755 "$tmp_file" /usr/local/bin/greenclip; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  rm -f "$tmp_file"
+  /usr/local/bin/greenclip --help >/dev/null
+  success "Latest Greenclip release installed successfully."
 }
 
 function install_tpm() {
-	[[ -d "$HOME/.tmux/plugins/tpm" ]] || {
-		log "Installing Tmux Plugin Manager..."
-		git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-		success "Tmux Plugin Manager installed."
-	}
+  [[ -d "$HOME/.tmux/plugins/tpm" ]] || {
+    log "Installing Tmux Plugin Manager..."
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    success "Tmux Plugin Manager installed."
+  }
 }
 
 install_zscroll() {
-	if command -v zscroll &>/dev/null; then
-		log "Zscroll already installed"
-		return
-	fi
-	local tmp_dir
-	tmp_dir=$(mktemp -d)
-	git clone https://github.com/noctuid/zscroll "$tmp_dir/zscroll"
-	cd "$tmp_dir/zscroll"
-	sudo python3 setup.py install
+  if command -v zscroll &>/dev/null; then
+    log "Zscroll already installed"
+    return
+  fi
+  local tmp_dir
+  tmp_dir=$(mktemp -d)
+  git clone https://github.com/noctuid/zscroll "$tmp_dir/zscroll"
+  cd "$tmp_dir/zscroll"
+  sudo python3 setup.py install
 }
 
 install_fzf() {
-	if command -v fzf &>/dev/null; then
-		log "fzf already installed"
-		return
-	fi
-	log "Installing fzf..."
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install --all
+  if command -v fzf &>/dev/null; then
+    log "fzf already installed"
+    return
+  fi
+  log "Installing fzf..."
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --all
 }
 
 function setup_wallpapers() {
-	local wallpapers_dir="$HOME/Pictures/Wallpapers"
-	log "Setting up wallpapers..."
-	mkdir -p "$wallpapers_dir"
-	cp -rv "$BASE_DIR/wallpapers/"* "$wallpapers_dir"
-	wal -nqi "$wallpapers_dir/archkali.png" || warn "Failed to set wallpaper with pywal."
-	success "Wallpapers set up successfully."
+  local wallpapers_dir="$HOME/Pictures/Wallpapers"
+  log "Setting up wallpapers..."
+  mkdir -p "$wallpapers_dir"
+  cp -rv "$BASE_DIR/wallpapers/"* "$wallpapers_dir"
+  wal -nqi "$wallpapers_dir/archkali.png" || warn "Failed to set wallpaper with pywal."
+  success "Wallpapers set up successfully."
 }
 
 function setup_xorg() {
-	local xorg_dir="/etc/X11/xorg.conf.d"
-	log "Applying Xorg configuration..."
-	sudo mkdir -p "$xorg_dir"
-	sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
+  local xorg_dir="/etc/X11/xorg.conf.d"
+  log "Applying Xorg configuration..."
+  sudo mkdir -p "$xorg_dir"
+  sudo cp -rv "$BASE_DIR/xorg/"* "$xorg_dir"
 }
 
 function setup_sysctl() {
-	local sysctl_dir="/etc/sysctl.d"
-	log "Applying sysctl configuration..."
-	sudo mkdir -p "$sysctl_dir"
-	sudo cp -rv "$BASE_DIR/sysctl/"* "$sysctl_dir"
-	sudo sysctl --system
+  local sysctl_dir="/etc/sysctl.d"
+  log "Applying sysctl configuration..."
+  sudo mkdir -p "$sysctl_dir"
+  sudo cp -rv "$BASE_DIR/sysctl/"* "$sysctl_dir"
+  sudo sysctl --system
 }
 
 function install_desktop_packages() {
-	log "Installing Desktop packages..."
-	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
-	sudo pip3 install pywal --break-system-packages
-	setup_xorg
-	setup_sysctl
-	setup_wallpapers
-	success "Desktop packages installed successfully."
+  log "Installing Desktop packages..."
+  sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
+  sudo pip3 install pywal --break-system-packages
+  install_greenclip
+  setup_xorg
+  setup_sysctl
+  setup_wallpapers
+  success "Desktop packages installed successfully."
 }
 
 function prompt_install_zscroll() {
-	if [[ "$QUIET" != true ]]; then
-		read -rp "${BLUE}Install zscroll? (y/N):${NC} " reply
-		if [[ "$reply" =~ ^[Yy]$ ]]; then
-			install_zscroll
-		fi
-	fi
+  if [[ "$QUIET" != true ]]; then
+    read -rp "${BLUE}Install zscroll? (y/N):${NC} " reply
+    if [[ "$reply" =~ ^[Yy]$ ]]; then
+      install_zscroll
+    fi
+  fi
 }
 
 function prompt_reboot() {
-	read -rp "${BLUE}Do you want to reboot now? (y/N):${NC} " reply
-	if [[ "$reply" =~ ^[Yy]$ ]]; then
-		success "Rebooting..."
-		sudo reboot
-	else
-		success "Please reboot to apply changes."
-	fi
+  read -rp "${BLUE}Do you want to reboot now? (y/N):${NC} " reply
+  if [[ "$reply" =~ ^[Yy]$ ]]; then
+    success "Rebooting..."
+    sudo reboot
+  else
+    success "Please reboot to apply changes."
+  fi
 }
 
 function banner() {
-	echo -e "${MAGENTA}              _____            ______"
-	echo -e "______ ____  ___  /______      ___  /___________________      ________ ___"
-	echo -e "_  __ \`/  / / /  __/  __ \     __  __ \_  ___/__  __ \_ | /| / /_  __ \`__ \\"
-	echo -e "/ /_/ // /_/ // /_ / /_/ /     _  /_/ /(__  )__  /_/ /_ |/ |/ /_  / / / / /"
-	echo -e "\__,_/ \__,_/ \__/ \____/      /_.___//____/ _  .___/____/|__/ /_/ /_/ /_/    ${NC}${YELLOW}(${NC}${DIM}By ${NC}${MAGENTA}@cabrera-evil${NC}${YELLOW})${NC}${BLUE}"
-	echo -e "                                             /_/${NC}"
+  echo -e "${MAGENTA}              _____            ______"
+  echo -e "______ ____  ___  /______      ___  /___________________      ________ ___"
+  echo -e "_  __ \`/  / / /  __/  __ \     __  __ \_  ___/__  __ \_ | /| / /_  __ \`__ \\"
+  echo -e "/ /_/ // /_/ // /_ / /_/ /     _  /_/ /(__  )__  /_/ /_ |/ |/ /_  / / / / /"
+  echo -e "\__,_/ \__,_/ \__/ \____/      /_.___//____/ _  .___/____/|__/ /_/ /_/ /_/    ${NC}${YELLOW}(${NC}${DIM}By ${NC}${MAGENTA}@cabrera-evil${NC}${YELLOW})${NC}${BLUE}"
+  echo -e "                                             /_/${NC}"
 }
 
 # ===================================
 # COMMANDS
 # ===================================
 function cmd_help() {
-	banner
-	cat <<EOF
+  banner
+  cat <<EOF
 ${BOLD}${SCRIPT_NAME}${NC} - A script to bootstrap and configure your environment.
 
 ${BOLD}USAGE:${NC}
@@ -288,255 +309,203 @@ EOF
 }
 
 function cmd_cli() {
-	[[ "$SKIP_BANNER" != true ]] && banner
-	log "Installing CLI packages..."
-	sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}"
-	install_ohmyzsh
-	install_starship
-	install_tpm
-	install_fzf
-	success "CLI tools installed successfully."
+  [[ "$SKIP_BANNER" != true ]] && banner
+  log "Installing CLI packages..."
+  sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}"
+  install_ohmyzsh
+  install_starship
+  install_tpm
+  install_fzf
+  success "CLI tools installed successfully."
 }
 
 function cmd_desktop() {
-	# Root user check
-	[[ "$USER" == "root" ]] && {
-		banner
-		abort "Do not run this as root!"
-	}
+  # Root user check
+  [[ "$USER" == "root" ]] && {
+    banner
+    abort "Do not run this as root!"
+  }
 
-	# Display banner and check prerequisites
-	banner
-	require_cmd git
-	require_cmd curl
+  # Display banner and check prerequisites
+  banner
+  require_cmd git
+  require_cmd curl
 
-	# Skip banner for sub-commands
-	SKIP_BANNER=true
+  # Skip banner for sub-commands
+  SKIP_BANNER=true
 
-	# Install CLI tools first
-	cmd_cli
+  # Install CLI tools first
+  cmd_cli
 
-	# Install desktop packages
-	install_desktop_packages
+  # Install desktop packages
+  install_desktop_packages
 
-	# Interactive zscroll prompt
-	prompt_install_zscroll
+  # Interactive zscroll prompt
+  prompt_install_zscroll
 
-	# Apply dotfiles, fonts, and timezone
-	cmd_dotfiles
-	cmd_fonts
-	cmd_tz
+  # Apply dotfiles, fonts, and timezone
+  cmd_dotfiles
+  cmd_fonts
+  cmd_tz
 
-	success "Environment configured successfully."
+  success "Environment configured successfully."
 
-	# Reboot prompt
-	prompt_reboot
+  # Reboot prompt
+  prompt_reboot
 }
 
 function cmd_dotfiles() {
-	[[ "$SKIP_BANNER" != true ]] && banner
-	local config_dir="$HOME/.config"
-	log "Applying dotfiles to user and root..."
-	# Backup old .zshrc if it exists
-	if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
-		local backup="$HOME/.zshrc.backup"
-		mv "$HOME/.zshrc" "$backup"
-		success "Backed up existing .zshrc to $backup"
-	fi
-	# Create symlinks for non-root user
-	mkdir -p "$config_dir"
-	ln -sfv "$BASE_DIR/.zshrc" "$HOME/.zshrc"
-	ln -sfv "$BASE_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
-	ln -sfv "$BASE_DIR/.bashrc" "$HOME/.bashrc"
-	ln -sfv "$BASE_DIR/config/"* "$config_dir/"
-	# Symlink dotfiles to root (forces override and keeps synced)
-	sudo mkdir -p /root/.config
-	sudo ln -sfv "$BASE_DIR/.zshrc" /root/.zshrc
-	sudo ln -sfv "$BASE_DIR/.p10k.zsh" /root/.p10k.zsh
-	sudo ln -sfv "$BASE_DIR/.bashrc" /root/.bashrc
-	sudo ln -sfv "$BASE_DIR/config/"* /root/.config/
-	success "Dotfiles applied successfully."
+  [[ "$SKIP_BANNER" != true ]] && banner
+  local config_dir="$HOME/.config"
+  log "Applying dotfiles to user and root..."
+  # Backup old .zshrc if it exists
+  if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
+    local backup="$HOME/.zshrc.backup"
+    mv "$HOME/.zshrc" "$backup"
+    success "Backed up existing .zshrc to $backup"
+  fi
+  # Create symlinks for non-root user
+  mkdir -p "$config_dir"
+  ln -sfv "$BASE_DIR/.zshrc" "$HOME/.zshrc"
+  ln -sfv "$BASE_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
+  ln -sfv "$BASE_DIR/.bashrc" "$HOME/.bashrc"
+  ln -sfv "$BASE_DIR/config/"* "$config_dir/"
+  # Symlink dotfiles to root (forces override and keeps synced)
+  sudo mkdir -p /root/.config
+  sudo ln -sfv "$BASE_DIR/.zshrc" /root/.zshrc
+  sudo ln -sfv "$BASE_DIR/.p10k.zsh" /root/.p10k.zsh
+  sudo ln -sfv "$BASE_DIR/.bashrc" /root/.bashrc
+  sudo ln -sfv "$BASE_DIR/config/"* /root/.config/
+  success "Dotfiles applied successfully."
 }
 
 cmd_fonts() {
-	[[ "$SKIP_BANNER" != true ]] && banner
-	local font_dir="$HOME/.local/share/fonts"
-	log "Installing fonts..."
-	mkdir -p "$font_dir"
-	ln -sfn "$BASE_DIR/fonts" "$font_dir/custom-fonts"
-	fc-cache -fv "$font_dir"
-	success "Fonts installed successfully (symlink created)."
+  [[ "$SKIP_BANNER" != true ]] && banner
+  local font_dir="$HOME/.local/share/fonts"
+  log "Installing fonts..."
+  mkdir -p "$font_dir"
+  ln -sfn "$BASE_DIR/fonts" "$font_dir/custom-fonts"
+  fc-cache -fv "$font_dir"
+  success "Fonts installed successfully (symlink created)."
 }
 
 function cmd_tz() {
-	[[ "$SKIP_BANNER" != true ]] && banner
-	log "Setting timezone to ${TIMEZONE}..."
-	sudo timedatectl set-timezone "$TIMEZONE"
-	success "Timezone set to ${TIMEZONE}."
-	log "Configuring RTC to UTC..."
-	sudo timedatectl set-local-rtc 0
-	success "RTC set to UTC."
-	log "Enabling NTP synchronization..."
-	sudo timedatectl set-ntp true || {
-		warn "NTP not available, trying to start systemd-timesyncd..."
-		if command -v systemctl &>/dev/null; then
-			sudo systemctl enable --now systemd-timesyncd || warn "systemd-timesyncd not installed."
-		fi
-	}
-	success "NTP synchronization enabled."
-	timedatectl
-}
-
-function cmd_agents() {
-	[[ "$SKIP_BANNER" != true ]] && banner
-	log "Setting up AI agent configurations..."
-
-	local claude_dir="$HOME/.claude"
-	local codex_dir="$HOME/.codex"
-
-	# --- Claude Code ---
-	if ! command -v claude &>/dev/null; then
-		if command -v npm &>/dev/null; then
-			log "Installing Claude Code..."
-			npm install -g @anthropic-ai/claude-code
-		else
-			warn "npm not found — install Node.js then run: npm install -g @anthropic-ai/claude-code"
-		fi
-	fi
-
-	mkdir -p "$claude_dir"
-
-	# Symlink statusline script
-	ln -sfv "$BASE_DIR/agents/claude/statusline.py" "$claude_dir/statusline.py"
-	chmod +x "$claude_dir/statusline.py"
-
-	# Copy settings with home path substitution (__HOME__ → $HOME)
-	sed "s|__HOME__|${HOME}|g" "$BASE_DIR/agents/claude/settings.json" > "$claude_dir/settings.json"
-	sed "s|__HOME__|${HOME}|g" "$BASE_DIR/agents/claude/settings.local.json" > "$claude_dir/settings.local.json"
-
-	success "Claude Code configuration applied."
-
-	# --- Codex ---
-	if ! command -v codex &>/dev/null; then
-		if command -v npm &>/dev/null; then
-			log "Installing Codex CLI..."
-			npm install -g @openai/codex
-		else
-			warn "npm not found — install Node.js then run: npm install -g @openai/codex"
-		fi
-	fi
-
-	mkdir -p "$codex_dir"
-
-	if [[ ! -f "$codex_dir/config.toml" ]]; then
-		cp "$BASE_DIR/agents/codex/config.toml" "$codex_dir/config.toml"
-		warn "Codex config installed. Edit $codex_dir/config.toml and replace REPLACE_ME with real API keys."
-	else
-		warn "Codex config already exists — skipping. Manually merge from $BASE_DIR/agents/codex/config.toml if needed."
-	fi
-
-	success "AI agent configurations applied."
+  [[ "$SKIP_BANNER" != true ]] && banner
+  log "Setting timezone to ${TIMEZONE}..."
+  sudo timedatectl set-timezone "$TIMEZONE"
+  success "Timezone set to ${TIMEZONE}."
+  log "Configuring RTC to UTC..."
+  sudo timedatectl set-local-rtc 0
+  success "RTC set to UTC."
+  log "Enabling NTP synchronization..."
+  sudo timedatectl set-ntp true || {
+    warn "NTP not available, trying to start systemd-timesyncd..."
+    if command -v systemctl &>/dev/null; then
+      sudo systemctl enable --now systemd-timesyncd || warn "systemd-timesyncd not installed."
+    fi
+  }
+  success "NTP synchronization enabled."
+  timedatectl
 }
 
 function cmd_default_shell() {
-	[[ "$SKIP_BANNER" != true ]] && banner
-	if [[ "$SHELL" != /usr/bin/zsh ]]; then
-		log "Changing default shell to zsh..."
-		chsh -s "$(which zsh)"
-		sudo chsh -s "$(which zsh)" root
-		success "Default shell changed to zsh."
-	else
-		log "Default shell is already zsh."
-	fi
+  [[ "$SKIP_BANNER" != true ]] && banner
+  if [[ "$SHELL" != /usr/bin/zsh ]]; then
+    log "Changing default shell to zsh..."
+    chsh -s "$(which zsh)"
+    sudo chsh -s "$(which zsh)" root
+    success "Default shell changed to zsh."
+  else
+    log "Default shell is already zsh."
+  fi
 }
 
 function cmd_default_terminal_emulator() {
-	[[ "$SKIP_BANNER" != true ]] && banner
-	kitty_path="$(command -v kitty)"
-	local priority=100
+  [[ "$SKIP_BANNER" != true ]] && banner
+  kitty_path="$(command -v kitty)"
+  local priority=100
 
-	if [[ -z "$kitty_path" ]]; then
-		warn "Kitty is not installed. Skipping terminal emulator setup."
-		return
-	fi
-	if command -v x-terminal-emulator &>/dev/null; then
-		if update-alternatives --query x-terminal-emulator 2>/dev/null | grep -q "$kitty_path"; then
-			log "Removing existing kitty alternative..."
-			sudo update-alternatives --remove x-terminal-emulator "$kitty_path"
-		fi
-		log "Installing kitty as x-terminal-emulator with priority $priority..."
-		sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$kitty_path" "$priority"
-		log "Setting kitty as default terminal emulator..."
-		sudo update-alternatives --set x-terminal-emulator "$kitty_path"
-		success "Kitty set as default terminal emulator."
-	else
-		warn "x-terminal-emulator is not available on this system."
-	fi
+  if [[ -z "$kitty_path" ]]; then
+    warn "Kitty is not installed. Skipping terminal emulator setup."
+    return
+  fi
+  if command -v x-terminal-emulator &>/dev/null; then
+    if update-alternatives --query x-terminal-emulator 2>/dev/null | grep -q "$kitty_path"; then
+      log "Removing existing kitty alternative..."
+      sudo update-alternatives --remove x-terminal-emulator "$kitty_path"
+    fi
+    log "Installing kitty as x-terminal-emulator with priority $priority..."
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "$kitty_path" "$priority"
+    log "Setting kitty as default terminal emulator..."
+    sudo update-alternatives --set x-terminal-emulator "$kitty_path"
+    success "Kitty set as default terminal emulator."
+  else
+    warn "x-terminal-emulator is not available on this system."
+  fi
 }
 
 cmd_version() {
-	banner
-	printf "%s %s\n" "$SCRIPT_NAME" "$VERSION"
+  banner
+  printf "%s %s\n" "$SCRIPT_NAME" "$VERSION"
 }
 
 # ===================================
 # ARGUMENT PARSING
 # ===================================
 parse_arguments() {
-	while [[ $# -gt 0 ]]; do
-		case "$1" in
-		-q | --quiet)
-			QUIET=true
-			shift
-			;;
-		-d | --debug)
-			DEBUG=true
-			shift
-			;;
-		-h | --help)
-			cmd_help
-			exit 0
-			;;
-		-v | --version)
-			cmd_version
-			exit 0
-			;;
-		-*)
-			abort "Unknown option: $1"
-			;;
-		*)
-			shift
-			;;
-		esac
-	done
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    -q | --quiet)
+      QUIET=true
+      shift
+      ;;
+    -d | --debug)
+      DEBUG=true
+      shift
+      ;;
+    -h | --help)
+      cmd_help
+      exit 0
+      ;;
+    -v | --version)
+      cmd_version
+      exit 0
+      ;;
+    -*)
+      abort "Unknown option: $1"
+      ;;
+    *)
+      shift
+      ;;
+    esac
+  done
 }
 
 # ===================================
 # MAIN LOGIC
 # ===================================
 main() {
-	local command="${1:-help}"
-	parse_arguments "$@"
+  local command="${1:-help}"
+  parse_arguments "$@"
 
-	case "$command" in
-	cli) cmd_cli ;;
-	desktop) cmd_desktop ;;
-	dotfiles) cmd_dotfiles ;;
-	fonts) cmd_fonts ;;
-	tz) cmd_tz ;;
-	agents) cmd_agents ;;
-	shell) cmd_default_shell ;;
-	terminal) cmd_default_terminal_emulator ;;
-	help | "")
-		cmd_help
-		;;
-	version)
-		cmd_version
-		;;
-	*)
-		abort "Unknown command: '$command'. Use '$SCRIPT_NAME help'."
-		;;
-	esac
+  case "$command" in
+  cli) cmd_cli ;;
+  desktop) cmd_desktop ;;
+  dotfiles) cmd_dotfiles ;;
+  fonts) cmd_fonts ;;
+  tz) cmd_tz ;;
+  shell) cmd_default_shell ;;
+  terminal) cmd_default_terminal_emulator ;;
+  help | "")
+    cmd_help
+    ;;
+  version)
+    cmd_version
+    ;;
+  *)
+    abort "Unknown command: '$command'. Use '$SCRIPT_NAME help'."
+    ;;
+  esac
 }
 
 main "$@"

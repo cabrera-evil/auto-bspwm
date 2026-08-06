@@ -23,6 +23,7 @@ declare -A KEEP_ALIVE_PROCESSES=(
 	[1password]="1password --silent"
 	[autorandr]="autorandr --change"        # Apply monitor layout
 	['bell-off']="xset -b"                  # Disable system beep
+	[greenclip]="greenclip daemon"          # Clipboard history daemon
 	['xss-lock']="xss-lock -- i3lock-fancy" # Lock screen after timeout
 	['xset-timeout']="xset s 900 300"       # Set screen saver timeout
 )
