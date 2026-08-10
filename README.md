@@ -72,6 +72,7 @@ Below is a categorized list of keybindings configured via `sxhkd`. This environm
 
 - <kbd>Super</kbd> + <kbd>Return</kbd>: Launch terminal (Kitty)
 - <kbd>Super</kbd> + <kbd>D</kbd>: Launch Rofi
+- <kbd>Super</kbd> + <kbd>V</kbd>: Open clipboard history
 - <kbd>Super</kbd> + <kbd>Escape</kbd>: Reload `sxhkd`
 
 ## BSPWM Control
@@ -134,13 +135,15 @@ Below is a categorized list of keybindings configured via `sxhkd`. This environm
 
 - <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>: Launch Blueman
 - <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>: Launch Google Chrome
-- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>: Launch Ranger in Kitty
+- <kbd>Super</kbd> + <kbd>E</kbd>: Launch Nautilus
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd>: Launch Ranger in Kitty
 - <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>: Launch Spotify
 
 ## System Controls
 
 - <kbd>Ctrl</kbd> + <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>P</kbd>: Power off
 - <kbd>Ctrl</kbd> + <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>: Reboot
+- <kbd>Ctrl</kbd> + <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>S</kbd>: Suspend
 - <kbd>Ctrl</kbd> + <kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>: Lock (i3lock-fancy)
 
 ## Media & Audio
@@ -157,6 +160,21 @@ Below is a categorized list of keybindings configured via `sxhkd`. This environm
 
 - <kbd>Print</kbd>: Full screenshot to clipboard (`flameshot`)
 - <kbd>Ctrl</kbd> + <kbd>Print</kbd>: GUI selection screenshot to clipboard
+
+## tmux Shortcuts
+
+tmux uses <kbd>Ctrl</kbd> + <kbd>S</kbd> as its prefix unless a shortcut is marked as global.
+
+- Prefix + <kbd>Ctrl</kbd> + <kbd>S</kbd>: Send the prefix to the active program (for nested tmux)
+- Prefix + <kbd>R</kbd>: Reload tmux configuration
+- Prefix + <kbd>H/J/K/L</kbd>: Move to the left/down/up/right pane
+- Global <kbd>Alt</kbd> + <kbd>H/J/K/L</kbd>: Resize the current pane left/down/up/right
+- Prefix + <kbd>|</kbd> / <kbd>-</kbd>: Split into side-by-side / stacked panes
+- Prefix + <kbd>N</kbd>: Create a new session in the current pane directory
+- Prefix + <kbd>P</kbd>: Copy the current pane ID to the clipboard
+- Prefix + <kbd>T</kbd> / <kbd>Shift</kbd> + <kbd>T</kbd>: Use an even horizontal / vertical layout
+- Prefix + <kbd>Shift</kbd> + <kbd>H/J/K/L</kbd>: Swap the current pane left/down/up/right
+- Prefix + <kbd>Shift</kbd> + <kbd>S</kbd> / <kbd>Shift</kbd> + <kbd>R</kbd>: Search pane content forward / backward
 
 # Software stack
 
