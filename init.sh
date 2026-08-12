@@ -34,6 +34,7 @@ USER=$(whoami)
 TIMEZONE="America/El_Salvador"
 GREENCLIP_URL="https://github.com/erebe/greenclip/releases/latest/download/greenclip"
 ROFI_BLUETOOTH_URL="https://raw.githubusercontent.com/nickclyde/rofi-bluetooth/master/rofi-bluetooth"
+NETWORKMANAGER_DMENU_URL="https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/main/networkmanager_dmenu"
 CLI_PACKAGES=(
   atool             # archive extractor
   bat               # cat clone with syntax highlighting
@@ -94,7 +95,10 @@ DESKTOP_PACKAGES=(
   numlockx                # enable num lock at startup
   numix-icon-theme-circle # numix circle icon variant
   mpd                     # music server
+  network-manager         # network connection manager
   picom                   # compositor (transparency, shadows)
+  python3-gi              # Python GObject bindings for NetworkManager
+  gir1.2-nm-1.0           # NetworkManager GObject introspection bindings
   polybar                 # customizable status bar
   rofi                    # launcher and clipboard-history UI
   sxhkd                   # simple hotkey daemon
@@ -163,6 +167,10 @@ function install_starship() {
 }
 
 function install_greenclip() {
+  if [[ -x /usr/local/bin/greenclip ]]; then
+    log "Greenclip already installed"
+    return
+  fi
   local tmp_file
   tmp_file=$(mktemp)
 
@@ -181,6 +189,10 @@ function install_greenclip() {
 }
 
 function install_rofi_bluetooth() {
+  if [[ -x /usr/local/bin/rofi-bluetooth ]]; then
+    log "rofi-bluetooth already installed"
+    return
+  fi
   local tmp_file
   tmp_file=$(mktemp)
 
@@ -199,6 +211,31 @@ function install_rofi_bluetooth() {
   fi
   rm -f "$tmp_file"
   success "Latest rofi-bluetooth version installed successfully."
+}
+
+function install_networkmanager_dmenu() {
+  if [[ -x /usr/local/bin/networkmanager_dmenu ]]; then
+    log "networkmanager-dmenu already installed"
+    return
+  fi
+  local tmp_file
+  tmp_file=$(mktemp)
+
+  log "Installing the latest networkmanager-dmenu version..."
+  if ! curl -fL "$NETWORKMANAGER_DMENU_URL" -o "$tmp_file"; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  if ! python3 -m py_compile "$tmp_file"; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  if ! sudo install -m 0755 "$tmp_file" /usr/local/bin/networkmanager_dmenu; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  rm -f "$tmp_file"
+  success "Latest networkmanager-dmenu version installed successfully."
 }
 
 function install_tpm() {
@@ -261,6 +298,7 @@ function install_desktop_packages() {
   sudo pip3 install pywal --break-system-packages
   install_greenclip
   install_rofi_bluetooth
+  install_networkmanager_dmenu
   setup_xorg
   setup_sysctl
   setup_wallpapers
