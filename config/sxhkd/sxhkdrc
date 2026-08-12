@@ -144,6 +144,10 @@ super + shift + n
 super + e
   nautilus --no-desktop
 
+# Open network manager menu
+super + ctrl + n
+  /usr/local/bin/networkmanager_dmenu
+
 # Open Tools
 super + shift + {b,g,e,s}
   {/usr/local/bin/rofi-bluetooth -theme ~/.config/polybar/cuts/scripts/rofi/launcher.rasi,google-chrome,kitty -e ranger,spotify}
