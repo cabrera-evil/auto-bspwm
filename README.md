@@ -133,7 +133,7 @@ Below is a categorized list of keybindings configured via `sxhkd`. This environm
 
 ## Application Shortcuts
 
-- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>: Launch Blueman
+- <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>: Launch Rofi Bluetooth
 - <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>: Launch Google Chrome
 - <kbd>Super</kbd> + <kbd>E</kbd>: Launch Nautilus
 - <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd>: Launch Ranger in Kitty

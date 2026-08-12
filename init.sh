@@ -33,6 +33,7 @@ BASE_DIR=$(pwd)
 USER=$(whoami)
 TIMEZONE="America/El_Salvador"
 GREENCLIP_URL="https://github.com/erebe/greenclip/releases/latest/download/greenclip"
+ROFI_BLUETOOTH_URL="https://raw.githubusercontent.com/nickclyde/rofi-bluetooth/master/rofi-bluetooth"
 CLI_PACKAGES=(
   atool             # archive extractor
   bat               # cat clone with syntax highlighting
@@ -80,7 +81,6 @@ CLI_PACKAGES=(
 DESKTOP_PACKAGES=(
   arandr                  # gui for xrandr
   autorandr               # auto display profile loader
-  blueman                 # gui bluetooth manager
   bspwm                   # tiling window manager
   curl                    # download utility (used for Greenclip)
   dunst                   # lightweight notification daemon
@@ -180,6 +180,27 @@ function install_greenclip() {
   success "Latest Greenclip release installed successfully."
 }
 
+function install_rofi_bluetooth() {
+  local tmp_file
+  tmp_file=$(mktemp)
+
+  log "Installing the latest rofi-bluetooth version..."
+  if ! curl -fL "$ROFI_BLUETOOTH_URL" -o "$tmp_file"; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  if ! bash -n "$tmp_file"; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  if ! sudo install -m 0755 "$tmp_file" /usr/local/bin/rofi-bluetooth; then
+    rm -f "$tmp_file"
+    return 1
+  fi
+  rm -f "$tmp_file"
+  success "Latest rofi-bluetooth version installed successfully."
+}
+
 function install_tpm() {
   [[ -d "$HOME/.tmux/plugins/tpm" ]] || {
     log "Installing Tmux Plugin Manager..."
@@ -239,6 +260,7 @@ function install_desktop_packages() {
   sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
   sudo pip3 install pywal --break-system-packages
   install_greenclip
+  install_rofi_bluetooth
   setup_xorg
   setup_sysctl
   setup_wallpapers

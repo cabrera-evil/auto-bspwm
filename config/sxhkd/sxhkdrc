@@ -146,7 +146,7 @@ super + e
 
 # Open Tools
 super + shift + {b,g,e,s}
-  {blueman-manager,google-chrome,kitty -e ranger,spotify}
+  {/usr/local/bin/rofi-bluetooth -theme ~/.config/polybar/cuts/scripts/rofi/launcher.rasi,google-chrome,kitty -e ranger,spotify}
 
 #
 # System Controls
