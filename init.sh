@@ -57,7 +57,6 @@ CLI_PACKAGES=(
   ncdu              # terminal disk usage analyzer
   poppler-utils     # pdf text and metadata tools
   python3           # python interpreter
-  python3-pip       # python package manager
   pipx              # python package installer for user-level packages
   playerctl         # media control from cli
   pamixer           # pulseaudio volume control
@@ -295,7 +294,7 @@ function setup_sysctl() {
 function install_desktop_packages() {
   log "Installing Desktop packages..."
   sudo apt update -y && sudo apt install -y "${CLI_PACKAGES[@]}" "${DESKTOP_PACKAGES[@]}"
-  sudo pip3 install pywal --break-system-packages
+  sudo pipx install pywal --break-system-packages
   install_greenclip
   install_rofi_bluetooth
   install_networkmanager_dmenu
