@@ -1,0 +1,37 @@
+[keys]
+prefix = "ctrl+a"
+
+# Match the tmux workflow in config/tmux/tmux.conf.
+reload_config = "prefix+r"
+resize_mode = ""
+
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+
+resize_pane_left = "alt+h"
+resize_pane_down = "alt+j"
+resize_pane_up = "alt+k"
+resize_pane_right = "alt+l"
+
+swap_pane_left = "prefix+shift+h"
+swap_pane_down = "prefix+shift+j"
+swap_pane_up = "prefix+shift+k"
+swap_pane_right = "prefix+shift+l"
+
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
+new_workspace = "prefix+shift+n"
+new_tab = "prefix+c"
+copy_mode = "prefix+["
+zoom = "prefix+z"
+
+# Reserve prefix+P for the tmux-equivalent pane-ID clipboard action.
+rename_pane = ""
+
+[[keys.command]]
+key = "prefix+shift+p"
+type = "shell"
+command = 'pane_id="${HERDR_ACTIVE_PANE_ID:-}"; if command -v xclip >/dev/null 2>&1; then printf "%s" "$pane_id" | xclip -selection clipboard; elif command -v xsel >/dev/null 2>&1; then printf "%s" "$pane_id" | xsel --clipboard --input; elif command -v wl-copy >/dev/null 2>&1; then printf "%s" "$pane_id" | wl-copy; fi'
+description = "copy active pane ID"
