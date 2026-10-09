@@ -10,6 +10,11 @@ focus_pane_down = "prefix+j"
 focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
 
+# Navigate agent entries in the sidebar without changing pane-swap bindings.
+previous_agent = "prefix+alt+k"
+next_agent = "prefix+alt+j"
+focus_agent = "prefix+ctrl+1..9"
+
 resize_pane_left = "alt+h"
 resize_pane_down = "alt+j"
 resize_pane_up = "alt+k"
