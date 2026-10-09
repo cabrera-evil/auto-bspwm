@@ -11,8 +11,8 @@ focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
 
 # Navigate agent entries in the sidebar without changing pane-swap bindings.
-previous_agent = "prefix+alt+k"
-next_agent = "prefix+alt+j"
+previous_agent = "prefix+alt+h"
+next_agent = "prefix+alt+l"
 focus_agent = "prefix+ctrl+1..9"
 
 resize_pane_left = "alt+h"
@@ -40,3 +40,6 @@ key = "prefix+shift+p"
 type = "shell"
 command = 'pane_id="${HERDR_ACTIVE_PANE_ID:-}"; if command -v xclip >/dev/null 2>&1; then printf "%s" "$pane_id" | xclip -selection clipboard; elif command -v xsel >/dev/null 2>&1; then printf "%s" "$pane_id" | xsel --clipboard --input; elif command -v wl-copy >/dev/null 2>&1; then printf "%s" "$pane_id" | wl-copy; fi'
 description = "copy active pane ID"
+
+[ui.toast]
+delivery = "herdr"
