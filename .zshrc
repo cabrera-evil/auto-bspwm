@@ -193,7 +193,6 @@ alias ra='ranger'
 alias v='nvim'
 alias lg='lazygit'
 alias lr='lazydocker'
-alias or='ollama run $ZSH_OLLAMA_MODEL'
 alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
 # Tmuxifier
@@ -316,11 +315,6 @@ fi
 # AWS configuration
 ###################################
 export AWS_PROFILE=default
-
-###################################
-# Ollama configuration
-###################################
-export ZSH_OLLAMA_MODEL=gemma3:4b
 
 ###################################
 # ASCII Art configuration
