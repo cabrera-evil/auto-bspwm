@@ -3,6 +3,9 @@ export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 export PATH=$PATH:/snap/bin
 export PATH=~/.console-ninja/.bin:$PATH
 
+# Completion path adjustments
+fpath=(~/.zsh/completions $fpath)
+
 # Oh My Zsh
 export ZSH=$HOME/.oh-my-zsh
 
