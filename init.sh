@@ -257,6 +257,20 @@ install_zscroll() {
   sudo python3 setup.py install
 }
 
+function install_ranger_plugins() {
+  local dir="$BASE_DIR/config/ranger/plugins"
+  declare -A plugins=(
+    [ranger-archives]="https://github.com/maxbrunet/ranger-archives"
+    [ranger_devicons]="https://github.com/alexanderjeurissen/ranger_devicons"
+    [ranger-fzf-filter]="https://github.com/MuXiu1997/ranger-fzf-filter"
+    [ranger-fzf-marks]="https://github.com/laggardkernel/ranger-fzf-marks"
+  )
+  for name in "${!plugins[@]}"; do
+    [[ -d "$dir/$name" ]] || git clone --depth 1 "${plugins[$name]}" "$dir/$name"
+  done
+  success "Ranger plugins installed."
+}
+
 install_fzf() {
   if command -v fzf &>/dev/null; then
     log "fzf already installed"
@@ -374,6 +388,7 @@ function cmd_cli() {
   install_ohmyzsh
   install_starship
   install_tpm
+  install_ranger_plugins
   install_fzf
   success "CLI tools installed successfully."
 }
