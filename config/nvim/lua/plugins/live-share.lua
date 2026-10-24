@@ -3,6 +3,7 @@ return {
   dependencies = {
     "jbyuki/instant.nvim",
   },
+  cmd = { "LiveShareServer", "LiveShareJoin" },
   config = function()
     vim.g.instant_username = os.getenv("USER") or os.getenv("USERNAME") or "guest"
     require("live-share").setup({

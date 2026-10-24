@@ -10,14 +10,5 @@
 -- Set the LSP log level to debug
 -- vim.lsp.set_log_level("debug")
 
--- LSP Configuration
-local lspconfig = require("lspconfig")
-
--- Prisma Language Server
-lspconfig.prismals.setup({
-  filetypes = { "prisma" },
-  root_dir = lspconfig.util.root_pattern("schema.prisma", ".git"),
-})
-
 -- Set Handlebars files to use HTML filetype
-vim.cmd("autocmd BufRead,BufNewFile *.hbs set filetype=html")
+vim.filetype.add({ extension = { hbs = "html" } })
