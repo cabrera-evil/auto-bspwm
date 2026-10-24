@@ -67,6 +67,7 @@ CLI_PACKAGES=(
   screen            # terminal multiplexer (alternative to tmux)
   shellcheck        # shell script linter
   systemd-timesyncd # time synchronization service
+  sqlite3           # sqlite cli and library (used by data-viewer.nvim)
   tmux              # terminal multiplexer
   trash-cli         # move files to trash
   tree              # recursive directory listing
