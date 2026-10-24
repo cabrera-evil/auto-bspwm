@@ -152,12 +152,12 @@ This document provides comprehensive documentation for all plugins configured in
 
 #### Features
 - Live preview server for supported filetypes
-- Multiple picker backends (telescope, fzf-lua, mini.pick, snacks)
+- Picker backends (fzf-lua, snacks)
 - Simple start/stop workflow
 
 #### Configuration
 - **Key Bindings:** `<leader>ps` (start), `<leader>pc` (close), `<leader>pp` (pick file)
-- **Dependencies:** `nvim-telescope/telescope.nvim`, `ibhagwan/fzf-lua`, `nvim-mini/mini.pick`, `folke/snacks.nvim`
+- **Dependencies:** `ibhagwan/fzf-lua`, `folke/snacks.nvim`
 
 #### Usage
 1. Run `:LivePreview start` or `<leader>ps`
