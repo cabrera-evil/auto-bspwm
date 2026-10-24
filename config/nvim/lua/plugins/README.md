@@ -247,6 +247,16 @@ All plugins are managed through lazy.nvim and follow these general patterns:
 
 ---
 
+## Merge Conventions
+
+Plugin specs extend, never override. lazy.nvim deep-merges `opts` across specs.
+
+1. **Adding or changing keys:** use a plain `opts = { ... }` table.
+2. **Appending to lists or reading existing values:** use `opts = function(_, opts)`. Mutate `opts` in place, or wrap the subtable in `vim.tbl_deep_extend("force", opts.x or {}, { ... })`. Never assign a whole subtable (`opts.picker = { ... }`).
+3. **Avoid `config`:** prefer `opts`, and `init` for `vim.g` settings. If `config` is unavoidable, use `config = function(_, opts) require("x").setup(opts) end`.
+
+---
+
 ## Contributing
 
 When adding new plugins:

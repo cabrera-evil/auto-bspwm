@@ -1,14 +1,14 @@
 return {
   "folke/snacks.nvim",
   ---@type snacks.Config
-  opts = function(_, opts)
-    opts.picker = {
+  opts = {
+    picker = {
       sources = {
         explorer = {
           hidden = true,
           ignored = true,
         },
       },
-    }
-  end,
+    },
+  },
 }
