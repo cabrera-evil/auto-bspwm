@@ -41,7 +41,6 @@ plugins=(
   gh
   git-open
   gitignore
-  github
   # Node Development
   bun
   deno
